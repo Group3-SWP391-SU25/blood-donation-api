@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj": {}
+    "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj": {}
   },
   "projects": {
-    "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Application\\BloodDonation.Application.csproj": {
+    "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Application\\BloodDonation.Application.csproj",
+        "projectUniqueName": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj",
         "projectName": "BloodDonation.Application",
-        "projectPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Application\\BloodDonation.Application.csproj",
-        "packagesPath": "C:\\Users\\Nghia\\.nuget\\packages\\",
-        "outputPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Application\\obj\\",
+        "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj",
+        "packagesPath": "C:\\Users\\SDC\\.nuget\\packages\\",
+        "outputPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Nghia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\SDC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,14 +26,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
-                "projectPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\BloodDonation.Domain.csproj"
+              "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
+                "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj"
               }
             }
           }
@@ -91,20 +92,20 @@
         }
       }
     },
-    "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
+    "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\BloodDonation.Domain.csproj",
+        "projectUniqueName": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj",
         "projectName": "BloodDonation.Domain",
-        "projectPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\BloodDonation.Domain.csproj",
-        "packagesPath": "C:\\Users\\Nghia\\.nuget\\packages\\",
-        "outputPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\obj\\",
+        "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj",
+        "packagesPath": "C:\\Users\\SDC\\.nuget\\packages\\",
+        "outputPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Nghia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\SDC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -113,6 +114,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -156,20 +158,20 @@
         }
       }
     },
-    "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj": {
+    "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
+        "projectUniqueName": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
         "projectName": "BloodDonation.Infrastructures",
-        "projectPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
-        "packagesPath": "C:\\Users\\Nghia\\.nuget\\packages\\",
-        "outputPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Infrastructures\\obj\\",
+        "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
+        "packagesPath": "C:\\Users\\SDC\\.nuget\\packages\\",
+        "outputPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Nghia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\SDC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -178,17 +180,18 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Application\\BloodDonation.Application.csproj": {
-                "projectPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Application\\BloodDonation.Application.csproj"
+              "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj": {
+                "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj"
               },
-              "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
-                "projectPath": "D:\\Code_Project\\Csharp\\SWP391_BloodDonationSupportSystem_BE\\BloodDonation.Domain\\BloodDonation.Domain.csproj"
+              "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
+                "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj"
               }
             }
           }
