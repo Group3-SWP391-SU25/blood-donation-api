@@ -1,0 +1,16 @@
+D:\semx\support\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Application.deps.json
+D:\semx\support\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Application.dll
+D:\semx\support\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Application.pdb
+D:\semx\support\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Domain.dll
+D:\semx\support\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Domain.pdb
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.csproj.AssemblyReference.cache
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.AssemblyInfoInputs.cache
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.AssemblyInfo.cs
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.csproj.CoreCompileInputs.cache
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.sourcelink.json
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDon.DE7DF12E.Up2Date
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.dll
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\refint\BloodDonation.Application.dll
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.pdb
+D:\semx\support\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\ref\BloodDonation.Application.dll
