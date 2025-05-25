@@ -1,0 +1,16 @@
+D:\SWP391\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Application.deps.json
+D:\SWP391\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Application.dll
+D:\SWP391\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Application.pdb
+D:\SWP391\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Domain.dll
+D:\SWP391\blood-donation-api\BloodDonation.Application\bin\Debug\net8.0\BloodDonation.Domain.pdb
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.csproj.AssemblyReference.cache
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.AssemblyInfoInputs.cache
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.AssemblyInfo.cs
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.csproj.CoreCompileInputs.cache
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.sourcelink.json
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDon.DE7DF12E.Up2Date
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.dll
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\refint\BloodDonation.Application.dll
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\BloodDonation.Application.pdb
+D:\SWP391\blood-donation-api\BloodDonation.Application\obj\Debug\net8.0\ref\BloodDonation.Application.dll

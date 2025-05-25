@@ -2543,24 +2543,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\SDC\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
+      "projectUniqueName": "D:\\SWP391\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
       "projectName": "BloodDonation.Infrastructures",
-      "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
-      "packagesPath": "C:\\Users\\SDC\\.nuget\\packages\\",
-      "outputPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Infrastructures\\obj\\",
+      "projectPath": "D:\\SWP391\\blood-donation-api\\BloodDonation.Infrastructures\\BloodDonation.Infrastructures.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "D:\\SWP391\\blood-donation-api\\BloodDonation.Infrastructures\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\SDC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2575,11 +2570,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj": {
-              "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj"
+            "D:\\SWP391\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj": {
+              "projectPath": "D:\\SWP391\\blood-donation-api\\BloodDonation.Application\\BloodDonation.Application.csproj"
             },
-            "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
-              "projectPath": "D:\\semx\\support\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj"
+            "D:\\SWP391\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj": {
+              "projectPath": "D:\\SWP391\\blood-donation-api\\BloodDonation.Domain\\BloodDonation.Domain.csproj"
             }
           }
         }
@@ -2593,8 +2588,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -2625,7 +2619,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
