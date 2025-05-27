@@ -6,6 +6,17 @@ namespace BloodDonation.Infrastructures;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
+    public DbSet<BloodGroup> BloodGroups { get; set; } = null!;
+    public DbSet<BloodComponent> BloodComponents { get; set; } = null!;
+
+    public DbSet<BloodDonationRequest> BloodDonationRequests { get; set; } = null!;
+    public DbSet<EmergencyBloodRequest> EmergencyBloodRequests { get; set; } = null!;
+    public DbSet<BlooodStorage> BloodStorages { get; set; } = null!;
+    public DbSet<BloodIssue> BloodIssues { get; set; } = null!;
+    public DbSet<Blog> Blogs { get; set; } = null!;
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -37,7 +48,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         new Role
         {
             Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b84"),
-            Name = "STAFF",
+            Name = "NURSE",
         });
         modelBuilder.Entity<User>().HasData();
         modelBuilder.Entity<BloodGroup>().HasData(

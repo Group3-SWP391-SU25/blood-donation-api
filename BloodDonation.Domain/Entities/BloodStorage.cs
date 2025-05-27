@@ -7,7 +7,7 @@ public class BlooodStorage : BaseEntity
     public DateTime ExpiredDate { get; set; }
     #region Relationship Configuration 
     public Guid BloodDonateId { get; set; } = Guid.Empty;
-    public virtual BloodDonate BloodDonate { get; set; } = new();
+    public virtual BloodDonationRequest BloodDonate { get; set; } = new();
     public Guid BloodComponentId { get; set; } = Guid.Empty;
     public virtual BloodComponent BloodComponent { get; set; } = new();
 
