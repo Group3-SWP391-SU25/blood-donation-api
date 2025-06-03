@@ -1,6 +1,8 @@
 ﻿using System.Security.AccessControl;
 using System.Transactions;
 using AutoMapper;
+using BloodDonation.Application.Models.BloodDonationRequests;
+using BloodDonation.Domain.Entities;
 
 namespace BloodDonation.Application.Mappers;
 
@@ -18,6 +20,10 @@ public class MapperConfigurationProfile : Profile
         #region BloodUnit
         //CreateMap<BloodUnitCreateModel, BloodUnit>().ReverseMap();
         //CreateMap<BloodUnitUpdateModel, BloodUnit>().ReverseMap();
+        #endregion
+
+        #region BloodDonationRequest
+        CreateMap<BloodDonationRequest, BloodDonationRequestViewModel>().ReverseMap();
         #endregion
     }
 }
