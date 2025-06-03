@@ -20,4 +20,12 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     void UpdateRange(List<TEntity> entities);
     void SoftRemove(TEntity entity);
     void SoftRemoveRange(List<TEntity> entities);
+
+    Task<IEnumerable<TEntity>> Search(
+            Expression<Func<TEntity, bool>> filter = null!,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null!,
+            string includeProperties = "",
+            int? pageIndex = null,
+            int? pageSize = null);
+    Task<TEntity> GetByCondition(Expression<Func<TEntity, bool>> filter, string includeProperties = "");
 }

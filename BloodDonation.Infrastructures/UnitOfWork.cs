@@ -12,12 +12,15 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext dbContext;
     public UnitOfWork(IServiceProvider serviceProvider)
     {
+        Mapper = serviceProvider.GetRequiredService<IMapper>();
         dbContext = serviceProvider.GetRequiredService<AppDbContext>();
         UserRepository = serviceProvider.GetRequiredService<IUserRepository>();
+        BloodDonationRequestRepository = serviceProvider.GetRequiredService<IBloodDonationRequestRepository>();
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
  
     }
     public IUserRepository UserRepository { get; }
+    public IBloodDonationRequestRepository BloodDonationRequestRepository { get;  }
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
     public IMapper Mapper { get; }
