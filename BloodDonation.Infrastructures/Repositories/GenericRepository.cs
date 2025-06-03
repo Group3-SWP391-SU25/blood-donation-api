@@ -160,4 +160,5 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return await query.FirstOrDefaultAsync()!;
     }
 
+
 }
