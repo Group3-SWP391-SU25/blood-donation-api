@@ -12,10 +12,10 @@ public class BloodDonationRequest : BaseEntity
     public double Volume { get; set; }
     public string Description { get; set; } = string.Empty;
     public List<BloodDonationRequirement> BloodDonationRequirements { get; set; } = [];
-  
+
     #region Relationship Configuration 
     public virtual User User { get; set; } = new();
     public Guid UserId { get; set; }
-
+    public virtual HealthCheckForm? HealthCheckForm { get; set; } = null;
     #endregion
 }

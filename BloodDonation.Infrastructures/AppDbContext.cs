@@ -14,9 +14,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<BloodDonationRequest> BloodDonationRequests { get; set; } = null!;
     public DbSet<EmergencyBloodRequest> EmergencyBloodRequests { get; set; } = null!;
     public DbSet<BlooodStorage> BloodStorages { get; set; } = null!;
+    public DbSet<HealthCheckForm> HealthCheckForms { get; set; } = null!;
     public DbSet<BloodIssue> BloodIssues { get; set; } = null!;
     public DbSet<Blog> Blogs { get; set; } = null!;
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -32,6 +33,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithOne(ebr => ebr.BloodIssue)
             .HasForeignKey<BloodIssue>(bi => bi.EmergencyBloodRequestId)
     .OnDelete(DeleteBehavior.NoAction); // or .NoAction
+        modelBuilder.Entity<HealthCheckForm>()
+            .HasOne(hcf => hcf.BloodDonationRequest)
+            .WithOne(bdr => bdr.HealthCheckForm)
+            .HasForeignKey<HealthCheckForm>(hcf => hcf.BloodDonateRequestId)
+            .OnDelete(DeleteBehavior.NoAction); // or .NoAction
     }
 
     private void SeedData(ModelBuilder modelBuilder)

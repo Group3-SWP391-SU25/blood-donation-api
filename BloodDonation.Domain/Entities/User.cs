@@ -13,6 +13,9 @@ public class User : BaseEntity
     public string Status { get; set; } = string.Empty;
     public bool Gender { get; set; }
     public string Addresss { get; set; } = string.Empty;
+    public string FrontUrlIdentity { get; set; } = string.Empty;
+    public string BackUrlIdentity { get; set; } = string.Empty;
+    
 
     #region  Relationship Configuration
     public Guid RoleId { get; set; } = Guid.Empty;
