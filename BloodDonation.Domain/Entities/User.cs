@@ -21,7 +21,7 @@ public class User : BaseEntity
     public virtual BloodGroup BloodGroup { get; set; } = new();
     public virtual ICollection<EmergencyBloodRequest>? EmergencyBloodRequests { get; set; }
     public virtual ICollection<Blog>? Blogs { get; set; }
-    public virtual ICollection<BloodRequest>? BloodRequests { get; set; }
+    public virtual ICollection<BloodDonationRequest>? BloodRequests { get; set; }
     
     #endregion
 
