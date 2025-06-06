@@ -159,6 +159,16 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         return await query.FirstOrDefaultAsync()!;
     }
+    public virtual async Task<int> Count(Expression<Func<TEntity, bool>> filter = null!)
+    {
+        IQueryable<TEntity> query = dbSet;
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+        return await query.CountAsync();
+    }
 
 
 }

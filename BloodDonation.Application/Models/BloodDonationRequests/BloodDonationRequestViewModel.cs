@@ -1,4 +1,6 @@
-﻿using BloodDonation.Domain.Entities;
+﻿using BloodDonation.Application.Models.HealthCheckForms;
+using BloodDonation.Domain.Entities;
+using BloodDonation.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +9,32 @@ using System.Threading.Tasks;
 
 namespace BloodDonation.Application.Models.BloodDonationRequests
 {
-    public class BloodDonationRequestViewModel
+    public class BloodDonationRequestViewModel : BaseModel
     {
-        public string BloodType { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
+        public BloodTypeEnum BloodType { get; set; }
+        public BloodDonationRequestStatus Status { get; set; }
         public string ReasonReject { get; set; } = string.Empty;
-        public DateTime DonatedDateRequest { get; set; } = DateTime.Now;
-        public string Type { get; set; } = string.Empty;
-        public double Volume { get; set; }
-        public string Description { get; set; } = string.Empty;
-        public List<BloodDonationRequirement> BloodDonationRequirements { get; set; } = [];
+        public DateTime DonatedDateRequest { get; set; }
+        public TimeSlotEnum TimeSlot { get; set; }
 
+        public bool HasBloodTransfusionHistory { get; set; }
+        public bool HasRecentIllnessOrMedication { get; set; }
+        public bool HasRecentSkinPenetrationOrSurgery { get; set; }
+        public bool HasDrugInjectionHistory { get; set; }
+        public bool HasVisitedEpidemicArea { get; set; }
+
+        // ==== User Info ====
+        public string IdentityId { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+        public int Age { get; set; }
+        public bool Gender { get; set; }
+        public string PhoneNo { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Addresss { get; set; } = string.Empty;
+
+        // ==== Health Check Form ====
+        public HealthCheckFormViewModel? HealthCheckForm { get; set; } 
     }
 }
