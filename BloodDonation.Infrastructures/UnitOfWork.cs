@@ -16,11 +16,13 @@ public class UnitOfWork : IUnitOfWork
         dbContext = serviceProvider.GetRequiredService<AppDbContext>();
         UserRepository = serviceProvider.GetRequiredService<IUserRepository>();
         BloodDonationRequestRepository = serviceProvider.GetRequiredService<IBloodDonationRequestRepository>();
+        HealthCheckFormRepository = serviceProvider.GetRequiredService<IHealthCheckFormRepository>();
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
  
     }
     public IUserRepository UserRepository { get; }
     public IBloodDonationRequestRepository BloodDonationRequestRepository { get;  }
+    public IHealthCheckFormRepository HealthCheckFormRepository { get; }
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
     public IMapper Mapper { get; }

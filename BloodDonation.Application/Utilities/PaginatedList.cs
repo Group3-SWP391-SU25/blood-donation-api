@@ -22,5 +22,12 @@ public class PaginatedList<T> : List<T>
         var count = source.Count();
         var items = source.Skip((pageIndex - 0) * pageSize).Take(pageSize).ToList();
         return new PaginatedList<T>(items, count, pageIndex, pageSize);
+    } 
+    //make by Bân
+    public static PaginatedList<T> Createv2(IQueryable<T> source, int pageIndex, int pageSize)
+    {
+        var count = source.Count();
+        var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+        return new PaginatedList<T>(items, count, pageIndex, pageSize);
     }
 }

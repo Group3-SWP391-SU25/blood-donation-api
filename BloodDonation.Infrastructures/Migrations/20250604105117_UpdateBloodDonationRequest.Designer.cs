@@ -4,6 +4,7 @@ using BloodDonation.Infrastructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodDonation.Infrastructures.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250604105117_UpdateBloodDonationRequest")]
+    partial class UpdateBloodDonationRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,7 +120,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b79"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(7003),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6871),
                             IsDeleted = false,
                             Name = "Red Blood Cells",
                             ShelfLifeInDay = 0,
@@ -128,7 +131,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b78"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(7005),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6874),
                             IsDeleted = false,
                             Name = "Plasma",
                             ShelfLifeInDay = 0,
@@ -139,7 +142,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b77"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(7007),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6877),
                             IsDeleted = false,
                             Name = "Platelets",
                             ShelfLifeInDay = 0,
@@ -154,8 +157,9 @@ namespace BloodDonation.Infrastructures.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BloodType")
-                        .HasColumnType("int");
+                    b.Property<string>("BloodType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -188,11 +192,9 @@ namespace BloodDonation.Infrastructures.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimeSlot")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -290,7 +292,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b83"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(6935),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6810),
                             IsDeleted = false,
                             Type = "A"
                         },
@@ -298,7 +300,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b82"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(6938),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6814),
                             IsDeleted = false,
                             Type = "B"
                         },
@@ -306,7 +308,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b81"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(6939),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6816),
                             IsDeleted = false,
                             Type = "O"
                         },
@@ -314,7 +316,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b80"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(6953),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6835),
                             IsDeleted = false,
                             Type = "AB"
                         });
@@ -561,7 +563,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b86"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(6749),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6535),
                             IsDeleted = false,
                             Name = "ADMIN"
                         },
@@ -569,7 +571,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b85"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(6776),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6576),
                             IsDeleted = false,
                             Name = "MEMBER"
                         },
@@ -577,7 +579,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b84"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 4, 18, 13, 58, 188, DateTimeKind.Local).AddTicks(6777),
+                            CreatedDate = new DateTime(2025, 6, 4, 17, 51, 15, 527, DateTimeKind.Local).AddTicks(6580),
                             IsDeleted = false,
                             Name = "NURSE"
                         });

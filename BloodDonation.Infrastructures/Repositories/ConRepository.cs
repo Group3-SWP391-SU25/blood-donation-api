@@ -7,6 +7,8 @@ public class UserRepository(IServiceProvider serviceProvider)
     : GenericRepository<User>(serviceProvider), IUserRepository;
 public class BloodDonationRequestRepository(IServiceProvider serviceProvider)
     : GenericRepository<BloodDonationRequest>(serviceProvider), IBloodDonationRequestRepository;
+public class HealthCheckFormRepository(IServiceProvider serviceProvider)
+    : GenericRepository<HealthCheckForm>(serviceProvider), IHealthCheckFormRepository;
 
 //public class BloodUnitRepository(IServiceProvider serviceProvider)
 //    : GenericRepository<BloodUnit>(serviceProvider), IBloodUnitRepository;
