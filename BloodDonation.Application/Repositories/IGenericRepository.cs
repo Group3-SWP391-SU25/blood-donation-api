@@ -28,4 +28,6 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
             int? pageIndex = null,
             int? pageSize = null);
     Task<TEntity> GetByCondition(Expression<Func<TEntity, bool>> filter, string includeProperties = "");
+    Task<int> Count(Expression<Func<TEntity, bool>> filter = null!);
+
 }

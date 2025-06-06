@@ -1,4 +1,6 @@
 ﻿using BloodDonation.Application.Models.BloodDonationRequests;
+using BloodDonation.Application.Utilities;
+using BloodDonation.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,18 @@ namespace BloodDonation.Application.Services.Interfaces
 {
     public interface IBloodDonationRequestService
     {
-        //Get all
-        Task<IEnumerable<BloodDonationRequestViewModel>?> SearchAsync(int? pageSize, string search = "", int pageIndex = 0, CancellationToken cancellationToken = default);
+        //Search
+        Task<object> SearchAsync(int? pageIndex = 1, int? pageSize = 10,
+                                               BloodDonationRequestStatus? status = null, string? keyword = null);
+        //Create
+        Task<BloodDonationRequestViewModel?> CreateAsync(BloodDonationRequestCreateModel model, CancellationToken cancellationToken = default);
+        //Update
+        Task<BloodDonationRequestViewModel?> UpdatePartialAsync(BloodDonationRequestUpdateModel model, CancellationToken cancellationToken = default);
+        //Delete
+        Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default);
+        //GetById
+        Task<BloodDonationRequestViewModel?> GetByIdAsync(string id, CancellationToken cancellationToken = default);
+        //update status
+        Task<BloodDonationRequestViewModel?> UpdateStatusAsync(string id, string? rejectNote, BloodDonationRequestStatus status, CancellationToken cancellationToken = default);
     }
 }

@@ -15,5 +15,5 @@ public class HealthCheckForm : BaseEntity
     public bool HasUnsafeSexualBehaviourOrSameSexSexualContact { get; set; }
     public string Note { get; set; } = string.Empty;
     public Guid BloodDonateRequestId { get; set; }
-    public virtual BloodDonationRequest BloodDonationRequest { get; set; } = new();
+    public virtual BloodDonationRequest BloodDonationRequest { get; set; } 
 }
