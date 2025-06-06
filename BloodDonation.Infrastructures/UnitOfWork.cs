@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using BloodDonation.Application;
 using BloodDonation.Application.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +22,7 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository UserRepository { get; }
     public IBloodDonationRequestRepository BloodDonationRequestRepository { get; }
     public IRoleRepository RoleRepository { get; }
-    public IBloodDonationRequestRepository BloodDonationRequestRepository { get;  }
+
     public IHealthCheckFormRepository HealthCheckFormRepository { get; }
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
