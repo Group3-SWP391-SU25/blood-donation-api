@@ -16,11 +16,13 @@ public class UnitOfWork : IUnitOfWork
         dbContext = serviceProvider.GetRequiredService<AppDbContext>();
         UserRepository = serviceProvider.GetRequiredService<IUserRepository>();
         BloodDonationRequestRepository = serviceProvider.GetRequiredService<IBloodDonationRequestRepository>();
+        RoleRepository = serviceProvider.GetRequiredService<IRoleRepository>();
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
- 
+
     }
     public IUserRepository UserRepository { get; }
-    public IBloodDonationRequestRepository BloodDonationRequestRepository { get;  }
+    public IBloodDonationRequestRepository BloodDonationRequestRepository { get; }
+    public IRoleRepository RoleRepository { get; }
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
     public IMapper Mapper { get; }
@@ -32,6 +34,7 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task SeedData()
     {
+        await Task.CompletedTask;
         throw new NotImplementedException();
     }
 }

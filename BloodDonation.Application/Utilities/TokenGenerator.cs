@@ -15,16 +15,15 @@ public static class TokenGenerator
         var key = Encoding.ASCII.GetBytes("VERYSTRONGPASSWORD_CHANGEMEIFYOUNEED");
         var claimsList = new List<Claim>()
             {
-            //new(ClaimTypes.Email, user.Email!),
-            //new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            //new(ClaimTypes.HomePhone, user.PhoneNumber ?? string.Empty),
-            //new(ClaimTypes.Role, role)
+                new(ClaimTypes.Email, user.Email!),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Role, role)
             };
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Audience = "ks.client",
-            Issuer = "ks.api",
+            Audience = "BloodDonation.Client",
+            Issuer = "BloodDonation.WebApi",
             Subject = new ClaimsIdentity(claimsList),
             Expires = DateTime.UtcNow.AddDays(1000),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)

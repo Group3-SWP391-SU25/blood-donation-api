@@ -1,10 +1,17 @@
-﻿namespace BloodDonation.Application.Models.Users;
+﻿using BloodDonation.Domain.Entities;
+
+namespace BloodDonation.Application.Models.Users;
 
 public class UserViewModel
 {
     public Guid Id { get; set; } = Guid.Empty;
     public string Email { get; set; } = string.Empty;
-    public string PhoneNumber { get; set; } = string.Empty;
+    public string PhoneNo { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
+    public string IdentityId { get; set; } = string.Empty;
+    public bool Gender { get; set; } = true;
+    public string Status { get; set; } = string.Empty;
+   
 
 }

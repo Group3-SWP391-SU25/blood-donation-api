@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using BloodDonation.Infrastructures;
 using BloodDonation.WebApi;
 using BloodDonation.WebApi.Middlewares;
@@ -23,7 +24,11 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddCoreServices(builder.Configuration);
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o =>
+        {
+            o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            o.JsonSerializerOptions.MaxDepth = 0;
+        }); ;
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();

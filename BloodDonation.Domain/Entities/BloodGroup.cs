@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace BloodDonation.Domain.Entities;
 
 public class BloodGroup : BaseEntity

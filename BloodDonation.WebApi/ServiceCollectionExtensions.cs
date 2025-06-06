@@ -83,8 +83,8 @@ public static class ServiceCollectionExtensions
         });
         // AutoMapper
         services.AddAutoMapper(typeof(MapperConfigurationProfile));
-        //services.AddValidatorsFromAssemblies(getAssemblies());
-
+        services.AddValidatorsFromAssemblies(getAssemblies());
+        
         return services;
     }
     private static Assembly[] getAssemblies()

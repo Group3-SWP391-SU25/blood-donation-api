@@ -1,5 +1,7 @@
 ﻿using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Services.Interfaces;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers;
@@ -30,9 +32,17 @@ public class UserController : ControllerBase
             : throw new Exception("List is empty");
     }
 
+
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] UserCreateModel model)
+    public async Task<IActionResult> CreateAsync([FromBody] UserCreateModel model,
+        [FromServices] IValidator<UserCreateModel> validator)
     {
+        var validatorRes = validator.Validate(model);
+        if (!validatorRes.IsValid)
+        {
+            return BadRequest(validatorRes.Errors);
+        }
+
         var result = await userService.CreateUserAsync(model, default);
         return result is not null
             ? Ok(result)

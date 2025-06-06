@@ -1,5 +1,6 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
+﻿using System;
+using System.Collections.Generic;
+using BloodDonation.Domain.Enums;
 namespace BloodDonation.Domain.Entities;
 
 public class User : BaseEntity
@@ -10,7 +11,7 @@ public class User : BaseEntity
     public string HashPassword { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PhoneNo { get; set; } = string.Empty;
-    public string Status { get; set; } = string.Empty;
+    public string Status { get; set; } = UserStatusEnum.Active.ToString();
     public bool Gender { get; set; }
     public string Addresss { get; set; } = string.Empty;
     public string FrontUrlIdentity { get; set; } = string.Empty;
@@ -18,14 +19,14 @@ public class User : BaseEntity
     
 
     #region  Relationship Configuration
-    public Guid RoleId { get; set; } = Guid.Empty;
-    public virtual Role Role { get; set; } = new();
-    public Guid BloodGroupId { get; set; } = Guid.Empty;
-    public virtual BloodGroup BloodGroup { get; set; } = new();
+    public Guid RoleId { get; set; } 
+    public virtual Role Role { get; set; } 
+    public Guid? BloodGroupId { get; set; } 
+    public virtual BloodGroup? BloodGroup { get; set; } 
     public virtual ICollection<EmergencyBloodRequest>? EmergencyBloodRequests { get; set; }
     public virtual ICollection<Blog>? Blogs { get; set; }
     public virtual ICollection<BloodDonationRequest>? BloodRequests { get; set; }
-    
+
     #endregion
 
 }

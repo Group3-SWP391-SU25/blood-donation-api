@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace BloodDonation.Domain.Entities;
 
 public class Blog : BaseEntity

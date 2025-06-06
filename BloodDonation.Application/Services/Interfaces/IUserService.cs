@@ -18,4 +18,7 @@ CancellationToken cancellationToken = default);
     Task<bool> UpdateAsync(Guid id,
         UserUpdateModel model,
         CancellationToken cancellationToken = default);
+    Task<UserViewModel> GetByEmailAsync(string email,
+        string? password = null,
+        CancellationToken cancellationToken = default);
 }

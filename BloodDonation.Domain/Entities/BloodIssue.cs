@@ -1,3 +1,5 @@
+using System;
+
 namespace BloodDonation.Domain.Entities;
 
 public class BloodIssue : BaseEntity
