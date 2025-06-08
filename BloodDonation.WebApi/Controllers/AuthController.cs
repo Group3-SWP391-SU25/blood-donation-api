@@ -1,5 +1,4 @@
 ﻿using BloodDonation.Application.Models.Auth;
-using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +25,13 @@ public class AuthController : ControllerBase
             : throw new Exception("invalid email/password"));
     }
 
+    [HttpPost("firebase")]
+    public async Task<IActionResult> LoginFireBase([FromBody] string authToken)
+    {
+        var result = await authService.LoginFirebaseAsync(authToken,
+            default);
+        return Ok(result);
+    }
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetUserInfo()
