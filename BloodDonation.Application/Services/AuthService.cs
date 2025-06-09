@@ -1,15 +1,15 @@
 using BloodDonation.Application.Models.Auth;
 using BloodDonation.Application.Models.Users;
-using BloodDonation.Application.Repositories;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Application.Utilities;
-using Microsoft.IdentityModel.JsonWebTokens;
-
+using BloodDonation.Domain.Entities;
+using Firebase.Auth;
 namespace BloodDonation.Application.Services;
 
 public class AuthService : IAuthService
 {
     private readonly IUnitOfWork unitOfWork;
+
 
     public AuthService(IUnitOfWork unitOfWork)
     {
@@ -30,5 +30,38 @@ public class AuthService : IAuthService
             };
         }
         throw new UnauthorizedAccessException("Invalid email or password.");
+    }
+    private async Task<Domain.Entities.User> LoginAsync(Firebase.Auth.User firebaseUser)
+    {
+        Domain.Entities.User user = new Domain.Entities.User();
+        user.Email = firebaseUser.Email;
+        user.FullName = $"{firebaseUser.LastName} {firebaseUser.FirstName}";
+        user.HashPassword = string.Empty;
+        user.RoleId = (await unitOfWork.RoleRepository.FirstOrDefaultAsync(x => x.Name == RoleNames.MEMBER))?.Id ?? Guid.Empty;
+        await unitOfWork.UserRepository.CreateAsync(user);
+        await unitOfWork.SaveChangesAsync();
+        return user;
+
+    }
+    public async Task<AuthResponseModel> LoginFirebaseAsync(string firebaseToken, CancellationToken cancellationToken = default)
+    {
+        var authResponse = new AuthResponseModel();
+        var auth = new Firebase.Auth.FirebaseAuthProvider(new FirebaseConfig(apiKey: "AIzaSyBYXlL9bovYOFszEe2iwsQ__9cEl9bZnmY"));
+        var userFirebase = await auth.GetUserAsync(firebaseToken) ?? throw new Exception("Firebase Token Does not exsit");
+
+
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email);
+        // Insert Into Db
+        if (user is null)
+        {
+            user = await LoginAsync(userFirebase);
+        }
+        else
+        {
+            authResponse.User = unitOfWork.Mapper.Map<UserViewModel>(user);
+            authResponse.Token = TokenGenerator.GenerateToken(user, user.Role.Name);
+        }
+        return authResponse;
+
     }
 }
