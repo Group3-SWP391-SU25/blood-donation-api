@@ -1,5 +1,4 @@
-﻿using System.Reflection.Emit;
-using BloodDonation.Domain.Entities;
+﻿using BloodDonation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonation.Infrastructures;
@@ -13,7 +12,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     public DbSet<BloodDonationRequest> BloodDonationRequests { get; set; } = null!;
     public DbSet<EmergencyBloodRequest> EmergencyBloodRequests { get; set; } = null!;
-    public DbSet<BlooodStorage> BloodStorages { get; set; } = null!;
+    public DbSet<BloodStorage> BloodStorages { get; set; } = null!;
     public DbSet<HealthCheckForm> HealthCheckForms { get; set; } = null!;
     public DbSet<BloodIssue> BloodIssues { get; set; } = null!;
     public DbSet<Blog> Blogs { get; set; } = null!;
@@ -22,7 +21,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     {
         base.OnModelCreating(modelBuilder);
         SeedData(modelBuilder);
-        modelBuilder.Entity<BlooodStorage>()
+        modelBuilder.Entity<BloodStorage>()
             .HasOne(bs => bs.BloodGroup)
             .WithMany(bg => bg.BloodStorages)
             .HasForeignKey(bs => bs.BloodGroupId)
@@ -38,6 +37,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithOne(bdr => bdr.HealthCheckForm)
             .HasForeignKey<HealthCheckForm>(hcf => hcf.BloodDonateRequestId)
             .OnDelete(DeleteBehavior.NoAction); // or .NoAction
+        modelBuilder.Entity<BloodDonation.Domain.Entities.BloodDonation>()
+            .HasOne(x => x.BloodDonationRequest).WithOne(x => x.BloodDonation)
+            .HasForeignKey<BloodDonation.Domain.Entities.BloodDonation>(x => x.BloodDonationRequestId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<BloodDonation.Domain.Entities.BloodDonation>()
+            .HasOne(x => x.BloodStorage).WithOne(x => x.BloodDonate)
+            .HasForeignKey<BloodStorage>(x => x.BloodDonationId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private void SeedData(ModelBuilder modelBuilder)

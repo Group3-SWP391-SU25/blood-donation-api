@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace BloodDonation.Domain.Entities;
 
 public class BloodComponent : BaseEntity
@@ -10,7 +8,7 @@ public class BloodComponent : BaseEntity
     public string Status { get; set; } = string.Empty;
 
     #region Relationship Configuration
-    public virtual ICollection<BlooodStorage> BloodStorages { get; set; } = new List<BlooodStorage>();
-        
+    public virtual ICollection<BloodStorage> BloodStorages { get; set; }
+
     #endregion
 }

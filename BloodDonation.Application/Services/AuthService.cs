@@ -9,10 +9,12 @@ namespace BloodDonation.Application.Services;
 public class AuthService : IAuthService
 {
     private readonly IUnitOfWork unitOfWork;
+    private readonly AppSetting appSetting;
 
-
-    public AuthService(IUnitOfWork unitOfWork)
+    public AuthService(IUnitOfWork unitOfWork,
+        AppSetting appsetting)
     {
+        this.appSetting = appsetting;
         this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
@@ -46,7 +48,7 @@ public class AuthService : IAuthService
     public async Task<AuthResponseModel> LoginFirebaseAsync(string firebaseToken, CancellationToken cancellationToken = default)
     {
         var authResponse = new AuthResponseModel();
-        var auth = new Firebase.Auth.FirebaseAuthProvider(new FirebaseConfig(apiKey: "AIzaSyBYXlL9bovYOFszEe2iwsQ__9cEl9bZnmY"));
+        var auth = new Firebase.Auth.FirebaseAuthProvider(new FirebaseConfig(appSetting.FirebaseConfig?.ApiKey));
         var userFirebase = await auth.GetUserAsync(firebaseToken) ?? throw new Exception("Firebase Token Does not exsit");
 
 

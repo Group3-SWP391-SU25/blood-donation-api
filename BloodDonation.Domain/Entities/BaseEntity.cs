@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BloodDonation.Domain.Entities;
+﻿namespace BloodDonation.Domain.Entities;
 
 public abstract class BaseEntity
 {

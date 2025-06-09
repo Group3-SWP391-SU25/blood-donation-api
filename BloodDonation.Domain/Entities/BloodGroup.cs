@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace BloodDonation.Domain.Entities;
 
 public class BloodGroup : BaseEntity
@@ -9,6 +7,6 @@ public class BloodGroup : BaseEntity
 
     #region Relationship Configurations
     public ICollection<User>? Users { get; set; } = [];
-    public ICollection<BlooodStorage> BloodStorages { get; set; } = [];
+    public ICollection<BloodStorage> BloodStorages { get; set; } = [];
     #endregion
 }

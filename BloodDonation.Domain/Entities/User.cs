@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BloodDonation.Domain.Enums;
+﻿using BloodDonation.Domain.Enums;
 namespace BloodDonation.Domain.Entities;
 
 public class User : BaseEntity
@@ -16,13 +14,13 @@ public class User : BaseEntity
     public string Addresss { get; set; } = string.Empty;
     public string FrontUrlIdentity { get; set; } = string.Empty;
     public string BackUrlIdentity { get; set; } = string.Empty;
-    
+
 
     #region  Relationship Configuration
-    public Guid RoleId { get; set; } 
-    public virtual Role Role { get; set; } 
-    public Guid? BloodGroupId { get; set; } 
-    public virtual BloodGroup? BloodGroup { get; set; } 
+    public Guid RoleId { get; set; }
+    public virtual Role Role { get; set; }
+    public Guid? BloodGroupId { get; set; }
+    public virtual BloodGroup? BloodGroup { get; set; }
     public virtual ICollection<EmergencyBloodRequest>? EmergencyBloodRequests { get; set; }
     public virtual ICollection<Blog>? Blogs { get; set; }
     public virtual ICollection<BloodDonationRequest>? BloodRequests { get; set; }

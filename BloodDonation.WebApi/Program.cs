@@ -1,8 +1,9 @@
-using System.Text.Json.Serialization;
+using BloodDonation.Application;
 using BloodDonation.Infrastructures;
 using BloodDonation.WebApi;
 using BloodDonation.WebApi.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,8 @@ builder.Services.AddCors(opt =>
                           .AllowAnyMethod().AllowAnyHeader();
                       });
 });
-
+var config = builder.Configuration.Get<AppSetting>() ?? throw new InvalidOperationException("Configuration Is Null");
+builder.Services.AddSingleton(config);
 builder.Services.AddSession(options =>
 {
     options.Cookie.HttpOnly = true;

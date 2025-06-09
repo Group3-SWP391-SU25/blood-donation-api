@@ -1,5 +1,3 @@
-using System;
-
 namespace BloodDonation.Domain.Entities;
 
 public class EmergencyBloodRequest : BaseEntity
@@ -10,8 +8,8 @@ public class EmergencyBloodRequest : BaseEntity
     public string? ReasonReject { get; set; } = string.Empty;
 
     public Guid UserId { get; set; } = Guid.Empty;
-    public virtual User User { get; set; } = new();
+    public virtual User User { get; set; }
 
-    public virtual BloodIssue? BloodIssue { get; set; } 
-    
+    public virtual BloodIssue? BloodIssue { get; set; }
+
 }

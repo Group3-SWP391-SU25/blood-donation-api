@@ -10,8 +10,11 @@ namespace BloodDonation.WebApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService authService;
-    public AuthController(IAuthService authService)
+    private readonly IConfiguration configuration;
+    public AuthController(IAuthService authService,
+        IConfiguration configuration)
     {
+        this.configuration = configuration;
         this.authService = authService;
     }
     [HttpPost]
