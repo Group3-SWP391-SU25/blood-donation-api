@@ -2,6 +2,7 @@
 using BloodDonation.Application.Services;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
+using BloodDonation.WebApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,11 @@ namespace BloodDonation.WebApi.Controllers
     public class BloodDonationRequestController : ControllerBase
     {
         private readonly IBloodDonationRequestService bloodDonationRequestService;
-        public BloodDonationRequestController(IBloodDonationRequestService bloodDonationRequestService)
+        private readonly IClaimsService ClaimsService;
+        public BloodDonationRequestController(IBloodDonationRequestService bloodDonationRequestService, IClaimsService claimsService)
         {
             this.bloodDonationRequestService = bloodDonationRequestService;
+            ClaimsService = claimsService;
         }
         [HttpGet("search")]
         public async Task<IActionResult> Search(
@@ -52,6 +55,8 @@ namespace BloodDonation.WebApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            // Set the UserId from the claims
+            //dto.UserId = ClaimsService.CurrentUser;
             var createdRequest = await bloodDonationRequestService.CreateAsync(dto);
             return Ok(createdRequest);
         }
