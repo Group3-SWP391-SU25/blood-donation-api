@@ -56,7 +56,7 @@ namespace BloodDonation.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             // Set the UserId from the claims
-            //dto.UserId = ClaimsService.CurrentUser;
+            dto.UserId = ClaimsService.CurrentUser;
             var createdRequest = await bloodDonationRequestService.CreateAsync(dto);
             return Ok(createdRequest);
         }
