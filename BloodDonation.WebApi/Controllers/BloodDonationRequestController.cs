@@ -3,6 +3,7 @@ using BloodDonation.Application.Services;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
 using BloodDonation.WebApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +51,7 @@ namespace BloodDonation.WebApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BloodDonationRequestCreateModel dto)
         {
@@ -103,6 +105,23 @@ namespace BloodDonation.WebApi.Controllers
                 }
                 var updatedRequest = await bloodDonationRequestService.UpdateStatusAsync(id, rejectNote,status);
                 return Ok(updatedRequest);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpGet("user-requests")]
+        public async Task<IActionResult> GetUserRequests([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var userId = ClaimsService.CurrentUser;
+
+                var requests = await bloodDonationRequestService.GetByUserIdAsync(userId, pageIndex, pageSize, cancellationToken);
+                return Ok(requests);
             }
             catch (Exception ex)
             {

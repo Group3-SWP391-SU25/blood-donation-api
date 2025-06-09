@@ -144,5 +144,41 @@ namespace BloodDonation.Application.Services
 
             return unitOfWork.Mapper.Map<BloodDonationRequestViewModel>(entity);
         }
+        public async Task<List<BloodDonationRequestViewModel>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+        {
+            var requests = await unitOfWork.BloodDonationRequestRepository
+                .GetByCondition(b => b.UserId == userId && !b.IsDeleted, includeProperties: "User,HealthCheckForm");
+
+            return unitOfWork.Mapper.Map<List<BloodDonationRequestViewModel>>(requests);
+        }
+        public async Task<object> GetByUserIdAsync(Guid userId, int? pageIndex = 1, int? pageSize = 10, CancellationToken cancellationToken = default)
+        {
+            Expression<Func<BloodDonationRequest, bool>> filter = b =>
+                b.UserId == userId && !b.IsDeleted;
+
+            var pagedData = await unitOfWork.BloodDonationRequestRepository.Search(
+                filter: filter,
+                includeProperties: "User,HealthCheckForm",
+                orderBy: q => q.OrderByDescending(b => b.DonatedDateRequest),
+                pageIndex: pageIndex,
+                pageSize: pageSize);
+
+            int totalRecords = await unitOfWork.BloodDonationRequestRepository.Count(filter);
+
+            int actualPageSize = pageSize ?? 10;
+            int actualPageIndex = pageIndex ?? 1;
+            int totalPages = (int)Math.Ceiling((double)totalRecords / actualPageSize);
+
+            var mappedData = unitOfWork.Mapper.Map<List<BloodDonationRequestViewModel>>(pagedData);
+
+            return new
+            {
+                TotalRecords = totalRecords,
+                TotalPages = totalPages,
+                PageIndex = actualPageIndex,
+                PageSize = actualPageSize,
+                Records = mappedData
+            };
+        }
     }
 }
