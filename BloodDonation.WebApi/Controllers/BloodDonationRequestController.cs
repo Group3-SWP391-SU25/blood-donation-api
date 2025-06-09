@@ -2,6 +2,8 @@
 using BloodDonation.Application.Services;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
+using BloodDonation.WebApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +14,11 @@ namespace BloodDonation.WebApi.Controllers
     public class BloodDonationRequestController : ControllerBase
     {
         private readonly IBloodDonationRequestService bloodDonationRequestService;
-        public BloodDonationRequestController(IBloodDonationRequestService bloodDonationRequestService)
+        private readonly IClaimsService ClaimsService;
+        public BloodDonationRequestController(IBloodDonationRequestService bloodDonationRequestService, IClaimsService claimsService)
         {
             this.bloodDonationRequestService = bloodDonationRequestService;
+            ClaimsService = claimsService;
         }
         [HttpGet("search")]
         public async Task<IActionResult> Search(
@@ -47,11 +51,14 @@ namespace BloodDonation.WebApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BloodDonationRequestCreateModel dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            // Set the UserId from the claims
+            dto.UserId = ClaimsService.CurrentUser;
             var createdRequest = await bloodDonationRequestService.CreateAsync(dto);
             return Ok(createdRequest);
         }
@@ -98,6 +105,23 @@ namespace BloodDonation.WebApi.Controllers
                 }
                 var updatedRequest = await bloodDonationRequestService.UpdateStatusAsync(id, rejectNote,status);
                 return Ok(updatedRequest);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpGet("user-requests")]
+        public async Task<IActionResult> GetUserRequests([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var userId = ClaimsService.CurrentUser;
+
+                var requests = await bloodDonationRequestService.GetByUserIdAsync(userId, pageIndex, pageSize, cancellationToken);
+                return Ok(requests);
             }
             catch (Exception ex)
             {

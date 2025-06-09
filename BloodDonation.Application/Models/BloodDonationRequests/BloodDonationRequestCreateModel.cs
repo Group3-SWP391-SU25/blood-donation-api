@@ -12,6 +12,7 @@ namespace BloodDonation.Application.Models.BloodDonationRequests
 {
     public class BloodDonationRequestCreateModel
     {
+        [JsonIgnore]
         public Guid UserId { get; set; }
         [Required(ErrorMessage = "BloodType là bắt buộc")]
         [EnumDataType(typeof(BloodTypeEnum), ErrorMessage = "BloodType không hợp lệ")]

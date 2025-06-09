@@ -38,7 +38,7 @@ namespace BloodDonation.Application.Services
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             var existingForm = await unitOfWork.HealthCheckFormRepository.GetByCondition(
-                h => h.BloodDonateRequestId == model.BloodDonateRequestId, includeProperties: "User");
+                h => h.BloodDonateRequestId == model.BloodDonateRequestId);
             // Return the created form with request
             return unitOfWork.Mapper.Map<HealthCheckFormViewModel>(existingForm);
         }
