@@ -1,16 +1,19 @@
-﻿namespace BloodDonation.Domain.Entities
+﻿using BloodDonation.Domain.Enums;
+
+namespace BloodDonation.Domain.Entities
 {
     public class BloodDonation : BaseEntity
     {
-        public string BloodType { get; set; } = string.Empty;
+        public BloodTypeEnum BloodType { get; set; } = BloodTypeEnum.Unknown;
         public double Volume { get; set; }
         public string Description { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public BloodDonationStatusEnum Status { get; set; } = BloodDonationStatusEnum.InProgress;
         public DateTime? DonationDate { get; set; }
 
         #region Config Relationship
         public virtual BloodStorage? BloodStorage { get; set; }
-        public Guid BloodDonationRequestId { get; set; } = Guid.Empty;
+        public virtual BloodCheck? BloodCheck { get; set; }
+        public Guid BloodDonationRequestId { get; set; }
         public virtual BloodDonationRequest BloodDonationRequest { get; set; }
 
         #endregion

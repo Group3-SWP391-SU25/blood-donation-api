@@ -1,4 +1,5 @@
-﻿using BloodDonation.Application.Models.HealthCheckForms;
+﻿using BloodDonation.Application.Models.BloodDonations;
+using BloodDonation.Application.Models.HealthCheckForms;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
 using System;
@@ -36,5 +37,6 @@ namespace BloodDonation.Application.Models.BloodDonationRequests
 
         // ==== Health Check Form ====
         public HealthCheckFormViewModel? HealthCheckForm { get; set; } 
+        public BloodDonationViewModel? BloodDonation { get; set; }
     }
 }

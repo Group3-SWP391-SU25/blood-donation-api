@@ -32,7 +32,7 @@ namespace BloodDonation.Application.Services
 
             var pagedData = await unitOfWork.BloodDonationRequestRepository.Search(
                 filter: filter,
-                includeProperties: "User,HealthCheckForm",
+                includeProperties: "User,HealthCheckForm,BloodDonation",
                 orderBy: q => q.OrderByDescending(b => b.DonatedDateRequest),
                 pageIndex: pageIndex,
                 pageSize: pageSize);
@@ -69,13 +69,13 @@ namespace BloodDonation.Application.Services
 
             var bloodDonationRequestWithUser = await unitOfWork
                 .BloodDonationRequestRepository
-                .GetByCondition(b => b.Id == bloodDonationRequest.Id, includeProperties: "User");
+                .GetByCondition(b => b.Id == bloodDonationRequest.Id, includeProperties: "User,HealthCheckForm,BloodDonation");
             return unitOfWork.Mapper.Map<BloodDonationRequestViewModel>(bloodDonationRequestWithUser);
         }
         public async Task<BloodDonationRequestViewModel> UpdatePartialAsync(BloodDonationRequestUpdateModel model, CancellationToken cancellationToken = default)
         {
             var entity = await unitOfWork.BloodDonationRequestRepository
-                .GetByCondition(b => b.Id.ToString() == model.Id, includeProperties: "User");
+                .GetByCondition(b => b.Id.ToString() == model.Id, includeProperties: "User,HealthCheckForm,BloodDonation");
 
             if (entity == null)
                 throw new KeyNotFoundException($"Không tìm thấy yêu cầu hiến máu với ID {model.Id}");
@@ -115,7 +115,7 @@ namespace BloodDonation.Application.Services
         public async Task<BloodDonationRequestViewModel?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
         {
             var entity = await unitOfWork.BloodDonationRequestRepository
-                .GetByCondition(b => b.Id.ToString() == id, includeProperties: "User,HealthCheckForm");
+                .GetByCondition(b => b.Id.ToString() == id, includeProperties: "User,HealthCheckForm,BloodDonation");
 
             if (entity == null)
                 return null;
@@ -124,21 +124,73 @@ namespace BloodDonation.Application.Services
         }
         public async Task<BloodDonationRequestViewModel?> UpdateStatusAsync(string id, string? rejectNote, BloodDonationRequestStatus status, CancellationToken cancellationToken = default)
         {
+            // Constants for validation
+            const double MinWeight = 45.0;
+            const double MinHemoglobin = 120;
+            const int MinAge = 18;
+            const int MaxAge = 60;
+
             var entity = await unitOfWork.BloodDonationRequestRepository
-                .GetByCondition(b => b.Id.ToString() == id, includeProperties: "User");
+                .GetByCondition(b => b.Id.ToString() == id, includeProperties: "User,HealthCheckForm,BloodDonation");
 
             if (entity == null)
                 throw new KeyNotFoundException($"Không tìm thấy yêu cầu hiến máu với ID {id}");
+
+            //add logic for accepted and rejected status
+            if(status == BloodDonationRequestStatus.Rejected || status == BloodDonationRequestStatus.Approved)
+            {
+                if (entity.HealthCheckForm == null)
+                    throw new InvalidOperationException("Yêu cầu kiểm tra sức khỏe chưa được tạo.");
+
+            }
+
+            //if reject status, check reject note
             if (status == BloodDonationRequestStatus.Rejected)
             {
-                if(rejectNote == null || rejectNote.Length < 2)
+                if (rejectNote == null || rejectNote.Length < 2)
                     throw new ArgumentException("Lý do từ chối phải có ít nhất 2 ký tự.");
                 entity.ReasonReject = rejectNote;
             }
 
-            //add logic for accepted and rejected status
+            //if approved status, check health form
+            if (status == BloodDonationRequestStatus.Approved)
+            {
+                var healthForm = entity.HealthCheckForm!;
 
-            entity.Status = status;
+                if (healthForm.Weight < MinWeight)
+                    throw new ArgumentException($"Cân nặng phải từ {MinWeight} kg trở lên.");
+                if (healthForm.Hemoglobin < MinHemoglobin)
+                    throw new ArgumentException($"Huyết sắc tố phải từ {MinHemoglobin} g/l trở lên.");
+                if (healthForm.Age < MinAge || healthForm.Age > MaxAge)
+                    throw new ArgumentException($"Tuổi phải trong khoảng {MinAge}-{MaxAge}.");
+                if (healthForm.IsInfectiousDisease)
+                    throw new ArgumentException("Không đủ điều kiện do mắc bệnh truyền nhiễm.");
+                if (healthForm.IsPregnant)
+                    throw new ArgumentException("Phụ nữ mang thai không đủ điều kiện hiến máu.");
+                if (healthForm.HasChronicDisease)
+                    throw new ArgumentException("Không đủ điều kiện do có bệnh mãn tính.");
+                if (healthForm.IsUsedAlcoholRecently)
+                    throw new ArgumentException("Không đủ điều kiện do đã sử dụng rượu gần đây.");
+                if (healthForm.HasUnsafeSexualBehaviourOrSameSexSexualContact)
+                    throw new ArgumentException("Không đủ điều kiện do hành vi tình dục không an toàn.");
+
+                if(healthForm.VolumeBloodDonated >= 350)
+                {
+                    if(healthForm.Hemoglobin >= 125)
+                        throw new ArgumentException("Không đủ điều kiện do huyết sắc tố không đạt trên 125 g/l nếu hiến từ 350ml trở lên.");
+                }
+
+                await unitOfWork.BloodDonationRepository.CreateAsync(new BloodDonation.Domain.Entities.BloodDonation
+                {
+                    BloodType = entity.BloodType,
+                    DonationDate = DateTime.Now,
+                    Volume = healthForm.VolumeBloodDonated,
+                    Description = "Hiến máu từ yêu cầu hiến máu",
+                    BloodDonationRequestId = entity.Id
+                }, cancellationToken);
+            }
+
+                entity.Status = status;
             unitOfWork.BloodDonationRequestRepository.Update(entity);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -147,7 +199,7 @@ namespace BloodDonation.Application.Services
         public async Task<List<BloodDonationRequestViewModel>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             var requests = await unitOfWork.BloodDonationRequestRepository
-                .GetByCondition(b => b.UserId == userId && !b.IsDeleted, includeProperties: "User,HealthCheckForm");
+                .GetByCondition(b => b.UserId == userId && !b.IsDeleted, includeProperties: "User,HealthCheckForm,BloodDonation");
 
             return unitOfWork.Mapper.Map<List<BloodDonationRequestViewModel>>(requests);
         }

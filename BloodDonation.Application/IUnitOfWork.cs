@@ -9,6 +9,9 @@ public interface IUnitOfWork
     IBloodDonationRequestRepository BloodDonationRequestRepository { get; }
     IRoleRepository RoleRepository { get; }
     IHealthCheckFormRepository HealthCheckFormRepository { get; }
+    IBloodDonationRepository BloodDonationRepository { get; }
+    IBloodStorageRepository BloodStorageRepository { get; }
+    IBloodComponentRepository BloodComponentRepository { get; }
     //IBloodUnitRepository BloodUnitRepository { get; }
     IMapper Mapper { get; }
     Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default);
