@@ -5,6 +5,9 @@ using BloodDonation.Application.Models.BloodDonationRequests;
 using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Models.HealthCheckForms;
 using BloodDonation.Domain.Entities;
+using BloodDonation.Application.Models.BloodDonations;
+using BloodDonation.Application.Models.BloodStorage;
+using BloodDonation.Application.Models.BloodComponents;
 
 namespace BloodDonation.Application.Mappers;
 
@@ -51,6 +54,20 @@ public class MapperConfigurationProfile : Profile
             .ForMember(dest => dest.BloodDonateRequestId, opt => opt.MapFrom(src => src.BloodDonationRequest.Id));
         CreateMap<HealthCheckFormCreateModel, HealthCheckForm>();
         CreateMap<HealthCheckFormUpdateModel, HealthCheckForm>();
+        #endregion
+
+        #region BloodDonation
+        CreateMap<BloodDonation.Domain.Entities.BloodDonation, BloodDonationViewModel>()
+            .ForMember(dest => dest.BloodDonationRequest, opt => opt.MapFrom(src => src.BloodDonationRequest));
+        #endregion
+        #region BloodStorage
+        CreateMap<BloodStorage, BloodStorageViewModel>()
+            .ForMember(dest => dest.BloodDonate, opt => opt.MapFrom(src => src.BloodDonate))
+            .ForMember(dest => dest.BloodComponent, opt => opt.MapFrom(src => src.BloodComponent))
+            .ForMember(dest => dest.BloodGroup, opt => opt.MapFrom(src => src.BloodGroup!.Type + src.BloodGroup!.RhFactor));
+        #endregion
+        #region BloodComponent
+        CreateMap<BloodComponent, BloodComponentViewModel>();
         #endregion
     }
 }

@@ -10,10 +10,10 @@ public enum UserStatusEnum
 //    APlus, AMinus, BPlus, BMinus, ABPlus, ABMinus, OPlus, OMinus
 //}
 
-public enum BloodDonationStatusEnum
-{
-    Pending, Approved, Rejected
-}
+//public enum BloodDonationStatusEnum
+//{
+//    Pending, Approved, Rejected
+//}
 
 public enum BloodDonationPurposeEnum
 {
@@ -66,4 +66,34 @@ public enum BloodTypeEnum
     AB = 2,
     O = 3,
     Unknown = 4
+}
+
+public enum BloodDonationStatusEnum
+{
+   InProgress = 0,
+   Donated = 1,
+   Cancelled = 2,
+   Checked = 3,
+}
+
+public enum BloodStorageStatusEnum
+{
+    UnChecked = 0,
+    Safe = 1,
+    Expired = 2,
+    Dangerous = 4,
+}
+public class BloodComponentType
+{
+    public static readonly BloodComponentType WholeBlood =
+        new("Máu toàn phần", Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b63"));
+
+    public string Name { get; }
+    public Guid Id { get; }
+
+    private BloodComponentType(string name, Guid id)
+    {
+        Name = name;
+        Id = id;
+    }
 }

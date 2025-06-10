@@ -16,6 +16,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<HealthCheckForm> HealthCheckForms { get; set; } = null!;
     public DbSet<BloodIssue> BloodIssues { get; set; } = null!;
     public DbSet<Blog> Blogs { get; set; } = null!;
+    public DbSet<BloodCheck> BloodChecks { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,6 +47,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasOne(x => x.BloodStorage).WithOne(x => x.BloodDonate)
             .HasForeignKey<BloodStorage>(x => x.BloodDonationId)
             .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<BloodCheck>()
+            .HasOne(bc => bc.BloodDonation)
+            .WithOne(bd => bd.BloodCheck)
+            .HasForeignKey<BloodCheck>(bc => bc.BloodDonationId)
+            .OnDelete(DeleteBehavior.NoAction); // or .NoAction
+
+        modelBuilder.Entity<BloodCheck>()
+            .HasOne(bc => bc.BloodGroup)
+            .WithMany(bg => bg.BloodChecks) 
+            .HasForeignKey(bc => bc.BloodGroupId)
+            .OnDelete(DeleteBehavior.Restrict); // or .NoAction
     }
 
     private void SeedData(ModelBuilder modelBuilder)
@@ -65,15 +78,33 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         });
         modelBuilder.Entity<User>().HasData();
         modelBuilder.Entity<BloodGroup>().HasData(
-            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b83"), Type = "A" },
-            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b82"), Type = "B" },
-            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b81"), Type = "O" },
-            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b80"), Type = "AB" }
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b83"), Type = "A", RhFactor = "+" },
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b82"), Type = "A", RhFactor = "-" },
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b81"), Type = "B", RhFactor = "+" },
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b80"), Type = "B", RhFactor = "-" },
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b7f"), Type = "AB", RhFactor = "+" },
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b7e"), Type = "AB", RhFactor = "-" },
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b7d"), Type = "O", RhFactor = "+" },
+            new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b7c"), Type = "O", RhFactor = "-" }
         );
         modelBuilder.Entity<BloodComponent>().HasData(
-            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b79"), Name = "Red Blood Cells" },
-            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b78"), Name = "Plasma" },
-            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b77"), Name = "Platelets" }
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b79"), Name = "Hồng cầu lắng", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 35},
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b78"), Name = "Khối hồng cầu có dung dịch bảo quản", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 35 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b77"), Name = "Khối hồng cầu rửa (xử lý trong hệ thống hở)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 1 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b76"), Name = "Khối hồng cầu rửa (rửa trong hệ thống kín và có bổ sung dung dịch bảo quản hồng cầu)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 14 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b75"), Name = "Khối hồng cầu đông lạnh", MinStorageTemerature = -80, MaxStorageTemerature = -60, ShelfLifeInDay = 365242199 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b74"), Name = "Khối tiểu cầu (Xử lí kín)", MinStorageTemerature = 20, MaxStorageTemerature = 24, ShelfLifeInDay = 5 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b73"), Name = "Khối tiểu cầu (Xử lí hở)", MinStorageTemerature = 20, MaxStorageTemerature = 24, ShelfLifeInDay = 0.25 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b72"), Name = "Khối tiểu cầu lọc bạch cầu (Xử lí kín)", MinStorageTemerature = 20, MaxStorageTemerature = 24, ShelfLifeInDay = 5 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b71"), Name = "Khối tiểu cầu lọc bạch cầu (Xử lí hở)", MinStorageTemerature = 20, MaxStorageTemerature = 24, ShelfLifeInDay = 0.25 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b70"), Name = "Huyết tương đông lạnh", MinStorageTemerature = -272, MaxStorageTemerature = -25, ShelfLifeInDay = 2 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b69"), Name = "Huyết tương (Xử lí kín)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 14 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b68"), Name = "Huyết tương (Xử lí hở)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 1 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b67"), Name = "Tủa lạnh (Xử lí kín)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 14 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b66"), Name = "Tủa lạnh (Xử lí hở)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 1 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b65"), Name = "Khối bạch cầu hạt trung tính", MinStorageTemerature = 20, MaxStorageTemerature = 24, ShelfLifeInDay = 1 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b64"), Name = "Máu toàn phần (Bảo quản)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 35 },
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b63"), Name = "Máu toàn phần", MinStorageTemerature = 20, MaxStorageTemerature = 24, ShelfLifeInDay = 1 }
         );
 
         // modelBuilder.Entity<BloodUnit>().HasData();

@@ -4,6 +4,7 @@ using BloodDonation.Infrastructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodDonation.Infrastructures.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250610104617_UpdateBloodDonation")]
+    partial class UpdateBloodDonation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,62 +76,6 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("BloodDonation.Domain.Entities.BloodCheck", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BloodDonationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BloodGroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CheckedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAntiHCVPositive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHBsAgPositive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHIVPositive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsOtherInfectionsPositive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BloodDonationId")
-                        .IsUnique();
-
-                    b.HasIndex("BloodGroupId");
-
-                    b.ToTable("BloodChecks");
-                });
-
             modelBuilder.Entity("BloodDonation.Domain.Entities.BloodComponent", b =>
                 {
                     b.Property<Guid>("Id")
@@ -144,22 +91,19 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<double>("MaxStorageTemerature")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MinStorageTemerature")
-                        .HasColumnType("float");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("ShelfLifeInDay")
-                        .HasColumnType("float");
+                    b.Property<int>("ShelfLifeInDay")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("StorageTemerature")
+                        .HasColumnType("float");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -176,205 +120,34 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b79"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4428),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(1208),
                             IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Hồng cầu lắng",
-                            ShelfLifeInDay = 35.0,
-                            Status = ""
+                            Name = "Red Blood Cells",
+                            ShelfLifeInDay = 0,
+                            Status = "",
+                            StorageTemerature = 0.0
                         },
                         new
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b78"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4435),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(1210),
                             IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Khối hồng cầu có dung dịch bảo quản",
-                            ShelfLifeInDay = 35.0,
-                            Status = ""
+                            Name = "Plasma",
+                            ShelfLifeInDay = 0,
+                            Status = "",
+                            StorageTemerature = 0.0
                         },
                         new
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b77"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4437),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(1211),
                             IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Khối hồng cầu rửa (xử lý trong hệ thống hở)",
-                            ShelfLifeInDay = 1.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b76"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4439),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Khối hồng cầu rửa (rửa trong hệ thống kín và có bổ sung dung dịch bảo quản hồng cầu)",
-                            ShelfLifeInDay = 14.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b75"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4442),
-                            IsDeleted = false,
-                            MaxStorageTemerature = -60.0,
-                            MinStorageTemerature = -80.0,
-                            Name = "Khối hồng cầu đông lạnh",
-                            ShelfLifeInDay = 365242199.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b74"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4444),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 24.0,
-                            MinStorageTemerature = 20.0,
-                            Name = "Khối tiểu cầu (Xử lí kín)",
-                            ShelfLifeInDay = 5.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b73"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4447),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 24.0,
-                            MinStorageTemerature = 20.0,
-                            Name = "Khối tiểu cầu (Xử lí hở)",
-                            ShelfLifeInDay = 0.25,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b72"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4449),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 24.0,
-                            MinStorageTemerature = 20.0,
-                            Name = "Khối tiểu cầu lọc bạch cầu (Xử lí kín)",
-                            ShelfLifeInDay = 5.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b71"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4451),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 24.0,
-                            MinStorageTemerature = 20.0,
-                            Name = "Khối tiểu cầu lọc bạch cầu (Xử lí hở)",
-                            ShelfLifeInDay = 0.25,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b70"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4456),
-                            IsDeleted = false,
-                            MaxStorageTemerature = -25.0,
-                            MinStorageTemerature = -272.0,
-                            Name = "Huyết tương đông lạnh",
-                            ShelfLifeInDay = 2.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b69"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4458),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Huyết tương (Xử lí kín)",
-                            ShelfLifeInDay = 14.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b68"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4460),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Huyết tương (Xử lí hở)",
-                            ShelfLifeInDay = 1.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b67"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4463),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Tủa lạnh (Xử lí kín)",
-                            ShelfLifeInDay = 14.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b66"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4465),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Tủa lạnh (Xử lí hở)",
-                            ShelfLifeInDay = 1.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b65"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4467),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 24.0,
-                            MinStorageTemerature = 20.0,
-                            Name = "Khối bạch cầu hạt trung tính",
-                            ShelfLifeInDay = 1.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b64"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4469),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 6.0,
-                            MinStorageTemerature = 2.0,
-                            Name = "Máu toàn phần (Bảo quản)",
-                            ShelfLifeInDay = 35.0,
-                            Status = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b63"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4471),
-                            IsDeleted = false,
-                            MaxStorageTemerature = 24.0,
-                            MinStorageTemerature = 20.0,
-                            Name = "Máu toàn phần",
-                            ShelfLifeInDay = 1.0,
-                            Status = ""
+                            Name = "Platelets",
+                            ShelfLifeInDay = 0,
+                            Status = "",
+                            StorageTemerature = 0.0
                         });
                 });
 
@@ -503,10 +276,6 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RhFactor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -526,73 +295,33 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b83"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4344),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(1142),
                             IsDeleted = false,
-                            RhFactor = "+",
                             Type = "A"
                         },
                         new
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b82"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4349),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(1146),
                             IsDeleted = false,
-                            RhFactor = "-",
-                            Type = "A"
+                            Type = "B"
                         },
                         new
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b81"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4353),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(1148),
                             IsDeleted = false,
-                            RhFactor = "+",
-                            Type = "B"
+                            Type = "O"
                         },
                         new
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b80"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4356),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(1150),
                             IsDeleted = false,
-                            RhFactor = "-",
-                            Type = "B"
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7f"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4359),
-                            IsDeleted = false,
-                            RhFactor = "+",
                             Type = "AB"
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7e"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4361),
-                            IsDeleted = false,
-                            RhFactor = "-",
-                            Type = "AB"
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7d"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4364),
-                            IsDeleted = false,
-                            RhFactor = "+",
-                            Type = "O"
-                        },
-                        new
-                        {
-                            Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7c"),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4366),
-                            IsDeleted = false,
-                            RhFactor = "-",
-                            Type = "O"
                         });
                 });
 
@@ -656,7 +385,7 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.Property<Guid>("BloodDonationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BloodGroupId")
+                    b.Property<Guid>("BloodGroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CreatedBy")
@@ -671,8 +400,9 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -837,7 +567,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b86"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(3918),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(847),
                             IsDeleted = false,
                             Name = "ADMIN"
                         },
@@ -845,7 +575,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b85"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4035),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(882),
                             IsDeleted = false,
                             Name = "MEMBER"
                         },
@@ -853,7 +583,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b84"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 11, 0, 33, 3, 124, DateTimeKind.Local).AddTicks(4038),
+                            CreatedDate = new DateTime(2025, 6, 10, 17, 46, 15, 976, DateTimeKind.Local).AddTicks(885),
                             IsDeleted = false,
                             Name = "NURSE"
                         });
@@ -948,25 +678,6 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BloodDonation.Domain.Entities.BloodCheck", b =>
-                {
-                    b.HasOne("BloodDonation.Domain.Entities.BloodDonation", "BloodDonation")
-                        .WithOne("BloodCheck")
-                        .HasForeignKey("BloodDonation.Domain.Entities.BloodCheck", "BloodDonationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BloodDonation.Domain.Entities.BloodGroup", "BloodGroup")
-                        .WithMany("BloodChecks")
-                        .HasForeignKey("BloodGroupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("BloodDonation");
-
-                    b.Navigation("BloodGroup");
-                });
-
             modelBuilder.Entity("BloodDonation.Domain.Entities.BloodDonation", b =>
                 {
                     b.HasOne("BloodDonation.Domain.Entities.BloodDonationRequest", "BloodDonationRequest")
@@ -1025,7 +736,8 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.HasOne("BloodDonation.Domain.Entities.BloodGroup", "BloodGroup")
                         .WithMany("BloodStorages")
                         .HasForeignKey("BloodGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("BloodComponent");
 
@@ -1080,8 +792,6 @@ namespace BloodDonation.Infrastructures.Migrations
 
             modelBuilder.Entity("BloodDonation.Domain.Entities.BloodDonation", b =>
                 {
-                    b.Navigation("BloodCheck");
-
                     b.Navigation("BloodStorage");
                 });
 
@@ -1094,8 +804,6 @@ namespace BloodDonation.Infrastructures.Migrations
 
             modelBuilder.Entity("BloodDonation.Domain.Entities.BloodGroup", b =>
                 {
-                    b.Navigation("BloodChecks");
-
                     b.Navigation("BloodStorages");
 
                     b.Navigation("Users");

@@ -16,14 +16,19 @@ public class UnitOfWork : IUnitOfWork
         BloodDonationRequestRepository = serviceProvider.GetRequiredService<IBloodDonationRequestRepository>();
         RoleRepository = serviceProvider.GetRequiredService<IRoleRepository>();
         HealthCheckFormRepository = serviceProvider.GetRequiredService<IHealthCheckFormRepository>();
+        BloodDonationRepository = serviceProvider.GetRequiredService<IBloodDonationRepository>();
+        BloodStorageRepository = serviceProvider.GetRequiredService<IBloodStorageRepository>();
+        BloodComponentRepository = serviceProvider.GetRequiredService<IBloodComponentRepository>();
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
 
     }
     public IUserRepository UserRepository { get; }
     public IBloodDonationRequestRepository BloodDonationRequestRepository { get; }
     public IRoleRepository RoleRepository { get; }
-
     public IHealthCheckFormRepository HealthCheckFormRepository { get; }
+    public IBloodDonationRepository BloodDonationRepository { get; }
+    public IBloodStorageRepository BloodStorageRepository { get; }
+    public IBloodComponentRepository BloodComponentRepository { get; }
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
     public IMapper Mapper { get; }
