@@ -9,10 +9,15 @@ namespace BloodDonation.Domain.Entities
 {
     public class BloodCheck : BaseEntity
     {
-        public bool IsHIVPositive { get; set; }
-        public bool IsHBsAgPositive { get; set; }
-        public bool IsAntiHCVPositive { get; set; }
-        public bool IsOtherInfectionsPositive { get; set; }
+        public double WBC { get; set; }
+        public double RBC { get; set; }
+        public double HGB { get; set; }
+        public double HCT { get; set; }
+        public double MCV { get; set; }
+        public double MCH { get; set; }
+        public double MCHC { get; set; }
+        public double PLT { get; set; }
+        public double MPV { get; set; }
         public string Description { get; set; } = string.Empty;
         public DateTime CheckedDate { get; set; } = DateTime.UtcNow;
 
