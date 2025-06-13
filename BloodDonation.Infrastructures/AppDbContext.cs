@@ -55,7 +55,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         modelBuilder.Entity<BloodCheck>()
             .HasOne(bc => bc.BloodGroup)
-            .WithMany(bg => bg.BloodChecks) 
+            .WithMany(bg => bg.BloodChecks)
             .HasForeignKey(bc => bc.BloodGroupId)
             .OnDelete(DeleteBehavior.Restrict); // or .NoAction
     }
@@ -88,7 +88,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             new BloodGroup { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b7c"), Type = "O", RhFactor = "-" }
         );
         modelBuilder.Entity<BloodComponent>().HasData(
-            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b79"), Name = "Hồng cầu lắng", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 35},
+            new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b79"), Name = "Hồng cầu lắng", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 35 },
             new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b78"), Name = "Khối hồng cầu có dung dịch bảo quản", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 35 },
             new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b77"), Name = "Khối hồng cầu rửa (xử lý trong hệ thống hở)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 1 },
             new BloodComponent { Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b76"), Name = "Khối hồng cầu rửa (rửa trong hệ thống kín và có bổ sung dung dịch bảo quản hồng cầu)", MinStorageTemerature = 2, MaxStorageTemerature = 6, ShelfLifeInDay = 14 },
