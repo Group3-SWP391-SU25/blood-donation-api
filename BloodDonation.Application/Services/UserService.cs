@@ -1,4 +1,5 @@
-﻿using BloodDonation.Application.Models.Users;
+﻿using BloodDonation.Application.IntegrationServices.Interfaces;
+using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Application.Utilities;
 using BloodDonation.Domain.Entities;
@@ -10,9 +11,12 @@ namespace BloodDonation.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUnitOfWork unitOfWork;
+    private readonly IFirebaseService firebaseService;
 
-    public UserService(IUnitOfWork unitOfWork)
+    public UserService(IUnitOfWork unitOfWork,
+        IFirebaseService firebaseService)
     {
+        this.firebaseService = firebaseService;
         this.unitOfWork = unitOfWork;
     }
 
@@ -21,13 +25,30 @@ public class UserService : IUserService
         var user = unitOfWork.Mapper.Map<User>(model);
         user.Id = Guid.NewGuid();
         user.CreatedDate = DateTime.UtcNow;
+        if (model.IdentityFront != null)
+        {
+            var res = await firebaseService.SaveFileAsync(model.IdentityFront,
+                @"blood-donation/identity");
+            if (!string.IsNullOrEmpty(res.Url))
+            {
+                user.FrontUrlIdentity = res.Url;
+            }
+        }
+        if (model.IdentityBack != null)
+        {
+            var res = await firebaseService.SaveFileAsync(model.IdentityBack,
+                @"blood-donation/identity");
+            if (!string.IsNullOrEmpty(res.Url))
+            {
+                user.BackUrlIdentity = res.Url;
+            }
+        }
         if (model.RoleId is null)
         {
             var role = await unitOfWork.RoleRepository.FirstOrDefaultAsync(x => x.Name == RoleNames.MEMBER, cancellationToken);
             if (role is not null)
             {
                 user.RoleId = role.Id;
-         
             }
         }
         user.HashPassword = model.Password.Hashing();
