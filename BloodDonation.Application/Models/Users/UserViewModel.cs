@@ -1,6 +1,4 @@
-﻿using BloodDonation.Domain.Entities;
-
-namespace BloodDonation.Application.Models.Users;
+﻿namespace BloodDonation.Application.Models.Users;
 
 public class UserViewModel
 {
@@ -8,10 +6,12 @@ public class UserViewModel
     public string Email { get; set; } = string.Empty;
     public string PhoneNo { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+    public string FrontUrlIdentity { get; set; } = string.Empty;
+    public string BackUrlIdentity { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
     public string IdentityId { get; set; } = string.Empty;
     public bool Gender { get; set; } = true;
     public string Status { get; set; } = string.Empty;
-   
+
 
 }

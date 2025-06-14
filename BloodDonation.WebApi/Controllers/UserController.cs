@@ -1,7 +1,6 @@
 ﻿using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Services.Interfaces;
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers;
@@ -34,7 +33,7 @@ public class UserController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] UserCreateModel model,
+    public async Task<IActionResult> CreateAsync([FromForm] UserCreateModel model,
         [FromServices] IValidator<UserCreateModel> validator)
     {
         var validatorRes = validator.Validate(model);

@@ -10,5 +10,6 @@
         public string ApiKey { get; set; } = string.Empty;
         public string ServiceAccountUsr { get; set; } = string.Empty;
         public string ServiceAccountPwd { get; set; } = string.Empty;
+        public string Bucket { get; set; } = string.Empty;
     }
 }
