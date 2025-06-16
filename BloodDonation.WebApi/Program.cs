@@ -16,7 +16,13 @@ builder.Services.AddCors(opt =>
                           .AllowAnyMethod().AllowAnyHeader();
                       });
 });
-var config = builder.Configuration.Get<AppSetting>() ?? throw new InvalidOperationException("Configuration Is Null");
+var config = builder.Configuration; /*.Get<AppSetting>() ?? throw new InvalidOperationException("Configuration Is Null");*/
+
+
+var appSetting = new AppSetting();
+config.GetSection("ConnectionStrings").Bind(appSetting.ConnectionStrings);
+config.GetSection("FirebaseConfig").Bind(appSetting.FirebaseConfig);
+
 builder.Services.AddSingleton(config);
 builder.Services.AddSession(options =>
 {
