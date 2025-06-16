@@ -2,6 +2,7 @@ using BloodDonation.Application;
 using BloodDonation.Infrastructures;
 using BloodDonation.WebApi;
 using BloodDonation.WebApi.Middlewares;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,8 +58,8 @@ void ApplyMigrations()
 {
     using var scope = app!.Services.CreateScope();
     var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    //if (_db.Database.GetPendingMigrations().Count() > 0)
-    //{
-    //    _db.Database.Migrate();
-    //}
+    if (_db.Database.GetPendingMigrations().Count() > 0)
+    {
+        _db.Database.Migrate();
+    }
 }

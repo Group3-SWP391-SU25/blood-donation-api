@@ -176,7 +176,7 @@ namespace BloodDonation.Application.Services
 
                 if(healthForm.VolumeBloodDonated >= 350)
                 {
-                    if(healthForm.Hemoglobin >= 125)
+                    if(healthForm.Hemoglobin < 125)
                         throw new ArgumentException("Không đủ điều kiện do huyết sắc tố không đạt trên 125 g/l nếu hiến từ 350ml trở lên.");
                 }
 
