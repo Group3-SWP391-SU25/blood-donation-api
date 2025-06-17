@@ -25,7 +25,7 @@ namespace BloodDonation.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+                return StatusCode(500, new { message = "Lỗi hệ thống!", detail = ex.Message });
             }
         }
     }
