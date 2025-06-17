@@ -136,3 +136,8 @@ _NCrunch*
 .vscode/
 
 .vs/
+
+# Appsetting
+appsettings.json
+appsettings.Development.json
+
