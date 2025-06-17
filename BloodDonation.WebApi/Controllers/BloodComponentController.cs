@@ -29,7 +29,7 @@ namespace BloodDonation.WebApi.Controllers
             }
         }
         [HttpPost()]
-        public async Task<IActionResult> Create([FromBody] BloodDonation.Domain.Entities.BloodComponent bloodComponent)
+        public async Task<IActionResult> Create()
         {
             //try
             //{
@@ -45,6 +45,18 @@ namespace BloodDonation.WebApi.Controllers
             //    return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             //}
             return Ok(new { message = "This endpoint is not implemented yet." });
+        }
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            try
+            {
+                return Ok(new { message = "Test successful"});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
         }
     }
 }

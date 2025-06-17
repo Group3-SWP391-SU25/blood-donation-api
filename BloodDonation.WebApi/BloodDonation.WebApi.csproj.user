@@ -4,6 +4,6 @@
     <ActiveDebugProfile>https</ActiveDebugProfile>
     <Controller_SelectedScaffolderID>ApiControllerEmptyScaffolder</Controller_SelectedScaffolderID>
     <Controller_SelectedScaffolderCategoryPath>root/Common/Api</Controller_SelectedScaffolderCategoryPath>
-    <NameOfLastUsedPublishProfile>D:\SWP391\blood-donation-api\.github\workflows\main_blooddonationwebapi20250609162342.yml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>D:\SWP391\blood-donation-api\.github\workflows\BloodDonationWebApi20250609162342.yml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
