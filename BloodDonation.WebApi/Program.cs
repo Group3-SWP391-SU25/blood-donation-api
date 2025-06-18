@@ -30,6 +30,13 @@ builder.Services.AddSingleton<AppSetting>(sp =>
     return setting;
 });
 
+builder.Services.AddSingleton<EmailSettings>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var setting = new EmailSettings();
+    config.GetSection("EmailSettings").Bind(setting);
+    return setting;
+});
 //builder.Services.AddSingleton(config);
 builder.Services.AddSession(options =>
 {
