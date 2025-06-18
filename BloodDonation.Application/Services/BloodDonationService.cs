@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,9 +17,12 @@ namespace BloodDonation.Application.Services
     public class BloodDonationService : IBloodDonationService
     {
         private readonly IUnitOfWork unitOfWork;
-        public BloodDonationService(IUnitOfWork unitOfWork)
+        private readonly EmailSettings emailSettings;
+
+        public BloodDonationService(IUnitOfWork unitOfWork, EmailSettings emailSettings)
         {
             this.unitOfWork = unitOfWork;
+            this.emailSettings = emailSettings;
         }
         public async Task<object> SearchAsync(string? searchKey, int? pageIndex, int? pageSize, BloodDonationStatusEnum? status)
         {
@@ -69,9 +74,9 @@ namespace BloodDonation.Application.Services
                 return true; //No change needed
             }
 
-            if (bloodDonation.Status == BloodDonationStatusEnum.Donated)
+            if (bloodDonation.Status != BloodDonationStatusEnum.InProgress)
             {
-                return false; //Cannot change status from Donated to another status
+                return false; //Cannot change status from current status
             }
             if(status == BloodDonationStatusEnum.Donated)
             {
@@ -83,6 +88,27 @@ namespace BloodDonation.Application.Services
                     BloodDonationId = bloodDonation.Id,
                     ExpiredDate = DateTime.Now.AddDays(bloodComponent.ShelfLifeInDay)
                 });
+                // Send email notification to user
+                var request = await unitOfWork.BloodDonationRequestRepository.GetByCondition(b => b.Id == bloodDonation.BloodDonationRequestId, includeProperties: "User");
+                if (request?.User != null)
+                {
+                    var user = request.User;
+
+                    string subject = "Cảm ơn bạn đã hiến máu!";
+                    string body = $@"
+                        <div style='font-family: Arial, sans-serif;'>
+                            <h2 style='color: #e74c3c;'>❤️ Xin chân thành cảm ơn, {user.FullName}!</h2>
+                            <p>Bạn đã hiến thành công <strong>{bloodDonation.Volume}ml</strong> máu vào ngày <strong>{bloodDonation.DonationDate:dd/MM/yyyy}</strong>.</p>
+                            <p>Nghĩa cử cao đẹp của bạn sẽ giúp cứu sống nhiều người.</p>
+                            <p style='margin-top: 15px;'>
+                                🧪 <strong>Kết quả xét nghiệm máu chi tiết</strong> sẽ được gửi đến bạn trong vòng <strong>3 đến 5 ngày tới</strong>.
+                            </p>
+                            <br>
+                            <p style='color: gray;'>— BloodLink - Trung tâm tiếp nhận máu</p>
+                        </div>";
+
+                    await SendEmailAsync(user.Email, subject, body);
+                }
             }
 
             // Update status
@@ -93,6 +119,26 @@ namespace BloodDonation.Application.Services
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return true;
+        }
+
+        private async Task SendEmailAsync(string toEmail, string subject, string body)
+        {
+            using var client = new SmtpClient(emailSettings.SmtpServer, emailSettings.Port)
+            {
+                Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password),
+                EnableSsl = true
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(emailSettings.FromEmail, emailSettings.FromName),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(toEmail);
+            await client.SendMailAsync(mailMessage);
         }
     }
 }
