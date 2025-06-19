@@ -67,7 +67,7 @@ public class UserService : IUserService
 
     public async Task<UserViewModel> GetByEmailAsync(string email, string? password = null, CancellationToken cancellationToken = default)
     {
-        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == email, cancellationToken, x => x.Role);
         if (user is null)
             throw new Exception("User not found");
         else
