@@ -1,4 +1,5 @@
-﻿using BloodDonation.Application.Models.BloodDonationRequests;
+﻿using BloodDonation.Application.Models.BloodChecks;
+using BloodDonation.Application.Models.BloodDonationRequests;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
 using System;
@@ -18,5 +19,6 @@ namespace BloodDonation.Application.Models.BloodDonations
         public DateTime? DonationDate { get; set; }
         public Guid BloodDonationRequestId { get; set; }
         public virtual BloodDonationRequestViewModel? BloodDonationRequest { get; set; }
+        public virtual BloodCheckViewModel? BloodCheck { get; set; }
     }
 }

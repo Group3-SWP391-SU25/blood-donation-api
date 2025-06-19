@@ -17,6 +17,10 @@ public class BloodStorageRepository(IServiceProvider serviceProvider)
     : GenericRepository<BloodStorage>(serviceProvider), IBloodStorageRepository;
 public class BloodComponentRepository(IServiceProvider serviceProvider)
     : GenericRepository<BloodComponent>(serviceProvider), IBloodComponentRepository;
+public class BloodGroupRepository(IServiceProvider serviceProvider)
+    : GenericRepository<BloodGroup>(serviceProvider), IBloodGroupRepository;
+public class BloodCheckRepository(IServiceProvider serviceProvider)
+    : GenericRepository<BloodCheck>(serviceProvider), IBloodCheckRepository;
 
 //public class BloodUnitRepository(IServiceProvider serviceProvider)
 //    : GenericRepository<BloodUnit>(serviceProvider), IBloodUnitRepository;
