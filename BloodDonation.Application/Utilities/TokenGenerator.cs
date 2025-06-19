@@ -25,7 +25,7 @@ public static class TokenGenerator
             Audience = "BloodDonation.Client",
             Issuer = "BloodDonation.WebApi",
             Subject = new ClaimsIdentity(claimsList),
-            Expires = DateTime.UtcNow.AddDays(1000),
+            Expires = DateTime.UtcNow.AddMinutes(30),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
