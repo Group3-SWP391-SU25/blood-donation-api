@@ -31,6 +31,7 @@ public class MapperConfigurationProfile : Profile
 
         #region BloodDonationRequest
         CreateMap<BloodDonationRequest, BloodDonationRequestViewModel>()
+            .ForMember(dest => dest.IdentityId, opt => opt.MapFrom(src => src.User.IdentityId))
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
             .ForMember(dest => dest.Age, opt => opt.MapFrom(src =>
                 src.User.DateOfBirth.HasValue
