@@ -23,7 +23,7 @@ namespace BloodDonation.Application.Services
             // Truy vấn dữ liệu đã lọc, phân trang
             var pagedData = await unitOfWork.BloodStorageRepository.Search(
                 filter: filter,
-                includeProperties: "BloodDonate,BloodComponent,BloodGroup,BloodDonate.BloodDonationRequest,BloodDonate.BloodDonationRequest.User",
+                includeProperties: "BloodDonate,BloodComponent,BloodGroup,BloodDonate.BloodDonationRequest,BloodDonate.BloodDonationRequest.User,BloodDonate.BloodCheck",
                 orderBy: q => q.OrderByDescending(b => b.CreatedDate),
                 pageIndex: pageIndex,
                 pageSize: pageSize);

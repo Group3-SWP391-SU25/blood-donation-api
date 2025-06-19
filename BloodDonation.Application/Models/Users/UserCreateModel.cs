@@ -1,5 +1,4 @@
-﻿using DataAnnotationsExtensions;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +7,7 @@ namespace BloodDonation.Application.Models.Users;
 public class UserCreateModel
 {
     public string FullName { get; set; } = string.Empty;
-    [Email]
+    [EmailAddress]
     public string Email { get; set; } = string.Empty;
     public DateTime? DateOfBirth { get; set; }
     [Phone]

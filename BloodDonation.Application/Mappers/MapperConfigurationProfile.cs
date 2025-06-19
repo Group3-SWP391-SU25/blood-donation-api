@@ -8,6 +8,8 @@ using BloodDonation.Domain.Entities;
 using BloodDonation.Application.Models.BloodDonations;
 using BloodDonation.Application.Models.BloodStorage;
 using BloodDonation.Application.Models.BloodComponents;
+using BloodDonation.Application.Models.BloodChecks;
+using BloodDonation.Application.Models.BloodGroups;
 
 namespace BloodDonation.Application.Mappers;
 
@@ -69,6 +71,15 @@ public class MapperConfigurationProfile : Profile
         #endregion
         #region BloodComponent
         CreateMap<BloodComponent, BloodComponentViewModel>();
+        #endregion
+        #region BloodGroup
+        CreateMap<BloodGroup, BloodGroupViewModel>();
+        #endregion
+
+        #region BloodCheck
+        CreateMap<BloodCheck, BloodCheckViewModel>()
+            .ForMember(dest => dest.BloodGroup, opt => opt.MapFrom(src => src.BloodGroup))
+            .ForMember(dest => dest.BloodDonation, opt => opt.MapFrom(src => src.BloodDonation));
         #endregion
     }
 }
