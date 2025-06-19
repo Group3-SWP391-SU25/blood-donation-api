@@ -5,7 +5,7 @@ public class UserViewModel
     public Guid Id { get; set; } = Guid.Empty;
     public string Email { get; set; } = string.Empty;
     public string PhoneNo { get; set; } = string.Empty;
-    public string Address { get; set; } = string.Empty;
+    public string Addresss { get; set; } = string.Empty;
     public string FrontUrlIdentity { get; set; } = string.Empty;
     public string BackUrlIdentity { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
