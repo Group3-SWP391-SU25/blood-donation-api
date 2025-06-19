@@ -1,13 +1,17 @@
-﻿using FluentValidation;
+﻿using DataAnnotationsExtensions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace BloodDonation.Application.Models.Users;
 
 public class UserCreateModel
 {
     public string FullName { get; set; } = string.Empty;
+    [Email]
     public string Email { get; set; } = string.Empty;
     public DateTime? DateOfBirth { get; set; }
+    [Phone]
     public string PhoneNo { get; set; } = string.Empty;
     public string Addresss { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
