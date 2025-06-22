@@ -2,18 +2,81 @@
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
+using Hangfire;
 using System.Linq.Expressions;
+using System.Net;
+using System.Net.Mail;
 
 namespace BloodDonation.Application.Services
 {
     public class BloodStorageService : IBloodStorageService
     {
         private readonly IUnitOfWork unitOfWork;
-        public BloodStorageService(IUnitOfWork unitOfWork)
+        private IBackgroundJobClient backgroundJobClient;
+        private readonly EmailSettings emailSettings;
+        public BloodStorageService(IUnitOfWork unitOfWork,
+            IBackgroundJobClient backgroundJobClient,
+            EmailSettings emailSettings)
         {
+            this.backgroundJobClient = backgroundJobClient;
             this.unitOfWork = unitOfWork;
+            this.emailSettings = emailSettings;
         }
+        public async Task NotiExpiredAlertBackground(Guid bloodStorageId)
+        {
+            var roleNurse = await unitOfWork.RoleRepository.FirstOrDefaultAsync(x => x.Name == "NURSE")
+                ?? throw new InvalidOperationException();
+            var allNurse = (await unitOfWork.UserRepository.WhereAsync(x => x.RoleId == roleNurse.Id && x.Status == UserStatusEnum.Active.ToString()))?
+                .Select(x => x.Email);
+            var item = await unitOfWork.BloodStorageRepository.FirstOrDefaultAsync(x => x.Id == bloodStorageId) ??
+              throw new InvalidOperationException("Không tìm thấy máu trong kho " + bloodStorageId);
+            if (item.Status == BloodStorageStatusEnum.Expired && item.Status == BloodStorageStatusEnum.Exported)
+            {
+                return;
+            }
+            string expiredAlert = $@"
+                <div style='font-family: Arial, sans-serif; margin-top: 30px; padding: 15px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 5px;'>
+                    <h3 style='color: #856404;'>⚠️ Cảnh báo: Máu sắp hết hạn</h3>
+                    <p>Mã túi máu: <strong>{item.Id}</strong></p>
+                    <p>Ngày hết hạn: <strong>{item.ExpiredDate:dd/MM/yyyy}</strong></p>
+                    <p style='margin-top: 10px;'>Vui lòng kiểm tra và xử lý kịp thời.</p>
+                </div>";
+            using var client = new SmtpClient(emailSettings.SmtpServer, emailSettings.Port)
+            {
+                Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password),
+                EnableSsl = true
+            };
 
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(emailSettings.FromEmail, emailSettings.FromName),
+                Subject = "Cảnh báo máu hết hạn",
+                Body = expiredAlert,
+                IsBodyHtml = true
+            };
+
+            if (allNurse?.Count() == 0) return;
+            foreach (var nurse in allNurse)
+            {
+                mailMessage.To.Add(nurse);
+                await client.SendMailAsync(mailMessage);
+            }
+
+        }
+        public async Task CheckExpired(Guid bloodStorageId)
+        {
+            var item = await unitOfWork.BloodStorageRepository.FirstOrDefaultAsync(x => x.Id == bloodStorageId) ??
+                throw new InvalidOperationException("Không tìm thấy máu trong kho " + bloodStorageId);
+            if (item.Status != BloodStorageStatusEnum.Exported && item.Status != BloodStorageStatusEnum.Expired)
+            {
+                if (item.ExpiredDate >= DateTime.Now)
+                {
+                    item.Status = BloodStorageStatusEnum.Expired;
+                    unitOfWork.BloodStorageRepository.Update(item);
+                    await unitOfWork.SaveChangesAsync();
+                }
+            }
+        }
         public async Task<BloodStorageViewModel> CreateAsync(BloodStorageCreateModel createModel,
             CancellationToken cancellationToken = default)
         {
@@ -33,6 +96,8 @@ namespace BloodDonation.Application.Services
             };
             await unitOfWork.BloodStorageRepository.CreateAsync(bloodStorage);
             await unitOfWork.SaveChangesAsync();
+            backgroundJobClient.Schedule(() => CheckExpired(bloodStorage.Id), bloodStorage.ExpiredDate);
+            backgroundJobClient.Schedule(() => NotiExpiredAlertBackground(bloodStorage.Id), bloodStorage.ExpiredDate.AddDays(-2));
             return unitOfWork.Mapper.Map<BloodStorageViewModel>(bloodStorage);
 
         }
