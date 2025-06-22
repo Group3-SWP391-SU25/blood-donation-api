@@ -19,6 +19,9 @@ public class UnitOfWork : IUnitOfWork
         BloodDonationRepository = serviceProvider.GetRequiredService<IBloodDonationRepository>();
         BloodStorageRepository = serviceProvider.GetRequiredService<IBloodStorageRepository>();
         BloodComponentRepository = serviceProvider.GetRequiredService<IBloodComponentRepository>();
+        BloodIssueRepository = serviceProvider.GetRequiredService<IBloodIssueRepository>();
+        EmergencyBloodRequestRepository = serviceProvider.GetRequiredService<IEmergencyBloodRepository>();
+
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
 
     }
@@ -29,9 +32,14 @@ public class UnitOfWork : IUnitOfWork
     public IBloodDonationRepository BloodDonationRepository { get; }
     public IBloodStorageRepository BloodStorageRepository { get; }
     public IBloodComponentRepository BloodComponentRepository { get; }
+
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
     public IMapper Mapper { get; }
+
+    public IEmergencyBloodRepository EmergencyBloodRequestRepository { get; }
+
+    public IBloodIssueRepository BloodIssueRepository { get; }
 
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

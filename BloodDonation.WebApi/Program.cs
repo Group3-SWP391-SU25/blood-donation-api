@@ -2,6 +2,7 @@ using BloodDonation.Application;
 using BloodDonation.Infrastructures;
 using BloodDonation.WebApi;
 using BloodDonation.WebApi.Middlewares;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -71,7 +72,7 @@ app.UseAuthorization();
 app.UseSession();
 
 app.MapControllers();
-
+app.UseHangfireDashboard("/hangfire");
 app.Run();
 
 void ApplyMigrations()

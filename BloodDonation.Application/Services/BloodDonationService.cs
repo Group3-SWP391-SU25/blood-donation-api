@@ -1,16 +1,10 @@
-﻿using BloodDonation.Application.Models.BloodDonationRequests;
-using BloodDonation.Application.Models.BloodDonations;
+﻿using BloodDonation.Application.Models.BloodDonations;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Mail;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace BloodDonation.Application.Services
 {
@@ -78,7 +72,7 @@ namespace BloodDonation.Application.Services
             {
                 return false; //Cannot change status from current status
             }
-            if(status == BloodDonationStatusEnum.Donated)
+            if (status == BloodDonationStatusEnum.Donated)
             {
                 var bloodComponent = await unitOfWork.BloodComponentRepository.GetByCondition(b => b.Id == BloodComponentType.WholeBlood.Id);
 

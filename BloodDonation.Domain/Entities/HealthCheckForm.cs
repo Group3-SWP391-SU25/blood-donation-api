@@ -1,5 +1,3 @@
-using System;
-
 namespace BloodDonation.Domain.Entities;
 
 public class HealthCheckForm : BaseEntity
@@ -15,5 +13,5 @@ public class HealthCheckForm : BaseEntity
     public bool HasUnsafeSexualBehaviourOrSameSexSexualContact { get; set; }
     public string Note { get; set; } = string.Empty;
     public Guid BloodDonateRequestId { get; set; }
-    public virtual BloodDonationRequest BloodDonationRequest { get; set; } 
+    public virtual BloodDonationRequest BloodDonationRequest { get; set; }
 }

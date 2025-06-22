@@ -1,7 +1,6 @@
-﻿using BloodDonation.Application.Services.Interfaces;
+﻿using BloodDonation.Application.Models.BloodStorage;
+using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
-using BloodDonation.WebApi.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers
@@ -27,6 +26,25 @@ namespace BloodDonation.WebApi.Controllers
         {
             var result = await bloodStorageService.SearchAsync(pageIndex, pageSize, search, status, cancellationToken);
             return Ok(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] BloodStorageCreateModel model)
+        {
+            var createResult = await bloodStorageService.CreateAsync(model);
+            return Ok(createResult);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Del([FromRoute] Guid id)
+        {
+            await bloodStorageService.DeleteAsync(id);
+            return NoContent();
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] BloodStorageUpdateModel updateModel)
+        {
+            await bloodStorageService.UpdateAsync(id, updateModel);
+            return NoContent();
         }
     }
 }

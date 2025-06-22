@@ -52,7 +52,6 @@ public class AuthService : IAuthService
         var userFirebase = await auth.GetUserAsync(firebaseToken) ?? throw new Exception("Firebase Token Does not exsit");
 
 
-
         var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email, includes: x => x.Role);
         // Insert Into Db
         if (user is null)

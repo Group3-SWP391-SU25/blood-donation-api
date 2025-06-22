@@ -4,6 +4,7 @@ using BloodDonation.Infrastructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodDonation.Infrastructures.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250621172834_V0.6_ModifyBloodIssue")]
+    partial class V06_ModifyBloodIssue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,7 +194,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b79"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(318),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8489),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -203,7 +206,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b78"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(323),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8495),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -215,7 +218,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b77"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(324),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8496),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -227,7 +230,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b76"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(326),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8498),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -239,7 +242,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b75"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(327),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8499),
                             IsDeleted = false,
                             MaxStorageTemerature = -60.0,
                             MinStorageTemerature = -80.0,
@@ -251,7 +254,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b74"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(330),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8501),
                             IsDeleted = false,
                             MaxStorageTemerature = 24.0,
                             MinStorageTemerature = 20.0,
@@ -263,7 +266,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b73"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(361),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8502),
                             IsDeleted = false,
                             MaxStorageTemerature = 24.0,
                             MinStorageTemerature = 20.0,
@@ -275,7 +278,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b72"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(363),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8504),
                             IsDeleted = false,
                             MaxStorageTemerature = 24.0,
                             MinStorageTemerature = 20.0,
@@ -287,7 +290,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b71"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(364),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8505),
                             IsDeleted = false,
                             MaxStorageTemerature = 24.0,
                             MinStorageTemerature = 20.0,
@@ -299,7 +302,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b70"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(367),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8506),
                             IsDeleted = false,
                             MaxStorageTemerature = -25.0,
                             MinStorageTemerature = -272.0,
@@ -311,7 +314,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b69"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(368),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8508),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -323,7 +326,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b68"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(369),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8509),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -335,7 +338,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b67"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(371),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8511),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -347,7 +350,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b66"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(372),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8512),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -359,7 +362,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b65"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(374),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8514),
                             IsDeleted = false,
                             MaxStorageTemerature = 24.0,
                             MinStorageTemerature = 20.0,
@@ -371,7 +374,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b64"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(375),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8515),
                             IsDeleted = false,
                             MaxStorageTemerature = 6.0,
                             MinStorageTemerature = 2.0,
@@ -383,7 +386,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b63"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(376),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8517),
                             IsDeleted = false,
                             MaxStorageTemerature = 24.0,
                             MinStorageTemerature = 20.0,
@@ -541,7 +544,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b83"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(249),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8388),
                             IsDeleted = false,
                             RhFactor = "+",
                             Type = "A"
@@ -550,7 +553,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b82"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(255),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8393),
                             IsDeleted = false,
                             RhFactor = "-",
                             Type = "A"
@@ -559,7 +562,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b81"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(257),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8395),
                             IsDeleted = false,
                             RhFactor = "+",
                             Type = "B"
@@ -568,7 +571,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b80"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(258),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8434),
                             IsDeleted = false,
                             RhFactor = "-",
                             Type = "B"
@@ -577,7 +580,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7f"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(260),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8436),
                             IsDeleted = false,
                             RhFactor = "+",
                             Type = "AB"
@@ -586,7 +589,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7e"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(262),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8438),
                             IsDeleted = false,
                             RhFactor = "-",
                             Type = "AB"
@@ -595,7 +598,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7d"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(263),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8440),
                             IsDeleted = false,
                             RhFactor = "+",
                             Type = "O"
@@ -604,7 +607,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b7c"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(265),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8441),
                             IsDeleted = false,
                             RhFactor = "-",
                             Type = "O"
@@ -726,7 +729,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("BloodIssueId")
+                    b.Property<Guid>("BloodIssueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CreatedBy")
@@ -759,8 +762,7 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BloodIssueId")
-                        .IsUnique()
-                        .HasFilter("[BloodIssueId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -864,7 +866,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b86"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(26),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8143),
                             IsDeleted = false,
                             Name = "ADMIN"
                         },
@@ -872,7 +874,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b85"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(55),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8172),
                             IsDeleted = false,
                             Name = "MEMBER"
                         },
@@ -880,7 +882,7 @@ namespace BloodDonation.Infrastructures.Migrations
                         {
                             Id = new Guid("859a4997-1ffa-4915-b50e-9a99e4147b84"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedDate = new DateTime(2025, 6, 22, 10, 34, 37, 542, DateTimeKind.Local).AddTicks(57),
+                            CreatedDate = new DateTime(2025, 6, 22, 0, 28, 33, 871, DateTimeKind.Local).AddTicks(8174),
                             IsDeleted = false,
                             Name = "NURSE"
                         });
@@ -1065,7 +1067,8 @@ namespace BloodDonation.Infrastructures.Migrations
                     b.HasOne("BloodDonation.Domain.Entities.BloodIssue", "BloodIssue")
                         .WithOne("EmergencyBloodRequest")
                         .HasForeignKey("BloodDonation.Domain.Entities.EmergencyBloodRequest", "BloodIssueId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("BloodDonation.Domain.Entities.User", "User")
                         .WithMany("EmergencyBloodRequests")

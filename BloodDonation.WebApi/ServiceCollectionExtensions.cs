@@ -1,7 +1,9 @@
-﻿using FluentValidation;
-using BloodDonation.Application.Mappers;
+﻿using BloodDonation.Application.Mappers;
 using BloodDonation.Infrastructures;
 using BloodDonation.WebApi.Middlewares;
+using FluentValidation;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +18,12 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHangfire(config => config
+                       .UseSimpleAssemblyNameTypeSerializer()
+                       .UseRecommendedSerializerSettings()
+                       .UseMemoryStorage()
+                       );
+        services.AddHangfireServer();
         services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Blood Donation Support System", Version = "v1" });
@@ -84,7 +92,7 @@ public static class ServiceCollectionExtensions
         // AutoMapper
         services.AddAutoMapper(typeof(MapperConfigurationProfile));
         services.AddValidatorsFromAssemblies(getAssemblies());
-        
+
         return services;
     }
     private static Assembly[] getAssemblies()

@@ -1,13 +1,14 @@
-﻿using System.Security.AccessControl;
-using System.Transactions;
-using AutoMapper;
-using BloodDonation.Application.Models.BloodDonationRequests;
-using BloodDonation.Application.Models.Users;
-using BloodDonation.Application.Models.HealthCheckForms;
-using BloodDonation.Domain.Entities;
-using BloodDonation.Application.Models.BloodDonations;
-using BloodDonation.Application.Models.BloodStorage;
+﻿using AutoMapper;
 using BloodDonation.Application.Models.BloodComponents;
+using BloodDonation.Application.Models.BloodDonationRequests;
+using BloodDonation.Application.Models.BloodDonations;
+using BloodDonation.Application.Models.BloodEmergencyRequests;
+using BloodDonation.Application.Models.BloodIssues;
+using BloodDonation.Application.Models.BloodStorage;
+using BloodDonation.Application.Models.EmergencyBloodRequests;
+using BloodDonation.Application.Models.HealthCheckForms;
+using BloodDonation.Application.Models.Users;
+using BloodDonation.Domain.Entities;
 
 namespace BloodDonation.Application.Mappers;
 
@@ -45,7 +46,7 @@ public class MapperConfigurationProfile : Profile
             .ForMember(dest => dest.HealthCheckForm, opt => opt.MapFrom(src => src.HealthCheckForm));
 
         CreateMap<BloodDonationRequestCreateModel, BloodDonationRequest>()
-            .ForMember(dest => dest.User, opt => opt.Ignore()) 
+            .ForMember(dest => dest.User, opt => opt.Ignore())
             .ReverseMap();
         #endregion
 
@@ -66,9 +67,26 @@ public class MapperConfigurationProfile : Profile
             .ForMember(dest => dest.BloodDonate, opt => opt.MapFrom(src => src.BloodDonate))
             .ForMember(dest => dest.BloodComponent, opt => opt.MapFrom(src => src.BloodComponent))
             .ForMember(dest => dest.BloodGroup, opt => opt.MapFrom(src => src.BloodGroup!.Type + src.BloodGroup!.RhFactor));
+        CreateMap<BloodStorageUpdateModel, BloodStorage>().ReverseMap();
         #endregion
         #region BloodComponent
         CreateMap<BloodComponent, BloodComponentViewModel>();
+        #endregion
+        #region BloodIssue
+        CreateMap<BloodIssue, BloodIssueCreateModel>()
+            .ReverseMap();
+        CreateMap<BloodIssue, BloodIssueViewModel>()
+            .ForMember(x => x.BloodStorage, cfg => cfg.MapFrom(x => x.BloodStorage))
+            .ReverseMap();
+        CreateMap<BloodIssue, BloodIssueUpdateModel>().ReverseMap();
+        #endregion
+
+        #region Emergency Blood
+        CreateMap<EmergencyBloodRequestCreateModel, EmergencyBloodRequest>().ReverseMap();
+        CreateMap<EmergencyBloodRequestViewModel, EmergencyBloodRequest>().ReverseMap()
+            .ForMember(x => x.User, x => x.MapFrom(cfg => cfg.User));
+        CreateMap<EmergencyBloodRequestUpdateModel, EmergencyBloodRequest>()
+            .ReverseMap();
         #endregion
     }
 }

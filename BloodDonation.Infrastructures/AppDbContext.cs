@@ -32,8 +32,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<BloodIssue>()
             .HasOne(bi => bi.EmergencyBloodRequest)
             .WithOne(ebr => ebr.BloodIssue)
-            .HasForeignKey<BloodIssue>(bi => bi.EmergencyBloodRequestId)
+            .HasForeignKey<EmergencyBloodRequest>(bi => bi.BloodIssueId)
     .OnDelete(DeleteBehavior.NoAction); // or .NoAction
+        modelBuilder.Entity<BloodStorage>()
+            .HasMany(x => x.Childs)
+            .WithOne(x => x.ParentStorage)
+            .HasForeignKey(x => x.ParentStorageId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<HealthCheckForm>()
             .HasOne(hcf => hcf.BloodDonationRequest)
             .WithOne(bdr => bdr.HealthCheckForm)

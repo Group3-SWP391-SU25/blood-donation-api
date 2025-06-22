@@ -18,6 +18,9 @@ public class BloodStorage : BaseEntity
     public virtual BloodGroup? BloodGroup { get; set; }
 
     public virtual BloodIssue? BloodIssue { get; set; }
+    public BloodStorage? ParentStorage { get; set; }
+    public Guid? ParentStorageId { get; set; }
+    public virtual ICollection<BloodStorage> Childs { get; set; }
 
     #endregion
 }
