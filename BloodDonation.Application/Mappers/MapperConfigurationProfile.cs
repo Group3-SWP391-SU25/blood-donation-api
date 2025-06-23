@@ -1,16 +1,14 @@
-﻿using System.Security.AccessControl;
-using System.Transactions;
-using AutoMapper;
-using BloodDonation.Application.Models.BloodDonationRequests;
-using BloodDonation.Application.Models.Users;
-using BloodDonation.Application.Models.HealthCheckForms;
-using BloodDonation.Domain.Entities;
-using BloodDonation.Application.Models.BloodDonations;
-using BloodDonation.Application.Models.BloodStorage;
-using BloodDonation.Application.Models.BloodComponents;
+﻿using AutoMapper;
 using BloodDonation.Application.Models.BloodChecks;
+using BloodDonation.Application.Models.BloodComponents;
+using BloodDonation.Application.Models.BloodDonationRequests;
+using BloodDonation.Application.Models.BloodDonations;
 using BloodDonation.Application.Models.BloodGroups;
+using BloodDonation.Application.Models.BloodStorage;
+using BloodDonation.Application.Models.HealthCheckForms;
 using BloodDonation.Application.Models.Roles;
+using BloodDonation.Application.Models.Users;
+using BloodDonation.Domain.Entities;
 
 namespace BloodDonation.Application.Mappers;
 
@@ -23,7 +21,13 @@ public class MapperConfigurationProfile : Profile
         //CreateMap<Customer, CustomerViewModel>().ReverseMap();
         //CreateMap<CustomerCreateModel, Customer>().ReverseMap();
         //CreateMap<CustomerUpdateModel, Customer>().ReverseMap();
-        CreateMap<User, UserViewModel>().ReverseMap();
+        CreateMap<User, UserViewModel>()
+            .ForMember(x => x.RoleName, cfg => cfg.MapFrom(x => x.Role.Name))
+            .ForMember(x => x.BloodGroupType, cfg => cfg.MapFrom(x => $"{x.BloodGroup!.Type ?? string.Empty}{x.BloodGroup!.RhFactor ?? string.Empty}"))
+            .ReverseMap();
+
+
+
         CreateMap<User, UserCreateModel>().ReverseMap();
         #endregion
 
@@ -48,7 +52,7 @@ public class MapperConfigurationProfile : Profile
             .ForMember(dest => dest.HealthCheckForm, opt => opt.MapFrom(src => src.HealthCheckForm));
 
         CreateMap<BloodDonationRequestCreateModel, BloodDonationRequest>()
-            .ForMember(dest => dest.User, opt => opt.Ignore()) 
+            .ForMember(dest => dest.User, opt => opt.Ignore())
             .ReverseMap();
         #endregion
 

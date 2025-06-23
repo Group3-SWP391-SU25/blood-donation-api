@@ -70,10 +70,10 @@ public enum BloodTypeEnum
 
 public enum BloodDonationStatusEnum
 {
-   InProgress = 0,
-   Donated = 1,
-   Cancelled = 2,
-   Checked = 3,
+    InProgress = 0,
+    Donated = 1,
+    Cancelled = 2,
+    Checked = 3,
 }
 
 public enum BloodStorageStatusEnum
