@@ -10,6 +10,7 @@ using BloodDonation.Application.Models.BloodStorage;
 using BloodDonation.Application.Models.BloodComponents;
 using BloodDonation.Application.Models.BloodChecks;
 using BloodDonation.Application.Models.BloodGroups;
+using BloodDonation.Application.Models.Roles;
 
 namespace BloodDonation.Application.Mappers;
 
@@ -68,6 +69,10 @@ public class MapperConfigurationProfile : Profile
             .ForMember(dest => dest.BloodDonate, opt => opt.MapFrom(src => src.BloodDonate))
             .ForMember(dest => dest.BloodComponent, opt => opt.MapFrom(src => src.BloodComponent))
             .ForMember(dest => dest.BloodGroup, opt => opt.MapFrom(src => src.BloodGroup!.Type + src.BloodGroup!.RhFactor));
+        CreateMap<BloodStorage, BloodStorageAvailableViewModel>()
+          .ForMember(dest => dest.BloodComponentName, opt => opt.MapFrom(src => src.BloodComponent.Name))
+          .ForMember(dest => dest.BloodGroup, opt => opt.MapFrom(src => src.BloodGroup!.Type + src.BloodGroup!.RhFactor));
+
         #endregion
         #region BloodComponent
         CreateMap<BloodComponent, BloodComponentViewModel>();
@@ -80,6 +85,9 @@ public class MapperConfigurationProfile : Profile
         CreateMap<BloodCheck, BloodCheckViewModel>()
             .ForMember(dest => dest.BloodGroup, opt => opt.MapFrom(src => src.BloodGroup))
             .ForMember(dest => dest.BloodDonation, opt => opt.MapFrom(src => src.BloodDonation));
+        #endregion
+        #region Role
+        CreateMap<Role, RoleViewModel>();
         #endregion
     }
 }

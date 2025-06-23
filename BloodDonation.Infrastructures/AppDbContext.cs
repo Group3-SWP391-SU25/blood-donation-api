@@ -44,8 +44,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasForeignKey<BloodDonation.Domain.Entities.BloodDonation>(x => x.BloodDonationRequestId)
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<BloodDonation.Domain.Entities.BloodDonation>()
-            .HasOne(x => x.BloodStorage).WithOne(x => x.BloodDonate)
-            .HasForeignKey<BloodStorage>(x => x.BloodDonationId)
+            .HasMany(x => x.BloodStorage).WithOne(x => x.BloodDonate)
+            .HasForeignKey(x => x.BloodDonationId)
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<BloodCheck>()
             .HasOne(bc => bc.BloodDonation)

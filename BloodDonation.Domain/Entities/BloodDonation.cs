@@ -11,7 +11,7 @@ namespace BloodDonation.Domain.Entities
         public DateTime? DonationDate { get; set; }
 
         #region Config Relationship
-        public virtual BloodStorage? BloodStorage { get; set; }
+        public ICollection<BloodStorage>? BloodStorage { get; set; }
         public virtual BloodCheck? BloodCheck { get; set; }
         public Guid BloodDonationRequestId { get; set; }
         public virtual BloodDonationRequest BloodDonationRequest { get; set; }

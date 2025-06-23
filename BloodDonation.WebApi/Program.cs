@@ -1,4 +1,5 @@
 using BloodDonation.Application;
+using BloodDonation.Application.Services;
 using BloodDonation.Infrastructures;
 using BloodDonation.WebApi;
 using BloodDonation.WebApi.Middlewares;
@@ -55,6 +56,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddHostedService<BloodDonationRequestCheckService>();
+builder.Services.AddHostedService<BloodStorageCheckService>();
+
 
 var app = builder.Build();
 

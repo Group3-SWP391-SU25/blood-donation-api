@@ -232,5 +232,18 @@ namespace BloodDonation.Application.Services
                 Records = mappedData
             };
         }
+        public async Task CancelExpiredPendingRequestsAsync()
+        {
+            var today = DateTime.Today;
+
+            var expiredRequests = await unitOfWork.BloodDonationRequestRepository
+                .Search(r => r.Status == BloodDonationRequestStatus.Pending && r.DonatedDateRequest.Date < today);
+            foreach (var request in expiredRequests)
+            {
+                request.Status = BloodDonationRequestStatus.Cancelled;
+            }
+            unitOfWork.BloodDonationRequestRepository.UpdateRange((List<BloodDonationRequest>)expiredRequests);
+            await unitOfWork.SaveChangesAsync();
+        }
     }
 }

@@ -26,5 +26,7 @@ namespace BloodDonation.Application.Services.Interfaces
         Task<BloodDonationRequestViewModel?> UpdateStatusAsync(string id, string? rejectNote, BloodDonationRequestStatus status, CancellationToken cancellationToken = default);
         //GetByUserId
         Task<object> GetByUserIdAsync(Guid userId, int? pageIndex = 1, int? pageSize = 10, CancellationToken cancellationToken = default);
+        Task CancelExpiredPendingRequestsAsync();
+
     }
 }

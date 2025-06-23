@@ -67,7 +67,7 @@ namespace BloodDonation.Application.Services
                 PLT = model.PLT,
                 MPV = model.MPV,
                 Description = model.Description,
-                CheckedDate = DateTime.UtcNow,
+                CheckedDate = DateTime.UtcNow.AddHours(7),
                 BloodGroupId = model.BloodGroupId,
                 BloodDonationId = model.BloodDonationId
             };
