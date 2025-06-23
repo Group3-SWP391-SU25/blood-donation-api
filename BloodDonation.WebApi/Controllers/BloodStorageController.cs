@@ -1,4 +1,5 @@
-﻿using BloodDonation.Application.Services.Interfaces;
+﻿using BloodDonation.Application.Models.BloodStorage;
+using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
 using BloodDonation.WebApi.Services;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +28,41 @@ namespace BloodDonation.WebApi.Controllers
         {
             var result = await bloodStorageService.SearchAsync(pageIndex, pageSize, search, status, cancellationToken);
             return Ok(result);
+        }
+        [HttpGet("available-bloods")]
+        public async Task<IActionResult> GetAvailableBloods(
+            [FromQuery] int pageIndex = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] BloodStorageStatusEnum? status = null,
+            [FromQuery] Guid? BloodComponentId = null,
+            [FromQuery] Guid? BloodGroupId = null,
+            [FromQuery] int? volume = null,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await bloodStorageService.GetAvailableBloods(
+                pageIndex,
+                pageSize,
+                status,
+                BloodComponentId,
+                BloodGroupId,
+                volume,
+                cancellationToken);
+            return Ok(result);
+        }
+        [HttpPost("blood-preparation/{id}")]
+        public async Task<IActionResult> PrepareBlood(Guid id, [FromBody] BloodStorageCreateModel dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                await bloodStorageService.PrepareBloodAsync(id, dto);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
         }
     }
 }

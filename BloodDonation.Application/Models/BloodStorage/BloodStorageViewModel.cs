@@ -24,4 +24,16 @@ namespace BloodDonation.Application.Models.BloodStorage
         public Guid? BloodGroupId { get; set; }
         public string? BloodGroup { get; set; }
     }
+    public class BloodStorageAvailableViewModel : BaseModel
+    {
+        public double Volume { get; set; }
+        public BloodStorageStatusEnum Status { get; set; }
+        public DateTime ExpiredDate { get; set; }
+
+        public Guid BloodComponentId { get; set; }
+        public string BloodComponentName { get; set; }
+
+        public Guid? BloodGroupId { get; set; }
+        public string? BloodGroup { get; set; }
+    }
 }
