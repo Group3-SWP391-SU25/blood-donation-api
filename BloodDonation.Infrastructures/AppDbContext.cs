@@ -75,6 +75,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b84"),
             Name = "NURSE",
+        },
+        new Role
+        {
+            Id = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b87"),
+            Name = "SUPERVISOR",
         });
         modelBuilder.Entity<User>().HasData();
         modelBuilder.Entity<BloodGroup>().HasData(
