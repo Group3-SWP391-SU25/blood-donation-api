@@ -12,6 +12,11 @@ public class UserViewModel
     public string IdentityId { get; set; } = string.Empty;
     public bool Gender { get; set; } = true;
     public string Status { get; set; } = string.Empty;
+    public Guid RoleId { get; set; } = Guid.Empty;
+    public string RoleName { get; set; } = string.Empty;
+    public Guid BloodGroupId { get; set; }
+    public string BloodGroupType { get; set; } = string.Empty;
+
 
 
 }

@@ -26,9 +26,7 @@ public class UserController : ControllerBase
             pageSize: pageSize,
             pageIndex: pageIndex,
             cancellationToken: default);
-        return result?.Count > 0
-            ? Ok(result)
-            : throw new Exception("List is empty");
+        return Ok(result);
     }
 
 

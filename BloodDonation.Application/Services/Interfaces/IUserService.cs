@@ -1,5 +1,4 @@
 ﻿using BloodDonation.Application.Models.Users;
-using BloodDonation.Application.Utilities;
 
 namespace BloodDonation.Application.Services.Interfaces;
 
@@ -7,9 +6,9 @@ public interface IUserService
 {
     Task<UserViewModel?> CreateUserAsync(UserCreateModel model,
 CancellationToken cancellationToken = default);
-    Task<PaginatedList<UserViewModel>?> GetAsync(int? pageSize,
+    Task<object> GetAsync(int? pageSize = null,
         string search = "",
-        int pageIndex = 0,
+        int? pageIndex = null,
         CancellationToken cancellationToken = default);
     Task<bool> RemoveAsync(Guid id,
         CancellationToken cancellationToken = default);

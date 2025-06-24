@@ -3,6 +3,7 @@ using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Application.Utilities;
 using BloodDonation.Domain.Entities;
+using BloodDonation.Domain.Enums;
 using Firebase.Auth;
 namespace BloodDonation.Application.Services;
 
@@ -20,7 +21,8 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseModel> LoginAsync(AuthRequestModel requestModel, CancellationToken cancellationToken = default)
     {
-        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == requestModel.Email, cancellationToken, x => x.Role);
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == requestModel.Email &&
+            x.Status == UserStatusEnum.Active.ToString(), cancellationToken, [x => x.Role, x => x.BloodGroup!]);
         var hashPassword = requestModel.Password.Hashing();
         if (hashPassword == user?.HashPassword)
         {
@@ -53,7 +55,8 @@ public class AuthService : IAuthService
 
 
 
-        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email, includes: x => x.Role);
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email &&
+            x.Status == UserStatusEnum.Active.ToString(), includes: [x => x.Role, x => x.BloodGroup]);
         // Insert Into Db
         if (user is null)
         {

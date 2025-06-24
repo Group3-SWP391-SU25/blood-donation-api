@@ -18,7 +18,7 @@ public class User : BaseEntity
 
     #region  Relationship Configuration
     public Guid RoleId { get; set; }
-    public virtual Role Role { get; set; }
+    public virtual Role Role { get; set; } = null!;
     public Guid? BloodGroupId { get; set; }
     public virtual BloodGroup? BloodGroup { get; set; }
     public virtual ICollection<EmergencyBloodRequest>? EmergencyBloodRequests { get; set; }
