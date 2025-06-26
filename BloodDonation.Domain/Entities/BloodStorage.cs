@@ -4,6 +4,7 @@ namespace BloodDonation.Domain.Entities;
 
 public class BloodStorage : BaseEntity
 {
+    public string? Code { get; set; } = string.Empty;
     public double Volume { get; set; }
     public BloodStorageStatusEnum Status { get; set; } = BloodStorageStatusEnum.UnChecked;
     public DateTime ExpiredDate { get; set; }

@@ -4,6 +4,7 @@ namespace BloodDonation.Domain.Entities
 {
     public class BloodDonation : BaseEntity
     {
+        public string? Code { get; set; } = string.Empty;
         public BloodTypeEnum BloodType { get; set; } = BloodTypeEnum.Unknown;
         public double Volume { get; set; }
         public string Description { get; set; } = string.Empty;

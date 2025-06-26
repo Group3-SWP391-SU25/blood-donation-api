@@ -12,6 +12,7 @@ namespace BloodDonation.Application.Models.BloodDonations
 {
     public class BloodDonationViewModel : BaseModel
     {
+        public string? Code { get; set; } = string.Empty;
         public BloodTypeEnum BloodType { get; set; }
         public double Volume { get; set; }
         public string? Description { get; set; } 

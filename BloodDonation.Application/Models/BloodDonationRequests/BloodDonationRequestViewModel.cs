@@ -12,7 +12,7 @@ namespace BloodDonation.Application.Models.BloodDonationRequests
 {
     public class BloodDonationRequestViewModel : BaseModel
     {
-        public Guid Id { get; set; }
+        public string? Code { get; set; } = string.Empty;
         public Guid UserId { get; set; }
         public BloodTypeEnum BloodType { get; set; }
         public BloodDonationRequestStatus Status { get; set; }
