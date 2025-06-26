@@ -4,6 +4,7 @@ namespace BloodDonation.Domain.Entities;
 
 public class BloodDonationRequest : BaseEntity
 {
+    public string? Code { get; set; } = string.Empty;
     public BloodTypeEnum BloodType { get; set; } = BloodTypeEnum.Unknown;
     public BloodDonationRequestStatus Status { get; set; } = BloodDonationRequestStatus.Pending;
     public string ReasonReject { get; set; } = string.Empty;

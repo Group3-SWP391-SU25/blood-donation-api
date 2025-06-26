@@ -80,10 +80,26 @@ namespace BloodDonation.Application.Services
             }
             if(status == BloodDonationStatusEnum.Donated)
             {
+                // Create BloodStorage record when status is Donated
+                // Generate new code for BloodStorage
+                var existingStorange = await unitOfWork.BloodStorageRepository.Search(x => x.Code != null && x.Code.StartsWith("BS"));
+
+                int maxNumericCode = 0;
+                foreach (var code in existingStorange)
+                {
+                    var numericPart = code.Code!.Substring(2); // Remove "BS"
+                    if (int.TryParse(numericPart, out int num))
+                    {
+                        maxNumericCode = Math.Max(maxNumericCode, num);
+                    }
+                }
+
+                var nextCode = $"BS{(maxNumericCode + 1).ToString("D5")}"; // BS00001, BS00002, ...
                 var bloodComponent = await unitOfWork.BloodComponentRepository.GetByCondition(b => b.Id == BloodComponentType.WholeBlood.Id);
 
                 await unitOfWork.BloodStorageRepository.CreateAsync(new BloodStorage
                 {
+                    Code = nextCode, // Assign the generated code
                     Volume = bloodDonation.Volume,
                     BloodDonationId = bloodDonation.Id,
                     ExpiredDate = DateTime.Now.AddDays(bloodComponent.ShelfLifeInDay)

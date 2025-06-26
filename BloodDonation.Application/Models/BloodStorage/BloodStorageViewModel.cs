@@ -12,6 +12,7 @@ namespace BloodDonation.Application.Models.BloodStorage
 {
     public class BloodStorageViewModel : BaseModel
     {
+        public string? Code { get; set; } = string.Empty;
         public double Volume { get; set; }
         public BloodStorageStatusEnum Status { get; set; }
         public DateTime ExpiredDate { get; set; }

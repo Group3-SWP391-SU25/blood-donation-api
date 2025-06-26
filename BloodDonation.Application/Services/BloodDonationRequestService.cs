@@ -63,7 +63,25 @@ namespace BloodDonation.Application.Services
             {
                 throw new ArgumentException($"Người dùng với ID {model.UserId} không tồn tại.");
             }
+
+            // 2. Tìm mã Code lớn nhất hiện có (định dạng BDR00001)
+            var existingRequest = await unitOfWork.BloodDonationRequestRepository.Search(x => x.Code != null && x.Code.StartsWith("BDR"));
+
+            int maxNumericCode = 0;
+            foreach (var code in existingRequest)
+            {
+                var numericPart = code.Code!.Substring(3); // Remove "BDR"
+                if (int.TryParse(numericPart, out int num))
+                {
+                    maxNumericCode = Math.Max(maxNumericCode, num);
+                }
+            }
+
+            var nextCode = $"BDR{(maxNumericCode + 1).ToString("D5")}"; // BDR00001, BDR00002, ...
+
             var bloodDonationRequest = unitOfWork.Mapper.Map<Domain.Entities.BloodDonationRequest>(model);
+            bloodDonationRequest.Code = nextCode; // Set the new code
+
             await unitOfWork.BloodDonationRequestRepository.CreateAsync(bloodDonationRequest, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -180,8 +198,24 @@ namespace BloodDonation.Application.Services
                         throw new ArgumentException("Không đủ điều kiện do huyết sắc tố không đạt trên 125 g/l nếu hiến từ 350ml trở lên.");
                 }
 
+                //Create a new BloodDonation record if the request is approved
+                //Find the next available code for BloodDonation
+                var existingBloodDonation = await unitOfWork.BloodDonationRepository.Search(x => x.Code != null && x.Code.StartsWith("BD"));
+
+                int maxNumericCode = 0;
+                foreach (var code in existingBloodDonation)
+                {
+                    var numericPart = code.Code!.Substring(2); // Remove "BD"
+                    if (int.TryParse(numericPart, out int num))
+                    {
+                        maxNumericCode = Math.Max(maxNumericCode, num);
+                    }
+                }
+
+                var nextCode = $"BD{(maxNumericCode + 1).ToString("D5")}"; // BD00001, BD00002, ...
                 await unitOfWork.BloodDonationRepository.CreateAsync(new BloodDonation.Domain.Entities.BloodDonation
                 {
+                    Code = nextCode,
                     BloodType = entity.BloodType,
                     DonationDate = DateTime.Now,
                     Volume = healthForm.VolumeBloodDonated,
