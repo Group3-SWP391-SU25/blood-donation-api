@@ -14,11 +14,14 @@ namespace BloodDonation.Application.Services
             this.unitOfWork = unitOfWork;
         }
         //search
-        public async Task<object> SearchAsync(int pageIndex, int pageSize, string? search = "", BloodStorageStatusEnum? status = null, CancellationToken cancellationToken = default)
+        public async Task<object> SearchAsync(Guid? bloodGroupId, Guid? componentId, int pageIndex, int pageSize, string? search = "", BloodStorageStatusEnum? status = null, CancellationToken cancellationToken = default)
         {
             // Biểu thức lọc
             Expression<Func<BloodStorage, bool>> filter = b =>
-                (!status.HasValue || b.Status == status);
+                (!status.HasValue || b.Status == status) &&
+                (bloodGroupId == null || b.BloodGroupId == bloodGroupId) &&
+                (componentId == null || b.BloodComponentId == componentId) &&
+                (string.IsNullOrEmpty(search) || b.Code!.Contains(search) || b.BloodDonate.BloodDonationRequest.User.FullName.Contains(search));
 
             // Truy vấn dữ liệu đã lọc, phân trang
             var pagedData = await unitOfWork.BloodStorageRepository.Search(

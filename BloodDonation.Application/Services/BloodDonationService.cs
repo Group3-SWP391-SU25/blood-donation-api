@@ -124,6 +124,10 @@ namespace BloodDonation.Application.Services
                         </div>";
 
                     await SendEmailAsync(user.Email, subject, body);
+
+                    //Update request status to Completed
+                    request.Status = BloodDonationRequestStatus.Completed;
+                    unitOfWork.BloodDonationRequestRepository.Update(request);
                 }
             }
 
