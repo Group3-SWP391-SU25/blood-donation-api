@@ -1,14 +1,8 @@
 ﻿using BloodDonation.Application.Models.BloodDonationRequests;
 using BloodDonation.Application.Services.Interfaces;
-using BloodDonation.Application.Utilities;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace BloodDonation.Application.Services
@@ -155,7 +149,7 @@ namespace BloodDonation.Application.Services
                 throw new KeyNotFoundException($"Không tìm thấy yêu cầu hiến máu với ID {id}");
 
             //add logic for accepted and rejected status
-            if(status == BloodDonationRequestStatus.Rejected || status == BloodDonationRequestStatus.Approved)
+            if (status == BloodDonationRequestStatus.Rejected || status == BloodDonationRequestStatus.Approved)
             {
                 if (entity.HealthCheckForm == null)
                     throw new InvalidOperationException("Yêu cầu kiểm tra sức khỏe chưa được tạo.");
@@ -192,9 +186,9 @@ namespace BloodDonation.Application.Services
                 if (healthForm.HasUnsafeSexualBehaviourOrSameSexSexualContact)
                     throw new ArgumentException("Không đủ điều kiện do hành vi tình dục không an toàn.");
 
-                if(healthForm.VolumeBloodDonated >= 350)
+                if (healthForm.VolumeBloodDonated >= 350)
                 {
-                    if(healthForm.Hemoglobin < 125)
+                    if (healthForm.Hemoglobin < 125)
                         throw new ArgumentException("Không đủ điều kiện do huyết sắc tố không đạt trên 125 g/l nếu hiến từ 350ml trở lên.");
                 }
 
@@ -224,7 +218,7 @@ namespace BloodDonation.Application.Services
                 }, cancellationToken);
             }
 
-                entity.Status = status;
+            entity.Status = status;
             unitOfWork.BloodDonationRequestRepository.Update(entity);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -13,10 +13,13 @@ public class UserService : IUserService
 {
     private readonly IUnitOfWork unitOfWork;
     private readonly IFirebaseService firebaseService;
+    private readonly IClaimsService claimsService;
 
     public UserService(IUnitOfWork unitOfWork,
-        IFirebaseService firebaseService)
+        IFirebaseService firebaseService,
+        IClaimsService claimsService)
     {
+        this.claimsService = claimsService;
         this.firebaseService = firebaseService;
         this.unitOfWork = unitOfWork;
     }
@@ -63,7 +66,8 @@ public class UserService : IUserService
     public async Task<object> GetAsync(int? pageSize = null,
         string search = "",
         int? pageIndex = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        bool? isDeleted = false)
     {
         var pagedData = await unitOfWork.UserRepository.Search(
                  filter: null!,
@@ -98,6 +102,7 @@ public class UserService : IUserService
         var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == email, cancellationToken, [x => x.Role, x => x.BloodGroup!]);
         if (user is null)
             throw new Exception("User not found");
+        else if (user.Status == UserStatusEnum.InActive.ToString()) throw new InvalidOperationException("User đã bị cấm hoạt động, không thể đăng nhập!");
         else
         {
             if (string.IsNullOrEmpty(password))
@@ -132,8 +137,7 @@ public class UserService : IUserService
         if (user is not null)
         {
             user.IsDeleted = true;
-            user.Status = UserStatusEnum.InActive.ToString();
-            unitOfWork.UserRepository.Update(user);
+            unitOfWork.UserRepository.SoftRemove(user);
 
             return await unitOfWork.SaveChangesAsync();
         }
@@ -144,12 +148,23 @@ public class UserService : IUserService
     public async Task<bool> UpdateAsync(Guid id, UserUpdateModel model,
         CancellationToken cancellationToken = default)
     {
+        var currentUser = claimsService.CurrentUser;
+        var currentLogin = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == currentUser, cancellationToken, [x => x.Role]);
         var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == id,
             cancellationToken,
             includes: [x => x.Role, x => x.BloodGroup!]);
         if (user is not null)
         {
+
+            if (currentLogin != null)
+            {
+                if (user.Status != model.Status && currentLogin.Role.Name != RoleNames.ADMIN)
+                {
+                    throw new InvalidOperationException("Chỉ ADMIN mới được quyền ban/unban user");
+                }
+            }
             unitOfWork.Mapper.Map(model, user);
+
             unitOfWork.UserRepository.Update(user);
             return await unitOfWork.SaveChangesAsync();
         }

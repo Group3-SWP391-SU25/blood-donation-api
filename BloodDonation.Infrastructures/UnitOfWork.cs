@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BloodDonation.Application;
 using BloodDonation.Application.Repositories;
-using BloodDonation.Infrastructures.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BloodDonation.Infrastructures;
@@ -22,6 +21,7 @@ public class UnitOfWork : IUnitOfWork
         BloodComponentRepository = serviceProvider.GetRequiredService<IBloodComponentRepository>();
         BloodGroupRepository = serviceProvider.GetRequiredService<IBloodGroupRepository>();
         BloodCheckRepository = serviceProvider.GetRequiredService<IBloodCheckRepository>();
+        EmergencyBloodRepository = serviceProvider.GetRequiredService<IEmergencyBloodRepository>();
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
 
     }
@@ -34,9 +34,11 @@ public class UnitOfWork : IUnitOfWork
     public IBloodComponentRepository BloodComponentRepository { get; }
     public IBloodGroupRepository BloodGroupRepository { get; }
     public IBloodCheckRepository BloodCheckRepository { get; }
+    public IEmergencyBloodRepository EmergencyBloodRepository { get; }
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
     public IMapper Mapper { get; }
+
 
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

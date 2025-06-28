@@ -14,6 +14,8 @@ public interface IUnitOfWork
     IBloodComponentRepository BloodComponentRepository { get; }
     IBloodGroupRepository BloodGroupRepository { get; }
     IBloodCheckRepository BloodCheckRepository { get; }
+    IEmergencyBloodRepository EmergencyBloodRepository { get; }
+
     //IBloodUnitRepository BloodUnitRepository { get; }
     IMapper Mapper { get; }
     Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default);

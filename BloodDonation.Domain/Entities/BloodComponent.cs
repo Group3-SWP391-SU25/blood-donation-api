@@ -10,6 +10,7 @@ public class BloodComponent : BaseEntity
 
     #region Relationship Configuration
     public virtual ICollection<BloodStorage> BloodStorages { get; set; }
+    public virtual ICollection<EmergencyBloodRequest> EmergencyBloodRequests { get; set; }
 
     #endregion
 }
