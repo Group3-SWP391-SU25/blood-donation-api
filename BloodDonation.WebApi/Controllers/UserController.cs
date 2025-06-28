@@ -54,7 +54,7 @@ public class UserController : ControllerBase
     {
         var result = await userService.UpdateAsync(id, model, default);
         return result
-            ? NoContent();
+            ? NoContent()
             : throw new Exception("Update Failed");
     }
 
