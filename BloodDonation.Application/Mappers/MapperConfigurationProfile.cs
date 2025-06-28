@@ -5,6 +5,7 @@ using BloodDonation.Application.Models.BloodDonationRequests;
 using BloodDonation.Application.Models.BloodDonations;
 using BloodDonation.Application.Models.BloodGroups;
 using BloodDonation.Application.Models.BloodStorage;
+using BloodDonation.Application.Models.EmergencyBloodRequests;
 using BloodDonation.Application.Models.HealthCheckForms;
 using BloodDonation.Application.Models.Roles;
 using BloodDonation.Application.Models.Users;
@@ -25,7 +26,7 @@ public class MapperConfigurationProfile : Profile
             .ForMember(x => x.RoleName, cfg => cfg.MapFrom(x => x.Role.Name))
             .ForMember(x => x.BloodGroupType, cfg => cfg.MapFrom(x => $"{x.BloodGroup!.Type ?? string.Empty}{x.BloodGroup!.RhFactor ?? string.Empty}"))
             .ReverseMap();
-
+        CreateMap<User, UserUpdateModel>().ReverseMap();
 
 
         CreateMap<User, UserCreateModel>().ReverseMap();
@@ -83,6 +84,7 @@ public class MapperConfigurationProfile : Profile
         #endregion
         #region BloodGroup
         CreateMap<BloodGroup, BloodGroupViewModel>();
+
         #endregion
 
         #region BloodCheck
@@ -93,5 +95,9 @@ public class MapperConfigurationProfile : Profile
         #region Role
         CreateMap<Role, RoleViewModel>();
         #endregion
+
+        CreateMap<EmergencyBloodRequest, EmergencyBloodCreateModel>().ReverseMap();
+        CreateMap<EmergencyBloodRequest, EmergencyBloodViewModel>().ReverseMap();
+        CreateMap<EmergencyBloodRequest, EmergencyBloodUpdateModel>().ReverseMap();
     }
 }

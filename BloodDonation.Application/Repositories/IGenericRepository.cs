@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using BloodDonation.Domain.Entities;
+﻿using BloodDonation.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace BloodDonation.Application.Repositories;
 
@@ -10,6 +10,7 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
         params Expression<Func<TEntity, object>>[] includes);
     Task<List<TEntity>?> WhereAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default,
+        bool? isDeleted = false,
         params Expression<Func<TEntity, object>>[] includes);
     Task<List<TEntity>?> GetAllAsync(CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes);

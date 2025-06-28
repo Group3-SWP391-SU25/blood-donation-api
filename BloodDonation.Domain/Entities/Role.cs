@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace BloodDonation.Domain.Entities;
 
 public class Role : BaseEntity
@@ -12,6 +10,7 @@ public class Role : BaseEntity
 }
 public static class RoleNames
 {
+    public const string SUPER_VISOR = "SUPERVISOR";
     public const string ADMIN = "ADMIN";
     public const string MEMBER = "MEMBER";
     public const string NURSE = "NURSE";

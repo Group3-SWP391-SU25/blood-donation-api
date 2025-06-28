@@ -20,12 +20,14 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAsync(
     [FromQuery] int? pageSize,
     [FromQuery] string search = "",
-    [FromQuery] int pageIndex = 0)
+    [FromQuery] int pageIndex = 0,
+    [FromQuery] bool? isDeleted = false)
     {
         var result = await userService.GetAsync(search: search,
             pageSize: pageSize,
             pageIndex: pageIndex,
-            cancellationToken: default);
+            cancellationToken: default,
+            isDeleted: isDeleted);
         return Ok(result);
     }
 
@@ -52,7 +54,7 @@ public class UserController : ControllerBase
     {
         var result = await userService.UpdateAsync(id, model, default);
         return result
-            ? Ok("Update Successful")
+            ? NoContent();
             : throw new Exception("Update Failed");
     }
 

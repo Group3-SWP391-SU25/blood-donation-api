@@ -10,7 +10,6 @@ public class UserCreateModel
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
     public DateTime? DateOfBirth { get; set; }
-    [Phone]
     public string PhoneNo { get; set; } = string.Empty;
     public string Addresss { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;

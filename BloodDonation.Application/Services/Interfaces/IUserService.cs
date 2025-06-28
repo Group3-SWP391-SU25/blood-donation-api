@@ -9,7 +9,8 @@ CancellationToken cancellationToken = default);
     Task<object> GetAsync(int? pageSize = null,
         string search = "",
         int? pageIndex = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        bool? isDeleted = false);
     Task<bool> RemoveAsync(Guid id,
         CancellationToken cancellationToken = default);
     Task<UserViewModel?> GetById(Guid id,

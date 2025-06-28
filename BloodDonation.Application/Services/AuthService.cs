@@ -1,4 +1,4 @@
-using BloodDonation.Application.Models.Auth;
+﻿using BloodDonation.Application.Models.Auth;
 using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Application.Utilities;
@@ -55,8 +55,7 @@ public class AuthService : IAuthService
 
 
 
-        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email &&
-            x.Status == UserStatusEnum.Active.ToString(), includes: [x => x.Role, x => x.BloodGroup]);
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email, includes: [x => x.Role, x => x.BloodGroup]);
         // Insert Into Db
         if (user is null)
         {
@@ -66,6 +65,7 @@ public class AuthService : IAuthService
         }
         else
         {
+            if (user.Status == UserStatusEnum.InActive.ToString()) throw new InvalidOperationException("User không được đăng nhập vào hệ thống");
             authResponse.User = unitOfWork.Mapper.Map<UserViewModel>(user);
             authResponse.Token = TokenGenerator.GenerateToken(user, user.Role.Name);
         }

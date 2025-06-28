@@ -1,9 +1,9 @@
-﻿using System.Linq.Expressions;
-using BloodDonation.Application.Repositories;
+﻿using BloodDonation.Application.Repositories;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq.Expressions;
 
 namespace BloodDonation.Infrastructures.Repositories;
 
@@ -90,11 +90,12 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public async Task<List<TEntity>?> WhereAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default,
+        bool? isDeleted = false,
         params Expression<Func<TEntity, object>>[] includes)
     => await includes.Aggregate(dbSet.AsQueryable(), (e, p) => e.Include(p))
         .AsNoTracking()
         .Where(predicate)
-        .Where(x => x.IsDeleted == false)
+        .Where(x => x.IsDeleted == isDeleted)
         .ToListAsync(cancellationToken);
 
     public virtual async Task<IEnumerable<TEntity>> Search(

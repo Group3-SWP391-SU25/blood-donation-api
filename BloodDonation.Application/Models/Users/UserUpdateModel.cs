@@ -11,6 +11,7 @@ public class UserUpdateModel
     public string FrontUrlIdentity { get; set; } = string.Empty;
     public string BackUrlIdentity { get; set; } = string.Empty;
     public Guid RoleId { get; set; }
+    public string? Status { get; set; }
     public Guid BloodGroupId { get; set; }
 
 }
