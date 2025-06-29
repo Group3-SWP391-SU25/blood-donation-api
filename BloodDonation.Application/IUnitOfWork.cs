@@ -15,6 +15,7 @@ public interface IUnitOfWork
     IBloodGroupRepository BloodGroupRepository { get; }
     IBloodCheckRepository BloodCheckRepository { get; }
     IEmergencyBloodRepository EmergencyBloodRepository { get; }
+    IBloodIssueRepository BloodIssueRepository { get; }
 
     //IBloodUnitRepository BloodUnitRepository { get; }
     IMapper Mapper { get; }

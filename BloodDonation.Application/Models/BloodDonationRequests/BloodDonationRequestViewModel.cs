@@ -34,6 +34,8 @@ namespace BloodDonation.Application.Models.BloodDonationRequests
         public string PhoneNo { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Addresss { get; set; } = string.Empty;
+        public string FrontUrlIdentity { get; set; } = string.Empty;
+        public string BackUrlIdentity { get; set; } = string.Empty;
 
         // ==== Health Check Form ====
         public HealthCheckFormViewModel? HealthCheckForm { get; set; } 

@@ -78,6 +78,14 @@ namespace BloodDonation.Application.Services
             bloodDonation.Status = BloodDonationStatusEnum.Checked;
             unitOfWork.BloodDonationRepository.Update(bloodDonation);
 
+            //Update blood group of user
+            if (bloodDonation.BloodDonationRequest.User != null)
+            {
+                var user = bloodDonation.BloodDonationRequest.User;
+                user.BloodGroupId = model.BloodGroupId; // Update user's blood group
+                unitOfWork.UserRepository.Update(user);
+            }
+
             // Update blood storage status based on validation results
             var bloodStorage = await unitOfWork.BloodStorageRepository.Search(
                 bs => bs.BloodDonationId == model.BloodDonationId);

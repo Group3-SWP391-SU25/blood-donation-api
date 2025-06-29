@@ -24,9 +24,11 @@ namespace BloodDonation.WebApi.Controllers
             [FromQuery] int pageIndex = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] BloodStorageStatusEnum? status = null,
+            [FromQuery] Guid? bloodGroupId = null,
+            [FromQuery] Guid? componentId = null,
             CancellationToken cancellationToken = default)
         {
-            var result = await bloodStorageService.SearchAsync(pageIndex, pageSize, search, status, cancellationToken);
+            var result = await bloodStorageService.SearchAsync(bloodGroupId, componentId, pageIndex, pageSize, search, status, cancellationToken);
             return Ok(result);
         }
         [HttpGet("available-bloods")]

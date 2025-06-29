@@ -1,0 +1,37 @@
+﻿using BloodDonation.Application.Models.BloodIssues;
+using BloodDonation.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BloodDonation.WebApi.Controllers
+{
+    [Route("api/blood-issues")]
+    [ApiController]
+    public class BloodIssueController : ControllerBase
+    {
+        private readonly IBloodIssueService bloodIssueService;
+        private readonly IClaimsService ClaimsService;
+        public BloodIssueController(IBloodIssueService bloodIssueService, IClaimsService claimsService)
+        {
+            this.bloodIssueService = bloodIssueService;
+            ClaimsService = claimsService;
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateBloodIssue([FromQuery] Guid EmergencyBloodRequestId, [FromBody] BloodIssueCreateModel reqDto)
+        {
+            try
+            {
+                var result = await bloodIssueService.CreateBloodIssueAsync(EmergencyBloodRequestId, reqDto);
+                if (result)
+                {
+                    return Created();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+    }
+}

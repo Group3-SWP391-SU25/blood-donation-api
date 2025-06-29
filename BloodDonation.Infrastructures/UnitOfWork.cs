@@ -22,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
         BloodGroupRepository = serviceProvider.GetRequiredService<IBloodGroupRepository>();
         BloodCheckRepository = serviceProvider.GetRequiredService<IBloodCheckRepository>();
         EmergencyBloodRepository = serviceProvider.GetRequiredService<IEmergencyBloodRepository>();
+        BloodIssueRepository = serviceProvider.GetRequiredService<IBloodIssueRepository>();
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
 
     }
@@ -35,6 +36,7 @@ public class UnitOfWork : IUnitOfWork
     public IBloodGroupRepository BloodGroupRepository { get; }
     public IBloodCheckRepository BloodCheckRepository { get; }
     public IEmergencyBloodRepository EmergencyBloodRepository { get; }
+    public IBloodIssueRepository BloodIssueRepository { get; }
     // public IBloodUnitRepository BloodUnitRepository { get; }
 
     public IMapper Mapper { get; }
