@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.Users;
 using BloodDonation.Application.Services.Interfaces;
+using BloodDonation.Domain.Enums;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -66,13 +67,29 @@ public class UserController : ControllerBase
             ? Ok(result)
             : throw new Exception($"Not found Id: {id}");
     }
+    [HttpPut("{id}/unban")]
+    public async Task<IActionResult> Unban([FromRoute] Guid id)
+    {
+        var result = await userService.ActiveAsync(id, UserStatusEnum.Active.ToString(), default);
+        return result
+            ? Ok("Unban sucessfully")
+            : throw new Exception("Unban người dùng Failed");
+    }
 
+    [HttpPut("{id}/ban")]
+    public async Task<IActionResult> BanAsync([FromRoute] Guid id)
+    {
+        var result = await userService.ActiveAsync(id, UserStatusEnum.InActive.ToString(), default);
+        return result
+            ? Ok("Ban sucessfully")
+            : throw new Exception("Unban người dùng Failed");
+    }
     [HttpDelete("{id}")]
     public async Task<IActionResult> Del([FromRoute] Guid id)
     {
         var result = await userService.RemoveAsync(id, default);
         return result
-            ? Ok("Delete Successful")
+            ? Ok("Delêt Successfully")
             : throw new Exception("Delete Failed");
     }
 }

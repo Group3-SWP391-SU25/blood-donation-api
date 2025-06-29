@@ -11,6 +11,9 @@ CancellationToken cancellationToken = default);
         int? pageIndex = null,
         CancellationToken cancellationToken = default,
         bool? isDeleted = false);
+    Task<bool> ActiveAsync(Guid id,
+        string userStatus,
+     CancellationToken cancellationToken = default);
     Task<bool> RemoveAsync(Guid id,
         CancellationToken cancellationToken = default);
     Task<UserViewModel?> GetById(Guid id,

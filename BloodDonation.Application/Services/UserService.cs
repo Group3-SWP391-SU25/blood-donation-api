@@ -129,15 +129,40 @@ public class UserService : IUserService
             .UserRepository
         .FirstOrDefaultAsync(x => x.Id == id, cancellationToken, [x => x.Role, x => x.BloodGroup!]));
     }
-
-    public async Task<bool> RemoveAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> ActiveAsync(Guid id, string userStatus, CancellationToken cancellationToken = default)
     {
         var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == id,
             cancellationToken, includes: [x => x.Role]);
+
+        var currentUser = claimsService.CurrentUser;
+        var currentUsr = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == currentUser, includes: [x => x.Role]);
+
         if (user is not null)
         {
+            if (currentUsr == null || currentUsr.Role.Name != RoleNames.ADMIN) throw new InvalidOperationException("Chỉ admin mới được quyền ban/unban user");
+
+            user.Status = userStatus;
+            unitOfWork.UserRepository.Update(user);
+
+            return await unitOfWork.SaveChangesAsync();
+        }
+        throw new InvalidOperationException("không tìm thấy user với id: " + id);
+    }
+    public async Task<bool> RemoveAsync(Guid id, CancellationToken cancellationToken = default)
+
+    {
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == id,
+            cancellationToken, includes: [x => x.Role]);
+
+        var currentUser = claimsService.CurrentUser;
+        var currentUsr = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == currentUser, includes: [x => x.Role]);
+
+        if (user is not null)
+        {
+            if (currentUsr == null || currentUsr.Role.Name != RoleNames.ADMIN) throw new InvalidOperationException("Chỉ admin mới được quyền ban/unban user");
+            user.Status = UserStatusEnum.InActive.ToString();
             user.IsDeleted = true;
-            unitOfWork.UserRepository.SoftRemove(user);
+            unitOfWork.UserRepository.Update(user);
 
             return await unitOfWork.SaveChangesAsync();
         }
