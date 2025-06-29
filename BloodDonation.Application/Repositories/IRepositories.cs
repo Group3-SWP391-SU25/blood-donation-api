@@ -11,4 +11,5 @@ public interface IBloodStorageRepository : IGenericRepository<BloodStorage>;
 public interface IBloodComponentRepository : IGenericRepository<BloodComponent>;
 public interface IBloodGroupRepository : IGenericRepository<BloodGroup>;
 public interface IBloodCheckRepository : IGenericRepository<BloodCheck>;
+public interface IBloodIssueRepository : IGenericRepository<BloodIssue>;
 //public interface IBloodUnitRepository : IGenericRepository<BloodUnit>;

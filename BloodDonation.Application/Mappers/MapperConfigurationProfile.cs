@@ -50,6 +50,8 @@ public class MapperConfigurationProfile : Profile
             .ForMember(dest => dest.PhoneNo, opt => opt.MapFrom(src => src.User.PhoneNo))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
             .ForMember(dest => dest.Addresss, opt => opt.MapFrom(src => src.User.Addresss))
+            .ForMember(dest => dest.FrontUrlIdentity, opt => opt.MapFrom(src => src.User.FrontUrlIdentity))
+            .ForMember(dest => dest.BackUrlIdentity, opt => opt.MapFrom(src => src.User.BackUrlIdentity))
             .ForMember(dest => dest.HealthCheckForm, opt => opt.MapFrom(src => src.HealthCheckForm));
 
         CreateMap<BloodDonationRequestCreateModel, BloodDonationRequest>()
