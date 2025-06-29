@@ -16,6 +16,7 @@ public class UserViewModel
     public string RoleName { get; set; } = string.Empty;
     public Guid BloodGroupId { get; set; }
     public string BloodGroupType { get; set; } = string.Empty;
+    public DateTime? DateOfBirth { get; set; }
 
 
 
