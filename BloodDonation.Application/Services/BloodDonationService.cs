@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace BloodDonation.Application.Services
 {
@@ -29,8 +30,12 @@ namespace BloodDonation.Application.Services
             // Biểu thức lọc
             Expression<Func<BloodDonation.Domain.Entities.BloodDonation, bool>> filter = b =>
                 (!status.HasValue || b.Status == status) &&
-                !b.IsDeleted;
-
+                (string.IsNullOrWhiteSpace(searchKey) ||
+                 (b.BloodDonationRequest.User.FullName.Contains(searchKey) ||
+                  b.BloodDonationRequest.User.PhoneNo.Contains(searchKey) ||
+                  b.BloodDonationRequest.User.IdentityId.Contains(searchKey) ||
+                  b.BloodDonationRequest.User.Email.Contains(searchKey) ||
+                  b.BloodDonationRequest.Code!.Contains(searchKey)));
             // Truy vấn dữ liệu đã lọc, phân trang
             var pagedData = await unitOfWork.BloodDonationRepository.Search(
                 filter: filter,
@@ -116,9 +121,26 @@ namespace BloodDonation.Application.Services
                             <h2 style='color: #e74c3c;'>❤️ Xin chân thành cảm ơn, {user.FullName}!</h2>
                             <p>Bạn đã hiến thành công <strong>{bloodDonation.Volume}ml</strong> máu vào ngày <strong>{bloodDonation.DonationDate:dd/MM/yyyy}</strong>.</p>
                             <p>Nghĩa cử cao đẹp của bạn sẽ giúp cứu sống nhiều người.</p>
+
+                            <hr style='border: none; border-top: 1px solid #ccc;'>
+
+                            <p>🧪 <strong>Kết quả xét nghiệm máu chi tiết</strong> sẽ được gửi đến bạn trong vòng <strong>3 đến 5 ngày tới</strong>.</p>
+
+                            <p>📅 <strong>Thời gian hiến máu tiếp theo</strong>: Bạn có thể hiến máu lần tiếp theo sau ngày 
+                               <strong>{bloodDonation.DonationDate!.Value.AddDays(60):dd/MM/yyyy}</strong>.</p>
+
+                            <p>💡 <strong>Hướng dẫn phục hồi sau hiến máu:</strong></p>
+                            <ul>
+                                <li>Uống nhiều nước và nghỉ ngơi đầy đủ trong 24 giờ.</li>
+                                <li>Ăn các thực phẩm giàu sắt như thịt đỏ, rau xanh, trứng, đậu,...</li>
+                                <li>Tránh vận động mạnh trong ngày đầu tiên sau hiến máu.</li>
+                                <li>Nếu cảm thấy chóng mặt, hãy ngồi hoặc nằm nghỉ ngay.</li>
+                            </ul>
+
                             <p style='margin-top: 15px;'>
-                                🧪 <strong>Kết quả xét nghiệm máu chi tiết</strong> sẽ được gửi đến bạn trong vòng <strong>3 đến 5 ngày tới</strong>.
+                                ☎️ Nếu bạn có bất kỳ phản ứng bất thường nào hoặc cần tư vấn thêm, vui lòng liên hệ trung tâm hiến máu qua hotline <strong>1900 123 456</strong>.
                             </p>
+
                             <br>
                             <p style='color: gray;'>— BloodLink - Trung tâm tiếp nhận máu</p>
                         </div>";
@@ -160,5 +182,46 @@ namespace BloodDonation.Application.Services
             mailMessage.To.Add(toEmail);
             await client.SendMailAsync(mailMessage);
         }
+
+        public async Task SendReminderEmailsAsync()
+        {
+            var targetDate = DateTime.Today.AddDays(-60); // 60 ngày trước
+
+            var donations = await unitOfWork.BloodDonationRepository.Search(
+                    b => b.DonationDate!.Value.Date == targetDate && (b.Status == BloodDonationStatusEnum.Donated || b.Status == BloodDonationStatusEnum.Checked),
+                    orderBy: q => q.OrderByDescending(x => x.DonationDate),
+                    includeProperties: "BloodDonationRequest.User,BloodDonationRequest");
+
+            // Lọc trùng theo UserId (chỉ 1 email / user)
+            var distinctDonations = donations
+                .Where(d => d.BloodDonationRequest?.User != null)
+                .GroupBy(d => d.BloodDonationRequest!.UserId)
+                .Select(g => g.First());
+
+            foreach (var donation in distinctDonations)
+            {
+                var user = donation.BloodDonationRequest?.User!;
+                if (string.IsNullOrWhiteSpace(user.Email)) continue;
+
+
+                string subject = "⏰ Đã đến lúc bạn có thể hiến máu trở lại!";
+                string body = $@"
+                    <div style='font-family: Arial, sans-serif;'>
+                        <h2 style='color: #e74c3c;'>Chào {user.FullName},</h2>
+                        <p>Hôm nay là tròn <strong>60 ngày</strong> kể từ lần hiến máu gần nhất của bạn vào ngày <strong>{donation.DonationDate:dd/MM/yyyy}</strong>.</p>
+                        <p>Bạn đã đủ điều kiện để tiếp tục hành trình giúp đỡ cộng đồng bằng cách <strong>hiến máu lần nữa</strong>.</p>
+
+                        <p>
+                            👉 <a href='https://bloodlink.vn/dang-ky'>Đăng ký hiến máu ngay</a>
+                        </p>
+
+                        <p style='margin-top: 20px;'>💖 Cảm ơn bạn vì nghĩa cử cao đẹp!</p>
+                        <p style='color: gray;'>— BloodLink - Trung tâm tiếp nhận máu</p>
+                    </div>";
+
+                await SendEmailAsync(user.Email, subject, body);
+            }
+        }
+
     }
 }

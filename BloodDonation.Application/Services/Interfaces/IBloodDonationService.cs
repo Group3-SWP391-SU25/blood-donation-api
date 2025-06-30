@@ -8,5 +8,6 @@ namespace BloodDonation.Application.Services.Interfaces
         Task<object> SearchAsync(string? searchKey, int? pageIndex, int? pageSize, BloodDonationStatusEnum? status);
         //update status
         Task<bool> UpdateStatusAsync(Guid id, BloodDonationStatusEnum status, CancellationToken cancellationToken = default);
+        Task SendReminderEmailsAsync();
     }
 }

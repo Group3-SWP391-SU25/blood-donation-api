@@ -59,6 +59,7 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddHostedService<BloodDonationRequestCheckService>();
 builder.Services.AddHostedService<BloodStorageCheckService>();
+builder.Services.AddHostedService<BloodDonationReminderService>();
 
 
 var app = builder.Build();

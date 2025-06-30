@@ -13,7 +13,7 @@ namespace BloodDonation.Application.Services.Interfaces
     {
         //Search
         Task<object> SearchAsync(int? pageIndex = 1, int? pageSize = 10,
-                                               BloodDonationRequestStatus? status = null, string? keyword = null);
+                                               BloodDonationRequestStatus? status = null, string? keyword = null, TimeSlotEnum? timeSlot = null, DateOnly? dayRequest = null);
         //Create
         Task<BloodDonationRequestViewModel?> CreateAsync(BloodDonationRequestCreateModel model, CancellationToken cancellationToken = default);
         //Update
