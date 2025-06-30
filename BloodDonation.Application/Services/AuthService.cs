@@ -39,11 +39,13 @@ public class AuthService : IAuthService
     {
         Domain.Entities.User user = new Domain.Entities.User();
         user.Email = firebaseUser.Email;
-        user.FullName = $"{firebaseUser.LastName} {firebaseUser.FirstName}";
+        user.FullName = $"{firebaseUser.DisplayName}";
         user.HashPassword = string.Empty;
-        user.RoleId = (await unitOfWork.RoleRepository.FirstOrDefaultAsync(x => x.Name == RoleNames.MEMBER))?.Id ?? Guid.Empty;
+        var role = await unitOfWork.RoleRepository.FirstOrDefaultAsync(x => x.Name == RoleNames.MEMBER);
+        user.RoleId = role?.Id ?? Guid.Empty;
         await unitOfWork.UserRepository.CreateAsync(user);
         await unitOfWork.SaveChangesAsync();
+        user.Role = role ?? throw new InvalidOperationException("Chưa tồn tại role MEMBER");
         return user;
 
     }
@@ -52,14 +54,11 @@ public class AuthService : IAuthService
         var authResponse = new AuthResponseModel();
         var auth = new Firebase.Auth.FirebaseAuthProvider(new FirebaseConfig(appSetting.FirebaseConfig?.ApiKey));
         var userFirebase = await auth.GetUserAsync(firebaseToken) ?? throw new Exception("Firebase Token Does not exsit");
-
-
-
-        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email, includes: [x => x.Role, x => x.BloodGroup]);
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.User.Email, includes: [x => x.Role, x => x.BloodGroup]);
         // Insert Into Db
         if (user is null)
         {
-            user = await LoginAsync(userFirebase);
+            user = await LoginAsync(userFirebase.User);
             authResponse.User = unitOfWork.Mapper.Map<UserViewModel>(user);
             authResponse.Token = TokenGenerator.GenerateToken(user, user.Role.Name);
         }
