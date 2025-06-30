@@ -16,13 +16,19 @@ namespace BloodDonation.Application.Services
         }
 
         public async Task<object> SearchAsync(int? pageIndex = 1, int? pageSize = 10,
-                                              BloodDonationRequestStatus? status = null, string? keyword = null)
+                                              BloodDonationRequestStatus? status = null, string? keyword = null, TimeSlotEnum? timeSlot = null, DateOnly? dateRequest = null)
         {
             Expression<Func<BloodDonationRequest, bool>> filter = b =>
                 (!status.HasValue || b.Status == status.Value) &&
+                (!timeSlot.HasValue || b.TimeSlot == timeSlot.Value) &&
+                (!dateRequest.HasValue || b.DonatedDateRequest.Date == dateRequest.Value.ToDateTime(TimeOnly.MinValue).Date) &&
                 (b.IsDeleted == false) &&
                 (string.IsNullOrEmpty(keyword) ||
-                    (b.User.FullName != null && b.User.FullName.Contains(keyword)));
+                    (b.User.FullName != null && b.User.FullName.Contains(keyword)) ||
+                    (b.User.PhoneNo != null && b.User.PhoneNo.Contains(keyword)) ||
+                    (b.User.IdentityId != null && b.User.IdentityId.Contains(keyword)) ||
+                    (b.User.Email != null && b.User.Email.Contains(keyword)) ||
+                    (b.Code != null && b.Code.Contains(keyword)));
 
             var pagedData = await unitOfWork.BloodDonationRequestRepository.Search(
                 filter: filter,
@@ -58,6 +64,26 @@ namespace BloodDonation.Application.Services
                 throw new ArgumentException($"Người dùng với ID {model.UserId} không tồn tại.");
             }
 
+            // Validate the date is not in the past
+            if (model.DonatedDateRequest.Date < DateTime.Today)
+            {
+                throw new ArgumentException("Ngày yêu cầu không được nhỏ hơn hôm nay");
+            }
+
+            // Kiểm tra khoảng cách 60 ngày kể từ lần hiến máu gần nhất
+            var lastDonation = (await unitOfWork.BloodDonationRepository
+                .Search(
+                    b => b.BloodDonationRequest.UserId == model.UserId && (b.Status == BloodDonationStatusEnum.Donated || b.Status == BloodDonationStatusEnum.Checked) ,
+                    orderBy: q => q.OrderByDescending(x => x.DonationDate),
+                    includeProperties: "BloodDonationRequest"))
+                .FirstOrDefault();
+
+            if (lastDonation != null && (DateTime.Today - lastDonation.DonationDate!.Value).TotalDays < 60)
+            {
+                //comment for testing purpose
+                //throw new ArgumentException("Không được tạo yêu cầu hiến máu mới trong vòng 60 ngày kể từ lần hiến máu gần nhất.");
+            }
+          
             // 2. Tìm mã Code lớn nhất hiện có (định dạng BDR00001)
             var existingRequest = await unitOfWork.BloodDonationRequestRepository.Search(x => x.Code != null && x.Code.StartsWith("BDR"));
 

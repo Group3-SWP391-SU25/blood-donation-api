@@ -25,5 +25,8 @@ namespace BloodDonation.Application.Models.HealthCheckForms
         public string Note { get; set; } = string.Empty;
         [Required(ErrorMessage = "Phải cung cấp Id yêu cầu hiến máu.")]
         public Guid BloodDonateRequestId { get; set; }
+        [Required(ErrorMessage = "Trạng thái phê duyệt là bắt buộc.")]
+        public bool IsApproved { get; set; }
+        public string? ReasonForRejection { get; set; } = string.Empty;
     }
 }

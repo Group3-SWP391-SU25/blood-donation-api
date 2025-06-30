@@ -23,12 +23,14 @@ namespace BloodDonation.WebApi.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> Search(
                                                 [FromQuery] BloodDonationRequestStatus? status,
+                                                [FromQuery] TimeSlotEnum? timeSlot,
+                                                [FromQuery] DateOnly? dateRequest,
                                                 [FromQuery] string? search = "",
                                                 [FromQuery] int pageIndex = 1,
                                                 [FromQuery] int pageSize = 10,
                                                 CancellationToken cancellationToken = default)
         {
-            var result = await bloodDonationRequestService.SearchAsync(pageIndex, pageSize, status, search);
+            var result = await bloodDonationRequestService.SearchAsync(pageIndex, pageSize, status, search, timeSlot, dateRequest);
 
             return Ok(result);
         }
