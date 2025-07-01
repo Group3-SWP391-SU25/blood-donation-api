@@ -56,9 +56,15 @@ public class UserService : IUserService
             }
         }
         user.HashPassword = model.Password.Hashing();
+        var userExist = (await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == user.Email));
+        if (userExist != null)
+        {
+            throw new InvalidOperationException("User đã tồn tại");
+        }
         var createdUserId = await unitOfWork.UserRepository.CreateAsync(user, cancellationToken);
         if (createdUserId == Guid.Empty)
             return null;
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return unitOfWork.Mapper.Map<UserViewModel>(user);
     }
