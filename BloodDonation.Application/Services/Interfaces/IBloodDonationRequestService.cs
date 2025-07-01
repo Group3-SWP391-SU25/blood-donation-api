@@ -27,6 +27,6 @@ namespace BloodDonation.Application.Services.Interfaces
         //GetByUserId
         Task<object> GetByUserIdAsync(Guid userId, int? pageIndex = 1, int? pageSize = 10, CancellationToken cancellationToken = default);
         Task CancelExpiredPendingRequestsAsync();
-
+        Task<object> GetSummaryAsync(DateRangeFilter range);
     }
 }

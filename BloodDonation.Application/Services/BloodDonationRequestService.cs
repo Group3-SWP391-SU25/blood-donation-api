@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.BloodDonationRequests;
 using BloodDonation.Application.Services.Interfaces;
+using BloodDonation.Application.Utilities;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
 using System.Linq.Expressions;
@@ -22,7 +23,7 @@ namespace BloodDonation.Application.Services
                 (!status.HasValue || b.Status == status.Value) &&
                 (!timeSlot.HasValue || b.TimeSlot == timeSlot.Value) &&
                 (!dateRequest.HasValue || b.DonatedDateRequest.Date == dateRequest.Value.ToDateTime(TimeOnly.MinValue).Date) &&
-                (b.IsDeleted == false) &&
+                (b.Status != BloodDonationRequestStatus.Cancelled) &&
                 (string.IsNullOrEmpty(keyword) ||
                     (b.User.FullName != null && b.User.FullName.Contains(keyword)) ||
                     (b.User.PhoneNo != null && b.User.PhoneNo.Contains(keyword)) ||
@@ -299,5 +300,53 @@ namespace BloodDonation.Application.Services
             unitOfWork.BloodDonationRequestRepository.UpdateRange((List<BloodDonationRequest>)expiredRequests);
             await unitOfWork.SaveChangesAsync();
         }
+
+        public async Task<object> GetSummaryAsync(DateRangeFilter range)
+        {
+            DateTime today = DateTime.Today;
+            DateTime startDate = today;
+            DateTime endDate = today.AddDays(1); // exclusive
+
+            switch (range)
+            {
+                case DateRangeFilter.Today:
+                    // startDate, endDate đã đúng
+                    break;
+                case DateRangeFilter.ThisWeek:
+                    int delta = DayOfWeek.Monday - today.DayOfWeek;
+                    startDate = today.AddDays(delta);
+                    endDate = startDate.AddDays(7);
+                    break;
+                case DateRangeFilter.ThisMonth:
+                    startDate = new DateTime(today.Year, today.Month, 1);
+                    endDate = startDate.AddMonths(1);
+                    break;
+                case DateRangeFilter.All:
+                    startDate = DateTime.MinValue;
+                    endDate = DateTime.MaxValue;
+                    break;
+            }
+
+            Expression<Func<BloodDonationRequest, bool>> baseFilter = b =>
+                b.DonatedDateRequest >= startDate &&
+                b.DonatedDateRequest < endDate &&
+                b.Status != BloodDonationRequestStatus.Cancelled;
+
+            var total = await unitOfWork.BloodDonationRequestRepository.Count(baseFilter);
+            var pending = await unitOfWork.BloodDonationRequestRepository.Count(baseFilter.And(b => b.Status == BloodDonationRequestStatus.Pending));
+            var approved = await unitOfWork.BloodDonationRequestRepository.Count(baseFilter.And(b => b.Status == BloodDonationRequestStatus.Approved));
+            var rejected = await unitOfWork.BloodDonationRequestRepository.Count(baseFilter.And(b => b.Status == BloodDonationRequestStatus.Rejected));
+            var donated = await unitOfWork.BloodDonationRequestRepository.Count(baseFilter.And(b => b.Status == BloodDonationRequestStatus.Completed));
+
+            return new
+            {
+                Total = total,
+                Pending = pending,
+                Approved = approved,
+                Rejected = rejected,
+                Donated = donated
+            };
+        }
+
     }
 }

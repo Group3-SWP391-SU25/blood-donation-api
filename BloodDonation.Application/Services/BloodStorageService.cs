@@ -164,5 +164,40 @@ namespace BloodDonation.Application.Services
             unitOfWork.BloodStorageRepository.Update(existingBlood);
             await unitOfWork.SaveChangesAsync();
         }
+        public async Task<object> VolumeSummary(Guid? bloodGroupId, Guid? componentId)
+        {
+            // Filter chung
+            Expression<Func<BloodStorage, bool>> filter = b =>
+                b.Volume > 0 &&
+                (bloodGroupId == null || b.BloodGroupId == bloodGroupId) &&
+                (componentId == null || b.BloodComponentId == componentId);
+            // Lấy danh sách đã lọc
+            var bloodList = await unitOfWork.BloodStorageRepository.Search(filter);
+
+            // Tính tổng các loại ml theo Status
+            var totalVolume = bloodList.Sum(b => b.Volume);
+
+            var safeVolume = bloodList
+                .Where(b => b.Status == BloodStorageStatusEnum.Safe)
+                .Sum(b => b.Volume);
+
+            var dangerVolume = bloodList
+                .Where(b => b.Status == BloodStorageStatusEnum.Dangerous)
+                .Sum(b => b.Volume);
+
+            var expiredVolume = bloodList
+                .Where(b => b.Status == BloodStorageStatusEnum.Expired)
+                .Sum(b => b.Volume);
+
+            // Trả kết quả
+            return new
+            {
+                TotalVolume = totalVolume,
+                SafeVolume = safeVolume,
+                WarningVolume = dangerVolume,
+                ExpiredVolume = expiredVolume
+            };
+        }
+
     }
 }

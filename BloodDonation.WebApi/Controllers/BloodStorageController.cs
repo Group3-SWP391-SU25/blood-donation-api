@@ -66,5 +66,20 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
+        [HttpGet("volume-summary")]
+        public async Task<IActionResult> VolumeSummary(
+            [FromQuery] Guid? bloodGroupId = null,
+            [FromQuery] Guid? componentId = null)
+        {
+            try
+            {
+                var summary = await bloodStorageService.VolumeSummary(bloodGroupId, componentId);
+                return Ok(summary);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
+        }
     }
 }

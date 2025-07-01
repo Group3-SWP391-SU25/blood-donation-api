@@ -12,6 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using BloodDonation.Application.Utilities;
 
 namespace BloodDonation.Application.Services
 {
@@ -222,6 +223,55 @@ namespace BloodDonation.Application.Services
                 await SendEmailAsync(user.Email, subject, body);
             }
         }
+
+        public async Task<object> GetDonationSummaryAsync(DateRangeFilter range)
+        {
+            DateTime today = DateTime.Today;
+            DateTime startDate;
+            DateTime endDate;
+
+            switch (range)
+            {
+                case DateRangeFilter.Today:
+                    startDate = today;
+                    endDate = today.AddDays(1);
+                    break;
+                case DateRangeFilter.ThisWeek:
+                    int delta = DayOfWeek.Monday - today.DayOfWeek;
+                    startDate = today.AddDays(delta);
+                    endDate = startDate.AddDays(7);
+                    break;
+                case DateRangeFilter.ThisMonth:
+                    startDate = new DateTime(today.Year, today.Month, 1);
+                    endDate = startDate.AddMonths(1);
+                    break;
+                case DateRangeFilter.All:
+                default:
+                    startDate = DateTime.MinValue;
+                    endDate = DateTime.MaxValue;
+                    break;
+            }
+
+            Expression<Func<BloodDonation.Domain.Entities.BloodDonation, bool>> baseFilter = b =>
+                b.DonationDate >= startDate &&
+                b.DonationDate < endDate;
+
+            var total = await unitOfWork.BloodDonationRepository.Count(baseFilter);
+            var inProgress = await unitOfWork.BloodDonationRepository.Count(baseFilter.And(b => b.Status == BloodDonationStatusEnum.InProgress));
+            var donated = await unitOfWork.BloodDonationRepository.Count(baseFilter.And(b => b.Status == BloodDonationStatusEnum.Donated));
+            var cancelled = await unitOfWork.BloodDonationRepository.Count(baseFilter.And(b => b.Status == BloodDonationStatusEnum.Cancelled));
+            var checkedCount = await unitOfWork.BloodDonationRepository.Count(baseFilter.And(b => b.Status == BloodDonationStatusEnum.Checked));
+
+            return new
+            {
+                Total = total,
+                InProgress = inProgress,
+                Donated = donated,
+                Cancelled = cancelled,
+                Checked = checkedCount
+            };
+        }
+
 
     }
 }

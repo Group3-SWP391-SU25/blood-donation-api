@@ -84,6 +84,14 @@ public enum BloodStorageStatusEnum
     Expired = 2,
     Dangerous = 4,
 }
+public enum DateRangeFilter
+{
+    Today,
+    ThisWeek,
+    ThisMonth,
+    All
+}
+
 public class BloodComponentType
 {
     public static readonly BloodComponentType WholeBlood =
