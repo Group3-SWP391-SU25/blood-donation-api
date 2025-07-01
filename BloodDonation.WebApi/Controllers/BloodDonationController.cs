@@ -1,4 +1,5 @@
-﻿using BloodDonation.Application.Services.Interfaces;
+﻿using BloodDonation.Application.Services;
+using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,20 @@ namespace BloodDonation.WebApi.Controllers
                 return Ok(new { message = "Cập nhật trạng thái hiến máu thành công." });
             }
             return NotFound();
+        }
+
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetDonationSummary([FromQuery] DateRangeFilter range)
+        {
+            try
+            {
+                var summary = await bloodDonationService.GetDonationSummaryAsync(range);
+                return Ok(summary);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
         }
     }
 }

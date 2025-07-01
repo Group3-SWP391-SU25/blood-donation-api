@@ -54,11 +54,11 @@ public class AuthService : IAuthService
         var authResponse = new AuthResponseModel();
         var auth = new Firebase.Auth.FirebaseAuthProvider(new FirebaseConfig(appSetting.FirebaseConfig?.ApiKey));
         var userFirebase = await auth.GetUserAsync(firebaseToken) ?? throw new Exception("Firebase Token Does not exsit");
-        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.User.Email, includes: [x => x.Role, x => x.BloodGroup]);
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userFirebase.Email, includes: [x => x.Role, x => x.BloodGroup]);
         // Insert Into Db
         if (user is null)
         {
-            user = await LoginAsync(userFirebase.User);
+            user = await LoginAsync(userFirebase);
             authResponse.User = unitOfWork.Mapper.Map<UserViewModel>(user);
             authResponse.Token = TokenGenerator.GenerateToken(user, user.Role.Name);
         }
