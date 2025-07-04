@@ -18,6 +18,8 @@ public interface IUnitOfWork
     IBloodIssueRepository BloodIssueRepository { get; }
 
     //IBloodUnitRepository BloodUnitRepository { get; }
+
+    IBlogRepository BlogRepository { get; }
     IMapper Mapper { get; }
     Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default);
     Task SeedData();

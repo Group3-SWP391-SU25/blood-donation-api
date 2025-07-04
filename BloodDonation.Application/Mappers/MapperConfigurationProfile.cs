@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodDonation.Application.Models.Blogs;
 using BloodDonation.Application.Models.BloodChecks;
 using BloodDonation.Application.Models.BloodComponents;
 using BloodDonation.Application.Models.BloodDonationRequests;
@@ -110,5 +111,8 @@ public class MapperConfigurationProfile : Profile
         CreateMap<EmergencyBloodRequest, EmergencyBloodCreateModel>().ReverseMap();
         CreateMap<EmergencyBloodRequest, EmergencyBloodViewModel>().ReverseMap();
         CreateMap<EmergencyBloodRequest, EmergencyBloodUpdateModel>().ReverseMap();
+        #region Blogs 
+        CreateMap<Blog, BlogCreateModel>().ReverseMap();
+        #endregion
     }
 }

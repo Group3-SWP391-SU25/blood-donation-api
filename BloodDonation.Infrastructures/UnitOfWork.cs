@@ -24,8 +24,10 @@ public class UnitOfWork : IUnitOfWork
         EmergencyBloodRepository = serviceProvider.GetRequiredService<IEmergencyBloodRepository>();
         BloodIssueRepository = serviceProvider.GetRequiredService<IBloodIssueRepository>();
         // BloodUnitRepository = serviceProvider.GetRequiredService<IBloodUnitRepository>();
+        BlogRepository = serviceProvider.GetRequiredService<IBlogRepository>();
 
     }
+    public IBlogRepository BlogRepository { get; }
     public IUserRepository UserRepository { get; }
     public IBloodDonationRequestRepository BloodDonationRequestRepository { get; }
     public IRoleRepository RoleRepository { get; }
