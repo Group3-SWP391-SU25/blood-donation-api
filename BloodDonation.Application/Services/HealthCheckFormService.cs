@@ -42,11 +42,11 @@ namespace BloodDonation.Application.Services
             // Add the entity to the repository
             await unitOfWork.HealthCheckFormRepository.CreateAsync(healthCheckForm, cancellationToken);
 
-            if(model.IsApproved == true)
+            if (model.IsApproved == true)
             {
                 await ApproveBloodDonationAsync(request, model, cancellationToken);
             }
-            else
+            else if (model.IsApproved == false)
             {
                 //If not approved, set the request status to rejected
                 request.Status = BloodDonationRequestStatus.Rejected;

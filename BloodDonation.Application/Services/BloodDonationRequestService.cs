@@ -79,10 +79,10 @@ namespace BloodDonation.Application.Services
                     includeProperties: "BloodDonationRequest"))
                 .FirstOrDefault();
 
-            if (lastDonation != null && (DateTime.Today - lastDonation.DonationDate!.Value).TotalDays < 60)
+            if (lastDonation != null && (DateTime.Today - lastDonation.DonationDate!.Value).TotalDays < 90)
             {
                 //comment for testing purpose
-                //throw new ArgumentException("Không được tạo yêu cầu hiến máu mới trong vòng 60 ngày kể từ lần hiến máu gần nhất.");
+                //throw new ArgumentException("Không được tạo yêu cầu hiến máu mới trong vòng 90 ngày kể từ lần hiến máu gần nhất.");
             }
           
             // 2. Tìm mã Code lớn nhất hiện có (định dạng BDR00001)
@@ -111,7 +111,7 @@ namespace BloodDonation.Application.Services
                 .GetByCondition(b => b.Id == bloodDonationRequest.Id, includeProperties: "User,HealthCheckForm,BloodDonation");
             return unitOfWork.Mapper.Map<BloodDonationRequestViewModel>(bloodDonationRequestWithUser);
         }
-        public async Task<BloodDonationRequestViewModel> UpdatePartialAsync(BloodDonationRequestUpdateModel model, CancellationToken cancellationToken = default)
+        public async Task<BloodDonationRequestViewModel?> UpdatePartialAsync(BloodDonationRequestUpdateModel model, CancellationToken cancellationToken = default)
         {
             var entity = await unitOfWork.BloodDonationRequestRepository
                 .GetByCondition(b => b.Id.ToString() == model.Id, includeProperties: "User,HealthCheckForm,BloodDonation");

@@ -186,7 +186,7 @@ namespace BloodDonation.Application.Services
 
         public async Task SendReminderEmailsAsync()
         {
-            var targetDate = DateTime.Today.AddDays(-60); // 60 ngày trước
+            var targetDate = DateTime.Today.AddDays(-90); // 60 ngày trước
 
             var donations = await unitOfWork.BloodDonationRepository.Search(
                     b => b.DonationDate!.Value.Date == targetDate && (b.Status == BloodDonationStatusEnum.Donated || b.Status == BloodDonationStatusEnum.Checked),
