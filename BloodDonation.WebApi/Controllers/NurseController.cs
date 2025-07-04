@@ -1,5 +1,4 @@
 ﻿using BloodDonation.Application.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers
@@ -19,8 +18,8 @@ namespace BloodDonation.WebApi.Controllers
         public async Task<IActionResult> SearchMember(
             [FromQuery] string? search = "",
             [FromQuery] int pageIndex = 1,
-            [FromQuery] int pageSize = 10, 
-            [FromQuery] Guid? bloodGroupId = null, 
+            [FromQuery] int pageSize = 10,
+            [FromQuery] Guid? bloodGroupId = null,
             [FromQuery] string? address = null)
         {
             try

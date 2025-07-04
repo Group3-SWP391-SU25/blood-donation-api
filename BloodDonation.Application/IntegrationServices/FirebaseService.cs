@@ -20,8 +20,7 @@ namespace BloodDonation.Application.IntegrationServices
                     new FirebaseStorageOptions
                     {
                         AuthTokenAsyncFactory = () => Task.FromResult(ServiceAccount.FirebaseToken),
-                        ThrowOnCancel = true
-
+                        ThrowOnCancel = false
                     });
         }
         public async Task<User> GetUserAsync(string email, string password)
@@ -34,20 +33,24 @@ namespace BloodDonation.Application.IntegrationServices
             else throw new InvalidOperationException("Sign in with Firebase Failed");
         }
 
+
         public async Task<(string FileName, string Url)> SaveFileAsync(IFormFile file, string directory)
         {
             if (file.Length > 0)
             {
-                var fs = file.OpenReadStream();
-                var auth = authProvider;
-
-                var a = ServiceAccount;
-                Console.Write(a.FirebaseToken);
-
-                var cancellation = FirebaseStorage.Child("assets/" + directory).Child(file.FileName)
-                    .PutAsync(fs, CancellationToken.None);
                 try
                 {
+                    var fs = file.OpenReadStream();
+                    var auth = authProvider;
+
+                    var a = ServiceAccount;
+                    Console.Write(a.FirebaseToken);
+                    string name = file.FileName + $"-{Guid.NewGuid()}";
+
+
+                    var cancellation = FirebaseStorage.Child("assets/" + directory).Child(name)
+                        .PutAsync(fs, CancellationToken.None);
+
                     var result = await cancellation;
                     return (file.FileName, result);
                 }
