@@ -34,6 +34,23 @@ namespace BloodDonation.Application.Services
                     var emerBlood = unitOfWork.Mapper.Map<EmergencyBloodRequest>(requestModel);
                     emerBlood.UserId = currentUserId;
                     emerBlood.Status = EmergencyBloodRequestEnum.Pending;
+
+                    //Make by Bân, Generate unique code for the emergency blood request
+                    var existingRequest = await unitOfWork.EmergencyBloodRepository.Search(x => x.Code != null && x.Code.StartsWith("EMR"));
+
+                    int maxNumericCode = 0;
+                    foreach (var code in existingRequest)
+                    {
+                        var numericPart = code.Code!.Substring(3); // Remove "EMR"
+                        if (int.TryParse(numericPart, out int num))
+                        {
+                            maxNumericCode = Math.Max(maxNumericCode, num);
+                        }
+                    }
+
+                    var nextCode = $"EMR{(maxNumericCode + 1).ToString("D5")}"; // EMR + next number
+                    emerBlood.Code = nextCode; //set the generated code
+
                     await unitOfWork.EmergencyBloodRepository.CreateAsync(emerBlood);
 
                     if (await unitOfWork.SaveChangesAsync())

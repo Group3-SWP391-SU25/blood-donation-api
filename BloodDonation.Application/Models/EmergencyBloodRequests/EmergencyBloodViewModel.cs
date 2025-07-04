@@ -5,6 +5,7 @@ namespace BloodDonation.Application.Models.EmergencyBloodRequests
 {
     public class EmergencyBloodViewModel : BaseModel
     {
+        public string Code { get; set; } = string.Empty;
         public EmergencyBloodRequestEnum Status { get; set; }
         public double Volume { get; set; }
         public string Address { get; set; } = string.Empty;

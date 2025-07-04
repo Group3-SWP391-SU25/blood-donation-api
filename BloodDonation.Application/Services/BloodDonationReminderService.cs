@@ -60,7 +60,7 @@ namespace BloodDonation.Application.Services
             try
             {
                 using var scope = _services.CreateScope();
-                var service = scope.ServiceProvider.GetRequiredService<IBloodDonationService>(); // bạn phải tạo interface này
+                var service = scope.ServiceProvider.GetRequiredService<IBloodDonationService>();
                 await service.SendReminderEmailsAsync();
             }
             catch (Exception ex)

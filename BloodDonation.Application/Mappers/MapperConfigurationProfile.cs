@@ -18,7 +18,7 @@ public class MapperConfigurationProfile : Profile
 {
     public MapperConfigurationProfile()
     {
-        #region Customer
+        #region User
         //CreateMap<Admin, AdminCreateModel>().ReverseMap();
         //CreateMap<Customer, CustomerViewModel>().ReverseMap();
         //CreateMap<CustomerCreateModel, Customer>().ReverseMap();
@@ -31,6 +31,15 @@ public class MapperConfigurationProfile : Profile
 
 
         CreateMap<User, UserCreateModel>().ReverseMap();
+        CreateMap<User, MemberViewModel>()
+             .ForMember(dest => dest.User, opt => opt.MapFrom(src => src))
+             .ForMember(dest => dest.LastDonationDate, opt => opt.MapFrom(src =>
+                src.BloodRequests
+                    .Where(br => br.BloodDonation != null && !br.BloodDonation.IsDeleted)
+                    .Select(br => br.BloodDonation!.DonationDate)
+                    .OrderByDescending(date => date)
+                    .FirstOrDefault()))
+             .ReverseMap();
         #endregion
 
         #region BloodUnit
