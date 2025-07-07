@@ -112,7 +112,8 @@ public class MapperConfigurationProfile : Profile
         CreateMap<EmergencyBloodRequest, EmergencyBloodViewModel>().ReverseMap();
         CreateMap<EmergencyBloodRequest, EmergencyBloodUpdateModel>().ReverseMap();
         #region Blogs 
-        CreateMap<Blog, BlogCreateModel>().ReverseMap();
+        CreateMap<Blog, BlogCreateModel>().ReverseMap()
+            .ForAllMembers(cfg => cfg.Condition((src, dest, srcMember) => srcMember != null));
         #endregion
     }
 }
