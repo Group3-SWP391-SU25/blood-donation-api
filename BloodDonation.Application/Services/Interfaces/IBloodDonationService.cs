@@ -10,5 +10,6 @@ namespace BloodDonation.Application.Services.Interfaces
         Task<bool> UpdateStatusAsync(Guid id, BloodDonationStatusEnum status, CancellationToken cancellationToken = default);
         Task SendReminderEmailsAsync();
         Task<object> GetDonationSummaryAsync(DateRangeFilter range);
+        Task<object> GetSupervisorSummaryAsync(DateRangeFilter range);
     }
 }

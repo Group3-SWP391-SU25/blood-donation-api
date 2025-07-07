@@ -57,5 +57,18 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
+        [HttpGet("supvisor-summary")]
+        public async Task<IActionResult> GetSummary([FromQuery] DateRangeFilter range)
+        {
+            try
+            {
+                var summary = await bloodDonationService.GetSupervisorSummaryAsync(range);
+                return Ok(summary);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
+        }
     }
 }

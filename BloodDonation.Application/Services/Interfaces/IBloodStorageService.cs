@@ -13,7 +13,7 @@ namespace BloodDonation.Application.Services.Interfaces
         //search
         Task<object> SearchAsync(Guid? bloodGroupId, Guid? componentId, int pageIndex, int pageSize, string? search = "", BloodStorageStatusEnum? status = null, CancellationToken cancellationToken = default);
         Task ExpireOutdatedBloodAsync();
-        Task<object> GetAvailableBloods(int pageIndex, int pageSize, BloodStorageStatusEnum? status = null, Guid? BloodComponentId = null, Guid? BloodGroupId = null, int? volume = null, CancellationToken cancellationToken = default);
+        Task<object> GetAvailableBloods(int pageIndex, int pageSize, Guid EmergencyBloodRequestId, BloodStorageStatusEnum? status = null, int? volume = null, CancellationToken cancellationToken = default);
         Task PrepareBloodAsync(Guid id, BloodStorageCreateModel dto);
         Task<object> VolumeSummary(Guid? bloodGroupId, Guid? componentId);
     }
