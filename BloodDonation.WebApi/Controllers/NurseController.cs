@@ -1,4 +1,5 @@
-﻿using BloodDonation.Application.Services.Interfaces;
+﻿using BloodDonation.Application.Models.Nurse;
+using BloodDonation.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,22 +34,23 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống!", detail = ex.Message });
             }
         }
-        //[HttpPost("send-blood-request")]
-        //public async Task<IActionResult> SendBloodRequest([FromBody] BloodRequestCreateModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
 
-        //    try
-        //    {
-        //        await nurseService.SendBloodRequestAsync(model);
-        //        return CreatedAtAction(nameof(SendBloodRequest), new { id = model.Id }, model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+        [HttpPost("send-mail")]
+        public async Task<IActionResult> SendBloodCallEmail([FromBody] SendCallRequest request)
+        {
+            if (request.UserIds == null || !request.UserIds.Any())
+                return BadRequest("Danh sách người nhận không được để trống.");
 
-        //    }
-        //}
+            try
+            {
+                await nurseService.SendCallForDonationEmailAsync(request.UserIds);
+                return Ok(new { message = "Đã gửi lời kêu gọi hiến máu thành công." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Gửi mail thất bại.", detail = ex.Message });
+            }
+        }
+
     }
 }
