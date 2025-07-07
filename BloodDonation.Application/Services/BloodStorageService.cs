@@ -69,14 +69,19 @@ namespace BloodDonation.Application.Services
                 await unitOfWork.SaveChangesAsync();
             }
         }
-        public async Task<object> GetAvailableBloods(int pageIndex, int pageSize, BloodStorageStatusEnum? status = null, Guid? BloodComponentId = null, Guid? BloodGroupId = null, int? volume = null, CancellationToken cancellationToken = default)
+        public async Task<object> GetAvailableBloods(int pageIndex, int pageSize, Guid emergencyBloodRequestId, BloodStorageStatusEnum? status = null, int? volume = null, CancellationToken cancellationToken = default)
         {
+            var emergencyBloodRequest = await unitOfWork.EmergencyBloodRepository.GetByCondition(e => e.Id == emergencyBloodRequestId);
+
+            var bloodGroupIds = await GetCompatibleBloodGroupIds(emergencyBloodRequest.BloodGroupId);
             // Biểu thức lọc
             Expression<Func<BloodStorage, bool>> filter = b =>
                 (status == null || b.Status == status) &&
-                (string.IsNullOrEmpty(BloodComponentId.ToString()) || b.BloodComponentId == BloodComponentId) &&
-                (string.IsNullOrEmpty(BloodGroupId.ToString()) || b.BloodGroupId == BloodGroupId) &&
-                (volume == null || b.Volume == volume);
+                (b.BloodComponentId == emergencyBloodRequest.BloodComponentId ||
+                 b.BloodComponentId == Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b64") || //máu toàn phần bảo quản
+                 b.BloodComponentId == Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b63")) && // máu toàn phân
+                bloodGroupIds.Contains(b.BloodGroupId!.Value) && 
+                (volume == null || b.Volume == volume) && b.Volume > 0;
 
             // Truy vấn dữ liệu đã lọc, phân trang
             var pagedData = await unitOfWork.BloodStorageRepository.Search(
@@ -107,6 +112,40 @@ namespace BloodDonation.Application.Services
                 Records = mappedData
             };
         }
+
+        public async Task<List<Guid>> GetCompatibleBloodGroupIds(Guid recipientBloodGroupId)
+        {
+            var allGroups = await unitOfWork.BloodGroupRepository.GetAllAsync();
+
+            var recipient = allGroups!.FirstOrDefault(bg => bg.Id == recipientBloodGroupId);
+            if (recipient == null)
+                return [];
+
+            var recipientName = recipient.Type.ToUpper(); // A, B, AB, O
+            var recipientRh = recipient.RhFactor; // string: +, -
+
+            // Nhóm máu có thể truyền: Xét theo tên và Rh
+            var compatible = allGroups!.Where(donor =>
+            {
+                var donorType = donor.Type.Trim().ToUpper();
+                var donorRh = donor.RhFactor.Trim();
+
+                // Rh compatibility: "-" chỉ nhận từ "-", "+" nhận từ cả "-" và "+"
+                bool rhCompatible = recipientRh == "+" || donorRh == "-";
+
+                return recipientName switch
+                {
+                    "O" => donorType == "O" && rhCompatible,
+                    "A" => (donorType == "O" || donorType == "A") && rhCompatible,
+                    "B" => (donorType == "O" || donorType == "B") && rhCompatible,
+                    "AB" => (donorType == "O" || donorType == "A" || donorType == "B" || donorType == "AB") && rhCompatible,
+                    _ => false
+                };
+            });
+
+            return compatible.Select(d => d.Id).ToList();
+        }
+
         public async Task PrepareBloodAsync(Guid id, BloodStorageCreateModel dto)
         {
             Guid wholeBloodId = Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b63"); // ID of Whole Blood component
