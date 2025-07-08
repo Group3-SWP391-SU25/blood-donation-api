@@ -171,5 +171,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return await query.CountAsync();
     }
 
+    public virtual Task DeleteHardAsync(TEntity entity)
+    {
+        dbSet.Remove(entity);
+        return Task.CompletedTask;
+    }
 
 }

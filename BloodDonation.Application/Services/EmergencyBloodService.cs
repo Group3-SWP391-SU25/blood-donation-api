@@ -190,5 +190,52 @@ namespace BloodDonation.Application.Services
 
 
         }
+
+        public async Task<object> GetSummaryAsync(DateRangeFilter range)
+        {
+            DateTime today = DateTime.Today;
+            DateTime startDate;
+            DateTime endDate;
+
+            switch (range)
+            {
+                case DateRangeFilter.Today:
+                    startDate = today;
+                    endDate = today.AddDays(1);
+                    break;
+                case DateRangeFilter.ThisWeek:
+                    int delta = DayOfWeek.Monday - today.DayOfWeek;
+                    startDate = today.AddDays(delta);
+                    endDate = startDate.AddDays(7);
+                    break;
+                case DateRangeFilter.ThisMonth:
+                    startDate = new DateTime(today.Year, today.Month, 1);
+                    endDate = startDate.AddMonths(1);
+                    break;
+                case DateRangeFilter.All:
+                default:
+                    startDate = DateTime.MinValue;
+                    endDate = DateTime.MaxValue;
+                    break;
+            }
+
+            Expression<Func<EmergencyBloodRequest, bool>> baseFilter = b =>
+                b.CreatedDate >= startDate &&
+                b.CreatedDate < endDate;
+            var total = await unitOfWork.EmergencyBloodRepository.Count(baseFilter);
+            var pending = await unitOfWork.EmergencyBloodRepository.Count(baseFilter.And(b => b.Status == EmergencyBloodRequestEnum.Pending));
+            var processing = await unitOfWork.EmergencyBloodRepository.Count(baseFilter.And(b => b.Status == EmergencyBloodRequestEnum.Processing));
+            var finish = await unitOfWork.EmergencyBloodRepository.Count(baseFilter.And(b => b.Status == EmergencyBloodRequestEnum.Finish));
+            var rejected = await unitOfWork.EmergencyBloodRepository.Count(baseFilter.And(b => b.Status == EmergencyBloodRequestEnum.Reject));
+            return new
+            {
+                Total = total,
+                Pending = pending,
+                Processing = processing,
+                Finish = finish,
+                Rejected = rejected
+            };
+        }
+
     }
 }

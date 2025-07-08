@@ -10,5 +10,6 @@ namespace BloodDonation.Application.Services.Interfaces
     public interface IBloodIssueService
     {
         Task<bool> CreateBloodIssueAsync(Guid emergencyBloodRequestId, BloodIssueCreateModel reqDto);
+        Task<bool> UpdateBloodIssueAsync(Guid id, BloodIssueCreateModel reqDto);
     }
 }

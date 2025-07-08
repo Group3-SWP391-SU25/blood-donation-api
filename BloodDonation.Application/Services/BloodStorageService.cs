@@ -69,20 +69,29 @@ namespace BloodDonation.Application.Services
                 await unitOfWork.SaveChangesAsync();
             }
         }
-        public async Task<object> GetAvailableBloods(int pageIndex, int pageSize, Guid emergencyBloodRequestId, BloodStorageStatusEnum? status = null, int? volume = null, CancellationToken cancellationToken = default)
+        public async Task<object> GetAvailableBloods(int pageIndex, int pageSize, Guid? emergencyBloodRequestId = null, BloodStorageStatusEnum? status = null, int? volume = null, CancellationToken cancellationToken = default)
         {
-            var emergencyBloodRequest = await unitOfWork.EmergencyBloodRepository.GetByCondition(e => e.Id == emergencyBloodRequestId);
+            Expression<Func<BloodStorage, bool>> filter = null!;
+            if (emergencyBloodRequestId != null)
+            {
+                var emergencyBloodRequest = await unitOfWork.EmergencyBloodRepository.GetByCondition(e => e.Id == emergencyBloodRequestId);
 
-            var bloodGroupIds = await GetCompatibleBloodGroupIds(emergencyBloodRequest.BloodGroupId);
-            // Biểu thức lọc
-            Expression<Func<BloodStorage, bool>> filter = b =>
-                (status == null || b.Status == status) &&
-                (b.BloodComponentId == emergencyBloodRequest.BloodComponentId ||
-                 b.BloodComponentId == Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b64") || //máu toàn phần bảo quản
-                 b.BloodComponentId == Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b63")) && // máu toàn phân
-                bloodGroupIds.Contains(b.BloodGroupId!.Value) && 
-                (volume == null || b.Volume == volume) && b.Volume > 0;
-
+                var bloodGroupIds = await GetCompatibleBloodGroupIds(emergencyBloodRequest.BloodGroupId);
+                // Biểu thức lọc
+                filter = b =>
+                    (status == null || b.Status == status) &&
+                    (b.BloodComponentId == emergencyBloodRequest.BloodComponentId ||
+                     b.BloodComponentId == Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b64") || //máu toàn phần bảo quản
+                     b.BloodComponentId == Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b63")) && // máu toàn phân
+                    bloodGroupIds.Contains(b.BloodGroupId!.Value) &&
+                    (volume == null || b.Volume == volume) && b.Volume > 0;
+            }
+            else
+            {
+                filter = b =>
+                    (status == null || b.Status == status) &&
+                    (volume == null || b.Volume == volume) && b.Volume > 0;
+            }
             // Truy vấn dữ liệu đã lọc, phân trang
             var pagedData = await unitOfWork.BloodStorageRepository.Search(
                 filter: filter,
