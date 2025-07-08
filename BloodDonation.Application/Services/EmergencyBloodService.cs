@@ -144,9 +144,10 @@ namespace BloodDonation.Application.Services
             {
                 if (emerBlood.Status == Domain.Enums.EmergencyBloodRequestEnum.Pending)
                 {
-                    if (model.Status != Domain.Enums.EmergencyBloodRequestEnum.Cancel)
+                    if (model.Status != Domain.Enums.EmergencyBloodRequestEnum.Cancel ||
+                        model.Status != Domain.Enums.EmergencyBloodRequestEnum.Pending)
                     {
-                        throw new InvalidOperationException("Nurse chỉ có quyền huỷ yêu cầu xuất máu");
+                        throw new InvalidOperationException("Nurse chỉ có quyền huỷ yêu cầu xuất máu hoặc cập nhật thông tin");
                     }
                 }
                 else if (model.Status != emerBlood.Status)
