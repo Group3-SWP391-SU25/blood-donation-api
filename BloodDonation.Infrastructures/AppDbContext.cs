@@ -29,11 +29,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasForeignKey(bs => bs.BloodGroupId)
             .OnDelete(DeleteBehavior.Restrict); // or NoAction
         modelBuilder.ApplyConfigurationsFromAssembly(assembly: AssemblyReference.Assembly);
+        //    modelBuilder.Entity<BloodIssue>()
+        //        .HasOne(bi => bi.EmergencyBloodRequest)
+        //        .WithOne(ebr => ebr.BloodIssue)
+        //        .HasForeignKey<BloodIssue>(bi => bi.EmergencyBloodRequestId)
+        //.OnDelete(DeleteBehavior.NoAction); // or .NoAction
         modelBuilder.Entity<BloodIssue>()
-            .HasOne(bi => bi.EmergencyBloodRequest)
-            .WithOne(ebr => ebr.BloodIssue)
-            .HasForeignKey<BloodIssue>(bi => bi.EmergencyBloodRequestId)
-    .OnDelete(DeleteBehavior.NoAction); // or .NoAction
+            .HasOne(x => x.EmergencyBloodRequest)
+            .WithMany(x => x.BloodIssues)
+            .HasForeignKey(x => x.EmergencyBloodRequestId)
+            .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<HealthCheckForm>()
             .HasOne(hcf => hcf.BloodDonationRequest)
             .WithOne(bdr => bdr.HealthCheckForm)

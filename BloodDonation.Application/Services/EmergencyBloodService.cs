@@ -139,7 +139,7 @@ namespace BloodDonation.Application.Services
                 [x => x.BloodComponent, x => x.BloodGroup])
                 ?? throw new InvalidOperationException("Không tìm thấy yêu cầu xuất máu với Id " + id);
             var currentState = emerBlood.Status;
-            if(model.Status == null) 
+            if (model.Status == null)
             {
                 model.Status = currentState;
             }

@@ -13,7 +13,8 @@ public class EmergencyBloodRequest : BaseEntity
     public Guid UserId { get; set; } = Guid.Empty;
     public virtual User User { get; set; }
 
-    public virtual BloodIssue? BloodIssue { get; set; }
+
+    public ICollection<BloodIssue> BloodIssues { get; set; }
 
     public Guid BloodComponentId { get; set; }
     public BloodComponent BloodComponent { get; set; }
