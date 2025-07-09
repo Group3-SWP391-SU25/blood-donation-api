@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.BloodComponents;
 using BloodDonation.Application.Models.BloodGroups;
+using BloodDonation.Application.Models.BloodIssues;
 using BloodDonation.Domain.Enums;
 namespace BloodDonation.Application.Models.EmergencyBloodRequests
 {
@@ -11,5 +12,6 @@ namespace BloodDonation.Application.Models.EmergencyBloodRequests
         public string Address { get; set; } = string.Empty;
         public BloodComponentViewModel BloodComponent { get; set; }
         public BloodGroupViewModel BloodGroup { get; set; }
+        //public ICollection<BloodIssueViewModel> BloodIssues { get; set; }
     }
 }

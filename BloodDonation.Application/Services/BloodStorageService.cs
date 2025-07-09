@@ -76,6 +76,11 @@ namespace BloodDonation.Application.Services
             {
                 var emergencyBloodRequest = await unitOfWork.EmergencyBloodRepository.GetByCondition(e => e.Id == emergencyBloodRequestId);
 
+                if(emergencyBloodRequest == null)
+                {
+                    throw new Exception("Yêu cầu máu khẩn cấp không tồn tại.");
+                }
+
                 var bloodGroupIds = await GetCompatibleBloodGroupIds(emergencyBloodRequest.BloodGroupId);
                 // Biểu thức lọc
                 filter = b =>
