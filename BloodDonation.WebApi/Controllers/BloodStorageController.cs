@@ -35,7 +35,7 @@ namespace BloodDonation.WebApi.Controllers
         public async Task<IActionResult> GetAvailableBloods(
             [FromQuery] int pageIndex = 1,
             [FromQuery] int pageSize = 10,
-            [FromQuery] Guid emergencyBloodRequestId = default,
+            [FromQuery] Guid? emergencyBloodRequestId = null,
             [FromQuery] BloodStorageStatusEnum? status = null,
             [FromQuery] int? volume = null,
             CancellationToken cancellationToken = default)

@@ -19,5 +19,6 @@ namespace BloodDonation.Application.Services.Interfaces
             CancellationToken cancellationToken = default);
         Task<bool> DelAsync(Guid id,
             CancellationToken cancellationToken = default);
+        Task<object> GetSummaryAsync(DateRangeFilter range);
     }
 }

@@ -5,6 +5,7 @@ using BloodDonation.Application.Models.BloodComponents;
 using BloodDonation.Application.Models.BloodDonationRequests;
 using BloodDonation.Application.Models.BloodDonations;
 using BloodDonation.Application.Models.BloodGroups;
+using BloodDonation.Application.Models.BloodIssues;
 using BloodDonation.Application.Models.BloodStorage;
 using BloodDonation.Application.Models.EmergencyBloodRequests;
 using BloodDonation.Application.Models.HealthCheckForms;
@@ -116,6 +117,11 @@ public class MapperConfigurationProfile : Profile
         #region Blogs 
         CreateMap<Blog, BlogCreateModel>().ReverseMap()
             .ForAllMembers(cfg => cfg.Condition((src, dest, srcMember) => srcMember != null));
+        #endregion
+        #region BloodIssue
+        CreateMap<BloodIssue, BloodIssueViewModel>()
+            .ForMember(dest => dest.BloodStorage, opt => opt.MapFrom(src => src.BloodStorage))
+            .ForMember(dest => dest.BloodStorageId, opt => opt.MapFrom(src => src.BloodStorage.Id));
         #endregion
     }
 }

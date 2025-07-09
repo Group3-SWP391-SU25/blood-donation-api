@@ -33,5 +33,22 @@ namespace BloodDonation.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBloodIssue(Guid id, [FromBody] BloodIssueCreateModel reqDto)
+        {
+            try
+            {
+                var result = await bloodIssueService.UpdateBloodIssueAsync(id, reqDto);
+                if (result)
+                {
+                    return Ok();
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
