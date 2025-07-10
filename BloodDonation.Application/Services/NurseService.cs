@@ -80,6 +80,22 @@ namespace BloodDonation.Application.Services
             //Check time donation
             var lastDonationThreshold = DateTime.Now.AddDays(-90); //90 days ago
 
+            foreach (var u in users)
+            {
+                //Get last donation date
+                var lastDonationDate = u.BloodRequests?
+                    .SelectMany(r => r.BloodDonation != null ? new[] { r.BloodDonation } : [])
+                    .Where(d => d.Status == BloodDonationStatusEnum.Donated || d.Status == BloodDonationStatusEnum.Checked)
+                    .OrderByDescending(d => d.DonationDate)
+                    .FirstOrDefault()?.DonationDate;
+
+                // if last donation date is null or older than threshold, throw exception
+                if (lastDonationDate == null || lastDonationDate >= lastDonationThreshold)
+                {
+                    throw new InvalidOperationException($"Không thể gửi mail kêu gọi hiến máu vì người dùng: {u.FullName} không đủ điều kiện hiến máu hiện tại.");
+                }
+            }
+
             foreach (var user in users)
             {
                 //Get last donation date

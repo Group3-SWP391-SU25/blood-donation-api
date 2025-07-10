@@ -91,7 +91,11 @@ namespace BloodDonation.Application.Services
             var pagedData = await unitOfWork.EmergencyBloodRepository.Search(
 
                 filter: filter,
-                includeProperties: "BloodComponent,BloodGroup",
+                includeProperties: "BloodComponent,BloodGroup," +
+                "BloodIssues," +
+                "BloodIssues.BloodStorage," +
+                "BloodIssues.BloodStorage.BloodComponent," +
+                "BloodIssues.BloodStorage.BloodGroup",
                 orderBy: q => q.OrderByDescending(b => b.CreatedDate),
                 pageIndex: pageIndex,
                 pageSize: pageSize);
@@ -121,8 +125,15 @@ namespace BloodDonation.Application.Services
         public async Task<EmergencyBloodViewModel> GetByIdAsync(Guid id,
             CancellationToken cancellationToken = default)
         {
-            var emerBlood = await unitOfWork.EmergencyBloodRepository.FirstOrDefaultAsync(x => x.Id == id, cancellationToken,
-                [x => x.BloodComponent, x => x.BloodGroup]) ?? throw new InvalidOperationException("Không tìm thấy yêu cầu xuất máu với Id: " + id);
+            //var emerBlood = await unitOfWork.EmergencyBloodRepository.FirstOrDefaultAsync(x => x.Id == id, cancellationToken,
+            //    [x => x.BloodComponent, x => x.BloodGroup]) ?? throw new InvalidOperationException("Không tìm thấy yêu cầu xuất máu với Id: " + id);
+            var emerBlood = await unitOfWork.EmergencyBloodRepository.GetByCondition(x => x.Id == id,
+                includeProperties: "BloodComponent,BloodGroup," +
+                "BloodIssues," +
+                "BloodIssues.BloodStorage," +
+                "BloodIssues.BloodStorage.BloodComponent," +
+                "BloodIssues.BloodStorage.BloodGroup") 
+                ?? throw new InvalidOperationException("Không tìm thấy yêu cầu xuất máu với Id: " + id);
             return unitOfWork.Mapper.Map<EmergencyBloodViewModel>(emerBlood);
 
         }
