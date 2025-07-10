@@ -12,6 +12,6 @@ namespace BloodDonation.Application.Models.EmergencyBloodRequests
         public string Address { get; set; } = string.Empty;
         public BloodComponentViewModel BloodComponent { get; set; }
         public BloodGroupViewModel BloodGroup { get; set; }
-        //public ICollection<BloodIssueViewModel> BloodIssues { get; set; }
+        public ICollection<BloodIssueViewModel> BloodIssues { get; set; }
     }
 }

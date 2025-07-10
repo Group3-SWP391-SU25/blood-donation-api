@@ -103,7 +103,8 @@ namespace BloodDonation.Application.Services
                 {
                     throw new InvalidOperationException($"Kho máu với ID {bloodStorageId} không đủ số lượng để xuất!");
                 }
-                if (bloodStorage.Status != Domain.Enums.BloodStorageStatusEnum.Safe)
+                if (bloodStorage.Status == Domain.Enums.BloodStorageStatusEnum.Dangerous ||
+                    bloodStorage.Status == Domain.Enums.BloodStorageStatusEnum.UnChecked)
                 {
                     throw new InvalidOperationException($"Kho máu với ID {bloodStorageId} không đủ tiêu chuẩn an toàn để xuất!");
                 }
