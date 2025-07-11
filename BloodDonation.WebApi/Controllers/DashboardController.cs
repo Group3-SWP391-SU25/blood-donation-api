@@ -21,5 +21,11 @@ namespace BloodDonation.WebApi.Controllers
             var dashboard = await dashboardService.GetNurseDashboardAsync();
             return Ok(dashboard);
         }
+        [HttpGet("supervisor")]
+        public async Task<IActionResult> GetSupervisorDashboardAsync()
+        {
+            var dashboard = await dashboardService.GetSupervisorDashboard();
+            return Ok(dashboard);
+        }
     }
 }
