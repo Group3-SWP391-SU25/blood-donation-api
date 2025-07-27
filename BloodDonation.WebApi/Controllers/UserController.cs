@@ -2,6 +2,7 @@
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers;
@@ -16,7 +17,7 @@ public class UserController : ControllerBase
     {
         this.userService = userService;
     }
-
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAsync(
     [FromQuery] int? pageSize,
@@ -31,7 +32,6 @@ public class UserController : ControllerBase
             isDeleted: isDeleted);
         return Ok(result);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] UserCreateModel model,
@@ -48,7 +48,7 @@ public class UserController : ControllerBase
             ? Ok(result)
             : throw new Exception("Created Failed");
     }
-
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> Put([FromRoute] Guid id,
     [FromBody] UserUpdateModel model)
@@ -67,6 +67,7 @@ public class UserController : ControllerBase
             ? Ok(result)
             : throw new Exception($"Not found Id: {id}");
     }
+    [Authorize(Roles = "ADMIN")]
     [HttpPut("{id}/unban")]
     public async Task<IActionResult> Unban([FromRoute] Guid id)
     {
@@ -75,7 +76,7 @@ public class UserController : ControllerBase
             ? Ok("Unban sucessfully")
             : throw new Exception("Unban người dùng Failed");
     }
-
+    [Authorize(Roles = "ADMIN")]
     [HttpPut("{id}/ban")]
     public async Task<IActionResult> BanAsync([FromRoute] Guid id)
     {
@@ -84,6 +85,7 @@ public class UserController : ControllerBase
             ? Ok("Ban sucessfully")
             : throw new Exception("Unban người dùng Failed");
     }
+    [Authorize(Roles = "ADMIN")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Del([FromRoute] Guid id)
     {

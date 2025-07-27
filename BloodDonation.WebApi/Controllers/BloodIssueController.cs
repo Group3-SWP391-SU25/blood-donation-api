@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.BloodIssues;
 using BloodDonation.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace BloodDonation.WebApi.Controllers
             this.bloodIssueService = bloodIssueService;
             ClaimsService = claimsService;
         }
+        [Authorize(Roles = "SUPERVISOR")]
         [HttpPost]
         public async Task<IActionResult> CreateBloodIssue([FromQuery] Guid EmergencyBloodRequestId, [FromBody] BloodIssueCreateModel reqDto)
         {
@@ -33,6 +35,7 @@ namespace BloodDonation.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Roles = "SUPERVISOR")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBloodIssue(Guid id, [FromBody] BloodIssueCreateModel reqDto)
         {

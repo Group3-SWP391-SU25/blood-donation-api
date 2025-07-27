@@ -1,6 +1,7 @@
 ﻿using BloodDonation.Application.Services;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace BloodDonation.WebApi.Controllers
             this.bloodDonationService = bloodDonationService;
             ClaimsService = claimsService;
         }
-
+        [Authorize]
         [HttpGet("search")]
         public async Task<IActionResult> Search(
             [FromQuery] string? search = "",
@@ -30,6 +31,7 @@ namespace BloodDonation.WebApi.Controllers
             return Ok(result);
         }
         //Update Blood Donation Status
+        [Authorize(Roles = "NURSE")]
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(
             [FromRoute] Guid id,
@@ -43,7 +45,7 @@ namespace BloodDonation.WebApi.Controllers
             }
             return NotFound();
         }
-
+        [Authorize]
         [HttpGet("summary")]
         public async Task<IActionResult> GetDonationSummary([FromQuery] DateRangeFilter range)
         {
@@ -57,6 +59,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
+        [Authorize]
         [HttpGet("supvisor-summary")]
         public async Task<IActionResult> GetSummary([FromQuery] DateRangeFilter range)
         {

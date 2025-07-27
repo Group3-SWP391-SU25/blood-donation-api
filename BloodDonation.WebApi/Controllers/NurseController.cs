@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.Nurse;
 using BloodDonation.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers
@@ -14,7 +15,7 @@ namespace BloodDonation.WebApi.Controllers
         {
             this.nurseService = nurseService;
         }
-
+        [Authorize(Roles = "NURSE")]
         [HttpGet("members")]
         public async Task<IActionResult> SearchMember(
             [FromQuery] string? search = "",
@@ -33,7 +34,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống!", detail = ex.Message });
             }
         }
-
+        [Authorize(Roles = "NURSE")]
         [HttpPost("send-mail")]
         public async Task<IActionResult> SendBloodCallEmail([FromBody] SendCallRequest request)
         {

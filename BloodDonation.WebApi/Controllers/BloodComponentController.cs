@@ -1,4 +1,5 @@
 ﻿using BloodDonation.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace BloodDonation.WebApi.Controllers
             this.bloodComponentService = bloodComponentService;
             ClaimsService = claimsService;
         }
+        [Authorize]
         [HttpGet()]
         public async Task<IActionResult> Get([FromQuery] string? search = "")
         {
