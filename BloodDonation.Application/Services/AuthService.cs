@@ -21,9 +21,10 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseModel> LoginAsync(AuthRequestModel requestModel, CancellationToken cancellationToken = default)
     {
-        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == requestModel.Email &&
-            x.Status == UserStatusEnum.Active.ToString(), cancellationToken, [x => x.Role, x => x.BloodGroup!]);
+        var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == requestModel.Email, cancellationToken, [x => x.Role, x => x.BloodGroup!]);
         var hashPassword = requestModel.Password.Hashing();
+        if (user != null &&
+            user.Status == UserStatusEnum.InActive.ToString()) throw new InvalidOperationException("User đã bị khoá! Không thể login");
         if (hashPassword == user?.HashPassword)
         {
             var token = TokenGenerator.GenerateToken(user, user.Role.Name);
@@ -33,6 +34,8 @@ public class AuthService : IAuthService
                 User = unitOfWork.Mapper.Map<UserViewModel>(user)
             };
         }
+
+
         throw new UnauthorizedAccessException("Invalid email or password.");
     }
     private async Task<Domain.Entities.User> LoginAsync(Firebase.Auth.User firebaseUser)

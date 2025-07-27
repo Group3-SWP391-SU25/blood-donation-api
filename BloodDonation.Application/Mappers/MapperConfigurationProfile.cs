@@ -28,7 +28,8 @@ public class MapperConfigurationProfile : Profile
             .ForMember(x => x.RoleName, cfg => cfg.MapFrom(x => x.Role.Name))
             .ForMember(x => x.BloodGroupType, cfg => cfg.MapFrom(x => $"{x.BloodGroup!.Type ?? string.Empty}{x.BloodGroup!.RhFactor ?? string.Empty}"))
             .ReverseMap();
-        CreateMap<User, UserUpdateModel>().ReverseMap();
+        CreateMap<User, UserUpdateModel>().ReverseMap()
+           .ForAllMembers(cfg => cfg.Condition((src, dest, srcMember) => srcMember != null));
 
 
         CreateMap<User, UserCreateModel>().ReverseMap();

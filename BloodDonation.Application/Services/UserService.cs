@@ -179,23 +179,12 @@ public class UserService : IUserService
     public async Task<bool> UpdateAsync(Guid id, UserUpdateModel model,
         CancellationToken cancellationToken = default)
     {
-        var currentUser = claimsService.CurrentUser;
-        var currentLogin = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == currentUser, cancellationToken, [x => x.Role]);
         var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == id,
             cancellationToken,
             includes: [x => x.Role, x => x.BloodGroup!]);
         if (user is not null)
         {
-
-            if (currentLogin != null)
-            {
-                if (user.Status != model.Status && currentLogin.Role.Name != RoleNames.ADMIN)
-                {
-                    throw new InvalidOperationException("Chỉ ADMIN mới được quyền ban/unban user");
-                }
-            }
             unitOfWork.Mapper.Map(model, user);
-
             unitOfWork.UserRepository.Update(user);
             return await unitOfWork.SaveChangesAsync();
         }
