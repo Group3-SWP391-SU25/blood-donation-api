@@ -5,6 +5,7 @@ using BloodDonation.Application.Utilities;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
 using Firebase.Auth;
+using FirebaseAdmin.Auth;
 namespace BloodDonation.Application.Services;
 
 public class AuthService : IAuthService
@@ -45,6 +46,13 @@ public class AuthService : IAuthService
         user.FullName = $"{firebaseUser.DisplayName}";
         user.HashPassword = string.Empty;
         user.Addresss = string.Empty;
+        user.BackUrlIdentity = string.Empty;
+        user.FrontUrlIdentity = string.Empty;
+        user.DateOfBirth = DateTime.Now;
+        user.PhoneNo = string.Empty;
+        user.Status = UserStatusEnum.Active.ToString();
+        user.IdentityId = string.Empty;
+
         var role = await unitOfWork.RoleRepository.FirstOrDefaultAsync(x => x.Name == RoleNames.MEMBER);
         user.RoleId = role?.Id ?? Guid.Empty;
         await unitOfWork.UserRepository.CreateAsync(user);
