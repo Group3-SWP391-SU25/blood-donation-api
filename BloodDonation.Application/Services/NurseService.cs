@@ -35,6 +35,7 @@ namespace BloodDonation.Application.Services
                 (string.IsNullOrEmpty(searchKey) || u.FullName.Contains(searchKey) || u.Email.Contains(searchKey)) &&
                 (!bloodGroupId.HasValue || u.BloodGroupId == bloodGroupId.Value) &&
                 (string.IsNullOrEmpty(address) || u.Addresss.Contains(address)) &&
+                (u.BloodGroup != null) &&
                 !u.IsDeleted && u.RoleId == Guid.Parse("859a4997-1ffa-4915-b50e-9a99e4147b85");
 
             var users = await unitOfWork.UserRepository.Search(
