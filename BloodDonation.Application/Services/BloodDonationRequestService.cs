@@ -4,6 +4,8 @@ using BloodDonation.Application.Utilities;
 using BloodDonation.Domain.Entities;
 using BloodDonation.Domain.Enums;
 using System.Linq.Expressions;
+using System.Net.Mail;
+using System.Net;
 
 
 namespace BloodDonation.Application.Services
@@ -11,9 +13,12 @@ namespace BloodDonation.Application.Services
     public class BloodDonationRequestService : IBloodDonationRequestService
     {
         private readonly IUnitOfWork unitOfWork;
-        public BloodDonationRequestService(IUnitOfWork unitOfWork)
+        private readonly EmailSettings emailSettings;
+
+        public BloodDonationRequestService(IUnitOfWork unitOfWork, EmailSettings emailSettings)
         {
             this.unitOfWork = unitOfWork;
+            this.emailSettings = emailSettings;
         }
 
         public async Task<object> SearchAsync(int? pageIndex = 1, int? pageSize = 10,
@@ -74,7 +79,7 @@ namespace BloodDonation.Application.Services
             // Kiểm tra khoảng cách 60 ngày kể từ lần hiến máu gần nhất
             var lastDonation = (await unitOfWork.BloodDonationRepository
                 .Search(
-                    b => b.BloodDonationRequest.UserId == model.UserId && (b.Status == BloodDonationStatusEnum.Donated || b.Status == BloodDonationStatusEnum.Checked) ,
+                    b => b.BloodDonationRequest.UserId == model.UserId && (b.Status == BloodDonationStatusEnum.Donated || b.Status == BloodDonationStatusEnum.Checked),
                     orderBy: q => q.OrderByDescending(x => x.DonationDate),
                     includeProperties: "BloodDonationRequest"))
                 .FirstOrDefault();
@@ -82,9 +87,9 @@ namespace BloodDonation.Application.Services
             if (lastDonation != null && (DateTime.Today - lastDonation.DonationDate!.Value).TotalDays < 90)
             {
                 //comment for testing purpose
-                //throw new ArgumentException("Không được tạo yêu cầu hiến máu mới trong vòng 90 ngày kể từ lần hiến máu gần nhất.");
+                throw new ArgumentException("Không được tạo yêu cầu hiến máu mới trong vòng 90 ngày kể từ lần hiến máu gần nhất.");
             }
-          
+
             // 2. Tìm mã Code lớn nhất hiện có (định dạng BDR00001)
             var existingRequest = await unitOfWork.BloodDonationRequestRepository.Search(x => x.Code != null && x.Code.StartsWith("BDR"));
 
@@ -105,6 +110,27 @@ namespace BloodDonation.Application.Services
 
             await unitOfWork.BloodDonationRequestRepository.CreateAsync(bloodDonationRequest, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var timeSlotDisplay = ToFriendlyString(model.TimeSlot);
+
+            await SendEmailAsync(user.Email!, "Xác nhận đăng ký hiến máu thành công",
+            $@"<div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;'>
+                <h2 style='color:#e74c3c;'> Xác nhận đăng ký hiến máu</h2>
+                <p>Xin chào <strong>{user.FullName}</strong>,</p>
+
+                <p>Chúng tôi xin xác nhận bạn đã đăng ký thành công buổi hiến máu với thông tin như sau:</p>
+
+                <ul style='line-height: 1.6;'>
+                    <li><strong>Mã đăng ký:</strong> {nextCode}</li>
+                    <li><strong>Ngày hiến máu:</strong> {model.DonatedDateRequest:dd/MM/yyyy}</li>
+                    <li><strong>Khung giờ:</strong> {timeSlotDisplay}</li>
+                </ul>
+
+                <p>Cảm ơn bạn đã tham gia đóng góp cho cộng đồng. Mỗi giọt máu cho đi là một hy vọng được trao gửi.</p>
+
+                <p style='color:gray; font-size: 0.9em;'>— BloodLink - Trung tâm Tiếp nhận và Hỗ trợ Hiến máu</p>
+            </div>");
+
 
             var bloodDonationRequestWithUser = await unitOfWork
                 .BloodDonationRequestRepository
@@ -249,6 +275,29 @@ namespace BloodDonation.Application.Services
             unitOfWork.BloodDonationRequestRepository.Update(entity);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
+            // Gửi email nếu status là Cancelled
+            if (status == BloodDonationRequestStatus.Cancelled)
+            {
+                var timeSlotDisplay = ToFriendlyString(entity.TimeSlot); // dùng method chuyển TimeSlotEnum về chữ
+
+                await SendEmailAsync(entity.User.Email!, "Huỷ đăng ký hiến máu",
+                $@"<div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;'>
+                    <h2 style='color:#e74c3c;'>Đăng ký hiến máu đã được huỷ</h2>
+                    <p>Xin chào <strong>{entity.User.FullName}</strong>,</p>
+
+                    <p>Yêu cầu hiến máu của bạn đã được huỷ với các thông tin sau:</p>
+
+                    <ul style='line-height: 1.6;'>
+                        <li><strong>Mã yêu cầu:</strong> {entity.Code}</li>
+                        <li><strong>Ngày đã đăng ký:</strong> {entity.DonatedDateRequest:dd/MM/yyyy}</li>
+                        <li><strong>Khung giờ:</strong> {timeSlotDisplay}</li>
+                    </ul>
+
+                    <p>Nếu đây là sự nhầm lẫn hoặc bạn muốn đặt lại lịch, vui lòng liên hệ với chúng tôi để được hỗ trợ.</p>
+
+                    <p style='color:gray; font-size: 0.9em;'>— BloodLink - Trung tâm Tiếp nhận và Hỗ trợ Hiến máu</p>
+                </div>");
+            }
             return unitOfWork.Mapper.Map<BloodDonationRequestViewModel>(entity);
         }
         public async Task<List<BloodDonationRequestViewModel>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
@@ -346,6 +395,44 @@ namespace BloodDonation.Application.Services
                 Rejected = rejected,
                 Donated = donated
             };
+        }
+        private async Task SendEmailAsync(string toEmail, string subject, string body)
+        {
+            using var client = new SmtpClient(emailSettings.SmtpServer, emailSettings.Port)
+            {
+                Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password),
+                EnableSsl = true
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(emailSettings.FromEmail, emailSettings.FromName),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(toEmail);
+            await client.SendMailAsync(mailMessage);
+        }
+        public static string ToFriendlyString(TimeSlotEnum slot)
+        {
+            switch (slot)
+            {
+                case TimeSlotEnum.Slot7hto7h30: return "07:00 - 07:30";
+                case TimeSlotEnum.Slot7h30to8h: return "07:30 - 08:00";
+                case TimeSlotEnum.Slot8hto8h30: return "08:00 - 08:30";
+                case TimeSlotEnum.Slot8h30to9h: return "08:30 - 09:00";
+                case TimeSlotEnum.Slot9hto9h30: return "09:00 - 09:30";
+                case TimeSlotEnum.Slot0h30to10h: return "09:30 - 10:00";
+                case TimeSlotEnum.Slot10hto10h30: return "10:00 - 10:30";
+                case TimeSlotEnum.Slot13h30to14h: return "13:30 - 14:00";
+                case TimeSlotEnum.Slot14hto14h30: return "14:00 - 14:30";
+                case TimeSlotEnum.Slot14h30to15h: return "14:30 - 15:00";
+                case TimeSlotEnum.Slot15hto15h30: return "15:00 - 15:30";
+                case TimeSlotEnum.Slot15h30to16h: return "15:30 - 16:00";
+                default: return "Không rõ";
+            }
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.BloodChecks;
 using BloodDonation.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,7 @@ namespace BloodDonation.WebApi.Controllers
         {
             this.bloodCheckService = bloodCheckService;
         }
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken = default)
         {
@@ -33,7 +34,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống!", detail = ex.Message });
             }
         }
-
+        [Authorize]
         [HttpGet("by-donation/{bloodDonationId}")]
         public async Task<IActionResult> GetByBloodDonationId(Guid bloodDonationId, CancellationToken cancellationToken = default)
         {
@@ -51,7 +52,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống!", detail = ex.Message });
             }
         }
-
+        [Authorize(Roles = "SUPERVISOR")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BloodCheckCreateModel model, CancellationToken cancellationToken = default)
         {

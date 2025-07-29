@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.HealthCheckForms;
 using BloodDonation.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace BloodDonation.WebApi.Controllers
         {
             this.healthCheckFormService = healthCheckFormService;
         }
+        [Authorize(Roles = "SUPERVISOR")]
         [HttpPost()]
         public async Task<IActionResult> CreateHealthCheckForm([FromBody] HealthCheckFormCreateModel model)
         {
@@ -29,6 +31,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
+        [Authorize(Roles = "SUPERVISOR")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHealthCheckForm(Guid id, [FromBody] HealthCheckFormUpdateModel model)
         {
@@ -46,6 +49,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHealthCheckFormById(Guid id)
         {

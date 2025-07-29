@@ -1,6 +1,7 @@
 ﻿using BloodDonation.Application.Models.EmergencyBloodRequests;
 using BloodDonation.Application.Services.Interfaces;
 using BloodDonation.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers
@@ -14,13 +15,14 @@ namespace BloodDonation.WebApi.Controllers
         {
             this.emergencyBloodService = emergencyBloodService;
         }
+        [Authorize(Roles = "NURSE")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EmergencyBloodCreateModel model)
         {
             var createResult = await emergencyBloodService.CreateAsync(model);
             return Ok(createResult);
         }
-
+        [Authorize(Roles = "NURSE,SUPERVISOR")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id,
             [FromBody] EmergencyBloodUpdateModel model)
@@ -28,12 +30,14 @@ namespace BloodDonation.WebApi.Controllers
             await emergencyBloodService.UpdateAsync(id, model, default);
             return NoContent();
         }
+        [Authorize(Roles = "NURSE")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Del(Guid id)
         {
             await emergencyBloodService.DelAsync(id);
             return NoContent();
         }
+        [Authorize(Roles = "NURSE,SUPERVISOR")]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string? search,
             [FromQuery] int pageIndex = 1,
@@ -46,12 +50,14 @@ namespace BloodDonation.WebApi.Controllers
                 status: status);
             return Ok(res);
         }
+        [Authorize(Roles = "NURSE,SUPERVISOR")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             var res = await emergencyBloodService.GetByIdAsync(id);
             return Ok(res);
         }
+        [Authorize]
         [HttpGet("summary")]
         public async Task<IActionResult> GetSummary([FromQuery] DateRangeFilter range)
         {

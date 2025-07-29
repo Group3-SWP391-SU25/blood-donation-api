@@ -1,5 +1,6 @@
 ﻿using BloodDonation.Application.Models.Blogs;
 using BloodDonation.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonation.WebApi.Controllers
@@ -27,13 +28,14 @@ namespace BloodDonation.WebApi.Controllers
         {
             return Ok(await blogService.GetByIdAsync(id));
         }
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BlogCreateModel model)
         {
             var res = await blogService.CreateAsync(model);
             return Ok(res);
         }
-
+        [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromRoute] Guid id,
             [FromBody] BlogCreateModel model)
@@ -41,7 +43,7 @@ namespace BloodDonation.WebApi.Controllers
             var res = await blogService.UpdateAsync(id, model);
             return NoContent();
         }
-
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Del([FromRoute] Guid id)
         {

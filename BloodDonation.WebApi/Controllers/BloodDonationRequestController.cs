@@ -20,6 +20,7 @@ namespace BloodDonation.WebApi.Controllers
             this.bloodDonationRequestService = bloodDonationRequestService;
             ClaimsService = claimsService;
         }
+        [Authorize(Roles = "NURSE,SUPERVISOR,MEMBER")]
         [HttpGet("search")]
         public async Task<IActionResult> Search(
                                                 [FromQuery] BloodDonationRequestStatus? status,
@@ -34,7 +35,7 @@ namespace BloodDonation.WebApi.Controllers
 
             return Ok(result);
         }
-
+        [Authorize(Roles = "NURSE,SUPERVISOR,MEMBER")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -53,7 +54,7 @@ namespace BloodDonation.WebApi.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "MEMBER")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BloodDonationRequestCreateModel dto)
         {
@@ -64,6 +65,7 @@ namespace BloodDonation.WebApi.Controllers
             var createdRequest = await bloodDonationRequestService.CreateAsync(dto);
             return Ok(createdRequest);
         }
+        [Authorize(Roles = "MEMBER")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] BloodDonationRequestUpdateModel model)
         {
@@ -80,7 +82,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -94,7 +96,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
-
+        [Authorize(Roles = "NURSE,MEMBER")]
         [HttpPut("status/{id}")]
         public async Task<IActionResult> UpdateStatus(string id, [FromQuery] BloodDonationRequestStatus status, [FromQuery] string? rejectNote)
         {
@@ -114,7 +116,7 @@ namespace BloodDonation.WebApi.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles ="MEMBER")]
         [HttpGet("user-requests")]
         public async Task<IActionResult> GetUserRequests([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
         {
@@ -130,6 +132,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
+        [Authorize]
         [HttpGet("summary")]
         public async Task<IActionResult> GetSummary([FromQuery] DateRangeFilter range)
         {

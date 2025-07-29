@@ -57,7 +57,7 @@ namespace BloodDonation.Application.Services
             var now = DateTime.Now;
 
             var expiredBloods = await unitOfWork.BloodStorageRepository
-                .Search(b => b.Status != BloodStorageStatusEnum.Expired && b.ExpiredDate < now);
+                .Search(b => b.Status != BloodStorageStatusEnum.Expired && b.ExpiredDate < now && b.Volume > 0);
 
             foreach (var blood in expiredBloods)
             {
