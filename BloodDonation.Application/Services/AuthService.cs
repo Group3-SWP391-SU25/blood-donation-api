@@ -44,6 +44,7 @@ public class AuthService : IAuthService
         user.Email = firebaseUser.Email;
         user.FullName = $"{firebaseUser.DisplayName}";
         user.HashPassword = string.Empty;
+        user.Addresss = string.Empty;
         var role = await unitOfWork.RoleRepository.FirstOrDefaultAsync(x => x.Name == RoleNames.MEMBER);
         user.RoleId = role?.Id ?? Guid.Empty;
         await unitOfWork.UserRepository.CreateAsync(user);
