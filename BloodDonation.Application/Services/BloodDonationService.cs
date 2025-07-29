@@ -128,7 +128,7 @@ namespace BloodDonation.Application.Services
                             <p>🧪 <strong>Kết quả xét nghiệm máu chi tiết</strong> sẽ được gửi đến bạn trong vòng <strong>3 đến 5 ngày tới</strong>.</p>
 
                             <p>📅 <strong>Thời gian hiến máu tiếp theo</strong>: Bạn có thể hiến máu lần tiếp theo sau ngày 
-                               <strong>{bloodDonation.DonationDate!.Value.AddDays(60):dd/MM/yyyy}</strong>.</p>
+                               <strong>{bloodDonation.DonationDate!.Value.AddDays(90):dd/MM/yyyy}</strong>.</p>
 
                             <p>💡 <strong>Hướng dẫn phục hồi sau hiến máu:</strong></p>
                             <ul>
@@ -186,7 +186,7 @@ namespace BloodDonation.Application.Services
 
         public async Task SendReminderEmailsAsync()
         {
-            var targetDate = DateTime.Today.AddDays(-90); // 60 ngày trước
+            var targetDate = DateTime.Today.AddDays(-90); // 90 ngày trước
 
             var donations = await unitOfWork.BloodDonationRepository.Search(
                     b => b.DonationDate!.Value.Date == targetDate && (b.Status == BloodDonationStatusEnum.Donated || b.Status == BloodDonationStatusEnum.Checked),

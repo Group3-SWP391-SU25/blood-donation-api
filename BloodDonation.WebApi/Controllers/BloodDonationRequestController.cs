@@ -96,7 +96,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
-        [Authorize(Roles = "NURSE")]
+        [Authorize(Roles = "NURSE,MEMBER")]
         [HttpPut("status/{id}")]
         public async Task<IActionResult> UpdateStatus(string id, [FromQuery] BloodDonationRequestStatus status, [FromQuery] string? rejectNote)
         {
