@@ -15,7 +15,7 @@ namespace BloodDonation.WebApi.Controllers
         {
             this.bloodGroupService = bloodGroupService;
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

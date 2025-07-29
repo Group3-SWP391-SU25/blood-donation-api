@@ -37,7 +37,7 @@ namespace BloodDonation.WebApi.Controllers
             await emergencyBloodService.DelAsync(id);
             return NoContent();
         }
-        [Authorize(Roles = "NURSE,SUPERVISOR")]
+        //[Authorize(Roles = "NURSE,SUPERVISOR")]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string? search,
             [FromQuery] int pageIndex = 1,
@@ -50,7 +50,7 @@ namespace BloodDonation.WebApi.Controllers
                 status: status);
             return Ok(res);
         }
-        [Authorize(Roles = "NURSE,SUPERVISOR")]
+        //[Authorize(Roles = "NURSE,SUPERVISOR")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {

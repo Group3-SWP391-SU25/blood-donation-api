@@ -18,7 +18,7 @@ namespace BloodDonation.WebApi.Controllers
             this.bloodDonationService = bloodDonationService;
             ClaimsService = claimsService;
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet("search")]
         public async Task<IActionResult> Search(
             [FromQuery] string? search = "",

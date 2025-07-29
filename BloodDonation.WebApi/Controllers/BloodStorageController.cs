@@ -19,7 +19,7 @@ namespace BloodDonation.WebApi.Controllers
             this.bloodStorageService = bloodStorageService;
             ClaimsService = claimsService;
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet("search")]
         public async Task<IActionResult> Search(
             [FromQuery] string? search = "",
@@ -33,7 +33,7 @@ namespace BloodDonation.WebApi.Controllers
             var result = await bloodStorageService.SearchAsync(bloodGroupId, componentId, pageIndex, pageSize, search, status, cancellationToken);
             return Ok(result);
         }
-        [Authorize(Roles = "SUPERVISOR,NURSE")]
+        //[Authorize(Roles = "SUPERVISOR,NURSE")]
         [HttpGet("available-bloods")]
         public async Task<IActionResult> GetAvailableBloods(
             [FromQuery] int pageIndex = 1,
@@ -52,7 +52,7 @@ namespace BloodDonation.WebApi.Controllers
                 cancellationToken);
             return Ok(result);
         }
-        [Authorize(Roles = "SUPERVISOR")]
+        //[Authorize(Roles = "SUPERVISOR")]
         [HttpPost("blood-preparation/{id}")]
         public async Task<IActionResult> PrepareBlood(Guid id, [FromBody] BloodStorageCreateModel dto)
         {
@@ -68,7 +68,7 @@ namespace BloodDonation.WebApi.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
             }
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet("volume-summary")]
         public async Task<IActionResult> VolumeSummary(
             [FromQuery] Guid? bloodGroupId = null,
