@@ -16,7 +16,7 @@ namespace BloodDonation.Application.Services
         private readonly ILogger<BloodDonationRequestCheckService> _logger;
         private Timer? _timer;
 
-        private readonly TimeSpan _checkTime = new TimeSpan(17, 0, 0); //16h VietNam
+        private readonly TimeSpan _checkTime = new TimeSpan(17, 0, 0); //17h VietNam
 
         public BloodDonationRequestCheckService(IServiceProvider services, ILogger<BloodDonationRequestCheckService> logger)
         {
@@ -44,6 +44,8 @@ namespace BloodDonation.Application.Services
             var delay = nextRun - now;
 
             _timer = new Timer(RunJob, null, delay, Timeout.InfiniteTimeSpan);
+            //_timer = new Timer(RunJob, null, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+
 
             _logger.LogInformation($"BloodDonationRequestCheckService next job scheduled at: {nextRun}");
         }
